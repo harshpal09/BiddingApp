@@ -275,7 +275,7 @@ export default function HomeScreen({ navigation }) {
               style={globalStyles.beltItemIcon}
             />
             <Text style={globalStyles.beltItemText}>
-              {item.lead.registration_in}
+              {item.lead.registration_in.substring(0,4)+"XXXX"}
             </Text>
           </View>
         </View>

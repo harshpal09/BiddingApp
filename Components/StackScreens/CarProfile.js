@@ -906,7 +906,7 @@ export default function CarProfile({ route }) {
                   style={globalStyles.beltItemIcon}
                 />
                 <Text style={globalStyles.beltItemText}>
-                  {all_data.lead.registration_in}
+                  {all_data.lead.registration_in.substring(0,4)+"XXXX"}
                 </Text>
               </View>
             </View>
