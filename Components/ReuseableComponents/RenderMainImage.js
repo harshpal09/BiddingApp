@@ -5,8 +5,9 @@ import {
     ImageBackground,
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import Image from 'react-native-image-lazy-loading';
+import LazyloadImage from 'react-native-image-lazy-loading';
 import { globalStyles } from '../../export';
+import FastImage from 'react-native-fast-image';
 
 
 export default function RenderMainImage({ item }) {
@@ -53,8 +54,8 @@ export default function RenderMainImage({ item }) {
     return (
         <View>
             { remainingTime === undefined || remainingTime > 0?
-                <Image
-                    source={frontMainImage !== undefined || frontMainImage !== "" ? {uri:frontMainImage.image}:null}
+                <FastImage
+                    source={frontMainImage !== undefined || frontMainImage !== "" ? {uri:frontMainImage.image,priority:FastImage.priority.high}:null}
                     style={globalStyles.image}
                 />
                 :

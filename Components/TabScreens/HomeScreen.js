@@ -12,9 +12,10 @@ import {
   Dimensions,
   ActivityIndicator,
   RefreshControl,
-  Modal
+  // Modal,
+
 } from 'react-native';
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useRef, useState, useEffect } from 'react';
 import HeaderSearch from '../ReuseableComponents/HeaderSearch';
 import globalStyles, {
   LARGE_FONT_SIZE,
@@ -33,6 +34,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { SelectCountry } from 'react-native-element-dropdown';
 import RenderIf from '../ExtraScreens/RenderIf';
 import Image from 'react-native-image-lazy-loading';
+import Svg, { Circle, Rect, Line, Path } from 'react-native-svg';
 
 
 const { width, height } = Dimensions.get('window');
@@ -41,7 +43,10 @@ import babelConfig from '../../babel.config';
 import MyBottomSheet from '../StackScreens/MyBottomSheet';
 import RenderMainImage from '../ReuseableComponents/RenderMainImage';
 import BidBottemSheet from '../StackScreens/BidBottomSheet';
-
+import PopupMessage from '../ReuseableComponents/PopupMessage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingComponent from '../ReuseableComponents/LoadingComponent';
+import Modal from 'react-native-modal';
 // const arr = [
 //   'Diesel',
 //   'Petrol',
@@ -105,32 +110,60 @@ export default function HomeScreen({ navigation }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isBidModalVisible, setBidModalVisible] = useState(false);
   const [bidData, setBidData] = useState({})
+  const [showButton, setShowButton] = useState(false);
+  const [toggle, setToggle] = useState(true);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const toggleBidModal = (id,bid,step_price) => {
-    setBidData({'auction_id':id,'current_price':bid,'step_price':step_price});
+  const toggleBidModal = (id, bid, step_price) => {
+    setBidData({ 'auction_id': id, 'current_price': bid, 'step_price': step_price });
     setBidModalVisible(!isBidModalVisible);
   };
 
   useEffect(() => {
-    
-    getData();
-  }, []);
-  const getData = async () => {
-    setIsRefreshing(true);
-    let response = await axios.post('https://crm.unificars.com/api/live-auctions', {
-        user: 11,
-      })
-      if (response.data.code == 200) {
-        // console.log("data =>",response.data.data.auction);
-        setData(response.data.data.auction);
-      } else {
-        console.log(response.data.status);
-      }
-    setIsRefreshing(false);
+    // Start a timer to show the button every 20 seconds
+    const timer = setInterval(() => {
+      setShowButton(true);
+    }, 60000); // 20 seconds in milliseconds
 
-    
+    // Clear the timer when the component unmounts
+    return () => clearInterval(timer);
+  }, [showButton]);
+
+  useEffect(() => {
+
+    getData();
+  }, [navigation]);
+  const getData = async () => {
+
+    id = await AsyncStorage.getItem('user_id');
+    if (id != null) {
+      try {
+        setToggle(true);
+        setShowButton(false);
+        setIsRefreshing(true);
+
+        let response = await axios.post('https://crm.unificars.com/api/live-auctions', {
+          user: id,
+        })
+        if (response.data.code == 200) {
+          // console.log("data =>",response.data.data.auction);
+          setData(response.data.data.auction);
+        } else {
+          console.log(response.data.status);
+        }
+      }
+      catch (e) {
+        console.log('error =>', e);
+      }
+      finally {
+        setToggle(false);
+        setIsRefreshing(false);
+      }
+    }
+
+
+
   };
 
   const calculateTimeLeft = (currentDate, startTime, endTime) => {
@@ -185,18 +218,27 @@ export default function HomeScreen({ navigation }) {
   };
   // console.log('remaining seconds =>',remainingSeconds);
 
+  const verticalScrollviewRef = useRef();
+  const scrollToVerticalComponent = () => {
+    if (verticalScrollviewRef.current) {
+      const yOffset = 0; // Adjust the yOffset as needed
+      verticalScrollviewRef.current.scrollToOffset({ offset: yOffset, animated: true });
+    }
+  };
+
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         style={[globalStyles.contentContainer]}
         activeOpacity={0.9}
         onPress={() => { navigation.navigate('car_profile', { auction_id: item.id }) }}>
+        {/* {console.log(item.id," name ",item.lead.brand)} */}
         <View style={globalStyles.flexBox}>
-          <ImageBackground source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU'}} style={[globalStyles.image]}>
+          <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU' }} style={[globalStyles.image]}>
             <RenderMainImage item={item} />
             <View style={[globalStyles.textContainer]}>
               <Text style={[globalStyles.text]}>
-                {item.lead.model+" "}
+                {item.lead.model + " "}
                 {item.lead.brand}
               </Text>
             </View>
@@ -275,7 +317,7 @@ export default function HomeScreen({ navigation }) {
               style={globalStyles.beltItemIcon}
             />
             <Text style={globalStyles.beltItemText}>
-              {item.lead.registration_in.substring(0,4)+"XXXX"}
+              {item.lead.registration_in.substring(0, 4) + "XXXX"}
             </Text>
           </View>
         </View>
@@ -304,12 +346,12 @@ export default function HomeScreen({ navigation }) {
               <View
                 style={[
                   globalStyles.flexBox,
-                  { transform: [{ skewX: '20deg' }, { perspective: 100 }] },
+                  { transform: [{ skewX: '20deg' }] },
                 ]}>
                 <Text
                   style={{
-                    color: '#ffffff',
-                    fontWeight: '500',
+                    color: '#fff',
+                    fontWeight: '700',
                     fontSize: SMALL_FONT_SIZE,
                   }}>
                   Highest Bid
@@ -333,9 +375,7 @@ export default function HomeScreen({ navigation }) {
             }}
           />
         </View>
-        <TouchableOpacity activeOpacity={calculateTimeLeft(item.start_date, item.start_time, item.end_time)
-          .timeLeftInSeconds == 0 ? 0.1 : 0.1} disabled={calculateTimeLeft(item.start_date, item.start_time, item.end_time)
-            .timeLeftInSeconds == 0 ? true : false} onPress={()=>toggleBidModal(item.id,item.highest_bid,item.step_price)} d style={[globalStyles.flexBox]}>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => toggleBidModal(item.id, item.highest_bid, item.step_price)} d style={[globalStyles.flexBox]}>
           <View
             style={[
               {
@@ -358,19 +398,7 @@ export default function HomeScreen({ navigation }) {
               Placed Bid
             </Text>
           </View>
-          <Modal
-            animationType="slide" // Choose an animation type (slide, fade, etc.)
-            transparent={true} // Make the modal background transparent
-            visible={isBidModalVisible}
-            onRequestClose={() => {
-              // Handle modal closing here (e.g., pressing the back button on Android)
-              toggleBidModal(null,null);
-            }}
 
-          >
-            {/* Modal Content */}
-            <BidBottemSheet callGetData={getData} toggleModal={()=>toggleBidModal(null,null)} data={bidData} />
-          </Modal>
         </TouchableOpacity>
       </TouchableOpacity>
     );
@@ -379,99 +407,118 @@ export default function HomeScreen({ navigation }) {
   return (
 
     <View style={[globalStyles.mainContainer, globalStyles.flexBox]}>
-      <View style={{ width: '100%', height: '100%' }}>
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          style={[globalStyles.scrollViewContainer]}
-          showsVerticalScrollIndicator={false}
-          // refreshControl={()=>{}}
-          keyExtractor={item => item.id.toString()} // Replace with your unique key
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-          }
-        />
-        <View
-          style={[
-            {
-              position: 'absolute',
-              width: '100%',
-              height: 40,
-              backgroundColor: 'transparent',
-              bottom: 20,
-            },
-            globalStyles.flexBoxAlign,
-          ]}>
+      {toggle ? <LoadingComponent /> :
+        <View style={{ width: '100%', height: '100%'}}>
+          {showButton && (
+            <TouchableOpacity style={{ paddingHorizontal: 10, top: -10, zIndex: 1 }} onPress={() => { onRefresh(), scrollToVerticalComponent() }}>
+              <PopupMessage message={'Pull to Refresh'} />
+            </TouchableOpacity>
+          )}
+
+          <FlatList
+            ref={verticalScrollviewRef}
+            data={data}
+            renderItem={renderItem}
+            style={[globalStyles.scrollViewContainer]}
+            showsVerticalScrollIndicator={false}
+            // refreshControl={()=>{}}
+            keyExtractor={item => item.id.toString()} // Replace with your unique key
+            refreshControl={
+              <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+            }
+          />
+          <Modal
+
+            style={{ marginLeft: 0, marginBottom: 0 }}
+            isVisible={isBidModalVisible}
+            onBackdropPress={() => toggleBidModal(null, null)}
+          >
+            <></>
+            <BidBottemSheet callGetData={getData} toggleModal={() => toggleBidModal(null, null)} data={bidData} />
+          </Modal>
+
+          <Modal
+                  style={{ marginLeft: 0, marginBottom: 0 }}
+                  isVisible={isModalVisible}
+                  onBackdropPress={() => toggleModal(null, null)}
+                >
+                  {/* Modal Content */}
+                  <MyBottomSheet toggleModal={toggleModal} />
+                </Modal>
+
           <View
             style={[
               {
-                width: '50%',
+                position: 'absolute',
+                width: '100%',
                 height: 40,
-                backgroundColor: 'white',
-                justifyContent: 'space-around',
-                borderRadius: 8,
+                backgroundColor: 'transparent',
+                bottom: 20,
               },
               globalStyles.flexBoxAlign,
-              globalStyles.rowContainer,
-              globalStyles.shadow,
             ]}>
-            {/* <View style={[globalStyles.rowContainer,{backgroundColor:'red',justifyContent:'space-around'}]}> */}
-            <TouchableOpacity style={[globalStyles.rowContainer]} onPress={toggleModal}>
-              <MaterialCommunityIcons
-                name="filter-menu-outline"
-                size={25}
-                style={[{ padding: 5 }]}
-              />
-              <Text
-                style={[
-                  {
-                    fontFamily: PALATINO_FONT,
-                    fontSize: LARGE_FONT_SIZE,
-                    padding: 7,
-                    fontWeight: '500',
-                  },
-                ]}>
-                Filter
-              </Text>
-              <Modal
-                animationType="slide" // Choose an animation type (slide, fade, etc.)
-                transparent={true} // Make the modal background transparent
-                visible={isModalVisible}
-                onRequestClose={() => {
-                  // Handle modal closing here (e.g., pressing the back button on Android)
-                  toggleModal();
-                }}
-                style={{}}
-              >
-                {/* Modal Content */}
-                <MyBottomSheet toggleModal={toggleModal} />
-              </Modal>
-            </TouchableOpacity>
             <View
-              style={[{ width: 5, height: 30, backgroundColor: 'grey' }]}></View>
-            <TouchableOpacity style={[globalStyles.rowContainer]}>
-              <MaterialCommunityIcons
-                name="heart-outline"
-                size={25}
-                tyle={[{ padding: 15 }]}
-              />
-              <Text
-                style={[
-                  {
-                    fontFamily: PALATINO_FONT,
-                    fontSize: LARGE_FONT_SIZE,
-                    padding: 5,
-                    fontWeight: '500',
-                  },
-                ]}>
-                Wishlist
-              </Text>
-            </TouchableOpacity>
-            {/* </View> */}
-          </View>
+              style={[
+                {
+                  width: '60%',
+                  height: 40,
+                  backgroundColor: 'white',
+                  justifyContent: 'space-around',
+                  borderRadius: 8,
+                },
+                globalStyles.flexBoxAlign,
+                globalStyles.rowContainer,
+                globalStyles.shadow,
+              ]}>
+              {/* <View style={[globalStyles.rowContainer,{backgroundColor:'red',justifyContent:'space-around'}]}> */}
+              <TouchableOpacity style={[globalStyles.rowContainer,globalStyles.flexBox,]} onPress={toggleModal}>
+                <MaterialCommunityIcons
+                  name="filter-menu-outline"
+                  size={25}
+                  style={[{ padding: 5,color:'#000' }]}
+                />
+                <Text
+                  style={[
+                    {
+                      fontFamily: PALATINO_FONT,
+                      fontSize: LARGE_FONT_SIZE,
+                      padding: 7,
+                      fontWeight: '700',
+                      color:'#000'
+                    },
+                  ]}>
+                  Filter
+                </Text>
+                
+              </TouchableOpacity>
+              <View
+                style={[{ width: 5, height: 30, backgroundColor: 'grey'}]}></View>
+              <TouchableOpacity style={[globalStyles.rowContainer,globalStyles.flexBox]} activeOpacity={0.9}>
+                <MaterialCommunityIcons
+                  name="heart-outline"
+                  size={25}
+                  color={'#000'}
+                  // style={[{ padding: 15 }]}
+                />
+                <Text
+                  style={[
+                    {
+                      fontFamily: PALATINO_FONT,
+                      fontSize: LARGE_FONT_SIZE,
+                      padding: 5,
+                      fontWeight: '700',
+                      color:'#000'
+                    },
+                  ]}>
+                  Wishlist
+                </Text>
+              </TouchableOpacity>
+              {/* </View> */}
+            </View>
 
+          </View>
         </View>
-      </View>
+      }
 
     </View>
   );

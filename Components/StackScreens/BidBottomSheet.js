@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, SafeAreaView, TextInput } from 'react-native';
 import { globalStyles } from '../../export';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { BLUE_COLOR, EXTRA_LARGE_FONT_SIZE, LARGE_FONT_SIZE, CONTAINER_BORDER, PALATINO_BOLD_FONT, LIGHT_BLUE, TOP_TAB_TEXT_COLOR, RP_S, MEDIUM_FONT_SIZE, SMALL_FONT_SIZE } from '../../Styles/global';
+import { BLUE_COLOR, EXTRA_LARGE_FONT_SIZE, LARGE_FONT_SIZE, CONTAINER_BORDER, PALATINO_BOLD_FONT, LIGHT_BLUE, TOP_TAB_TEXT_COLOR, RP_S, MEDIUM_FONT_SIZE, SMALL_FONT_SIZE, width } from '../../Styles/global';
 import { KEYBOARD_DISMISS_THRESHOLD } from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -32,9 +32,9 @@ const BidBottemSheet = ({ toggleModal, data, callGetData,isProfile }) => {
     }
     // }
   }
-  console.log("bid price =>", error)
+  // console.log("bid price =>", error)
   return (
-    <View style={[globalStyles.flexBoxAlign, { flex: 1, position: 'absolute', bottom: 0, width: '100%', backgroundColor: "#FFF", height: error.code == "" ? 200 : 230, borderRadius: 20 }]}>
+    <View style={[globalStyles.flexBoxAlign, { position: 'absolute', bottom: 0, width:width, backgroundColor: "#FFF", height: error.code == "" ? 170 : 200, borderTopLeftRadius: 20,borderTopRightRadius:20 }]}>
       <View style={[globalStyles.rowContainer, { width: '100%', height: 40, backgroundColor: LIGHT_BLUE, borderTopRightRadius: 20, borderTopLeftRadius: 20 }]}>
         <View style={[{ width: '100%', borderTopRightRadius: 20, borderTopLeftRadius: 20, backgroundColor:"#3d3d3d", height: 40, paddingHorizontal: 10 }, globalStyles.flexBoxAlign, globalStyles.rowContainer]} activeOpacity={0.9} >
           <TouchableOpacity onPress={toggleModal}>
@@ -50,11 +50,11 @@ const BidBottemSheet = ({ toggleModal, data, callGetData,isProfile }) => {
       </View>
       <View style={[{ width: '100%', padding: 10, justifyContent: 'space-around' }, globalStyles.flexBoxAlign, globalStyles.rowContainer]}  >
         <View style={[globalStyles.rowContainer, globalStyles.flexBox, { width: '20%', height: 40, padding: 2 }]}>
-          <TouchableOpacity style={[{ width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center', marginHorizontal: 2, backgroundColor: BLUE_COLOR, borderRadius: 8 }]} onPress={() => data.current_price < bid_price ? setBidPrice(bid_price - parseInt(data.step_price)) : ""}><Text style={[{fontSize: 20, color: '#fff' }]}>-</Text></TouchableOpacity>
+          <TouchableOpacity style={[{ width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center', marginHorizontal: 2, backgroundColor: BLUE_COLOR, borderRadius: 8 }]} onPress={() => data.current_price < bid_price ? setBidPrice(bid_price - parseInt(data.step_price)) : ""}><MaterialCommunityIcons name='minus' color={'#FFF'} size={25} /></TouchableOpacity>
         </View>
-        <TextInput keyboardType='numeric' style={[{ height: 40, width: '70%', backgroundColor: '#FFF', borderRadius: 5, paddingLeft: 15, borderWidth: 1, borderColor: '#3d3d3d', fontWeight: '700', fontSize: LARGE_FONT_SIZE }]} textAlignVertical='center' textAlign='center' value={RP_S + parseInt(bid_price).toLocaleString('en-IN')} editable={false} />
+        <TextInput keyboardType='numeric' style={[{ height: 40, width: '70%', backgroundColor: '#FFF', borderRadius: 5, paddingLeft: 15, borderWidth: 1, borderColor: '#3d3d3d', fontWeight: '700', fontSize: LARGE_FONT_SIZE ,color:'#000'}]} textAlignVertical='center' textAlign='center' value={RP_S + parseInt(bid_price).toLocaleString('en-IN')} editable={false} />
         <View style={[globalStyles.rowContainer, globalStyles.flexBox, { width: '20%', height: 40, padding: 2 }]}>
-          <TouchableOpacity style={[{ width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center', marginHorizontal: 2, backgroundColor: BLUE_COLOR, borderRadius: 8 }]} onPress={() => setBidPrice(parseInt(data.step_price) + bid_price)}><Text style={[{ fontSize: 20, color: '#fff' }]}>+</Text></TouchableOpacity>
+          <TouchableOpacity style={[{ width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center', marginHorizontal: 2, backgroundColor: BLUE_COLOR, borderRadius: 8 }]} onPress={() => setBidPrice(parseInt(data.step_price) + bid_price)}><MaterialCommunityIcons name='plus' color={'#FFF'} size={25} /></TouchableOpacity>
         </View>
       </View>
       <TouchableOpacity style={[globalStyles.button, { width: '90%' }]} onPress={() => { placedBid() }}>

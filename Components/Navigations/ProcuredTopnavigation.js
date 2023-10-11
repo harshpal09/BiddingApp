@@ -1,22 +1,19 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {HomeScreen, MyAutions, MyPurchases} from '../../export';
+import {Procured,RcTransfer ,Nagotiation } from '../../export';
 import HeaderSearch from '../ReuseableComponents/HeaderSearch';
 
-import { BLUE_COLOR, INACTIVE_TINT_COLOR, LIGHT_BLUE, MEDIUM_FONT_SIZE, ORANGE_COLOR, TOP_TAB_COLOR, TOP_TAB_TEXT_COLOR } from '../../Styles/global';
+import { BLUE_COLOR, INACTIVE_TINT_COLOR, LIGHT_BLUE, MEDIUM_FONT_SIZE, ORANGE_COLOR, SMALL_FONT_SIZE, TOP_TAB_COLOR, TOP_TAB_TEXT_COLOR } from '../../Styles/global';
 
 const HeaderTab = createMaterialTopTabNavigator();
 
-export default function TopNavigation({navigation}) {
+export default function ProcuredTopnavigation({navigation}) {
 
   
  
   return (
-    <SafeAreaView style={{height: '100%',}}>
-      {/* <View> */}
-        <HeaderSearch navigation={navigation} />
-      {/* </View> */}
+    <SafeAreaView style={{flex:1}}>
       <HeaderTab.Navigator
         style={{
           // padding: 10
@@ -33,7 +30,7 @@ export default function TopNavigation({navigation}) {
             // width:'100%'
           },
           tabBarLabelStyle: {
-            fontSize: MEDIUM_FONT_SIZE,
+            fontSize: SMALL_FONT_SIZE,
             fontWeight:'700',
             color:TOP_TAB_TEXT_COLOR
 
@@ -44,15 +41,14 @@ export default function TopNavigation({navigation}) {
             // width:'100%'
             
           },
-          
-
-        //   tabBarIndicator: e => console.log(e),
+        //tabBarIndicator: e => console.log(e),
         }}>
-        <HeaderTab.Screen name="Active Auction" component={HomeScreen} />
-        {/* <HeaderTab.Screen name="OCB" component={MyAutions} /> */}
-        {/* <HeaderTab.Screen name="My Purchases" component={MyPurchases} /> */}
+        <HeaderTab.Screen name="nagotiation" component={Nagotiation} />
+        <HeaderTab.Screen name="procured" component={Procured} />  
+        <HeaderTab.Screen name="rctransfer" component={RcTransfer} />
+  
       </HeaderTab.Navigator>
-    </SafeAreaView>
+      </SafeAreaView>
   );
 }
 

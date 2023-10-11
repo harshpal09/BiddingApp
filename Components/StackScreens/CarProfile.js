@@ -21,469 +21,17 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailsComponent, RenderIf ,} from '../../export';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-// import Image from 'react-native-image-lazy-loading';
+import LazyloadImage from 'react-native-image-lazy-loading';
 import BidBottemSheet from './BidBottomSheet';
+import LoadingComponent from '../ReuseableComponents/LoadingComponent';
+import FastImage from 'react-native-fast-image';
 
 
-// const item = {
-//   car_details: {
-//     engine: 'Diesel',
-//     feature: 'Manual',
-//     run: '1,32 Km',
-//     owner: '1st Owner',
-//     registration: 'DL3C',
-//   },
-// };
-// const car_item = [
-//   {
-//     name: 'Exterior',
-//     image: require('../../Assets/Images/car_1.jpeg'),
-//     number: 1,
-//   },
-//   {
-//     name: 'Interior',
-//     image: require('../../Assets/Images/interior.jpeg'),
-//     number: 2,
-//   },
-//   {
-//     name: 'Others',
-//     image: require('../../Assets/Images/car_7.jpeg'),
-//     number: 3,
-//   },
-//   {
-//     name: 'Damage',
-//     image: require('../../Assets/Images/car_5.webp'),
-//     number: 4,
-//   }
-// ]
-// const details = [
-//   {
-//     name: 'DOCUMENTS',
-//     icon_name: 'file-outline',
-//     car_details: [
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Comprehensive till 07 Dec 2023',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'Hypothrcation',
-//         Value: 'HDFC BANK LTD',
-//       },
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Comprehensive till 07 Dec 2023',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//     ],
-//     other_information: [
-//       {
-//         key: 'Duplicate Key',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Chasis No.',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Party Peshi Required',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Engine No.',
-//         value: 'yes',
-//       },
-//     ],
-//     registration_and_fitness: [
-//       {
-//         key: 'Manufacturing date',
-//         value: 'October 2020',
-//       },
-//       {
-//         key: 'Registration date',
-//         value: 'January 2021',
-//       },
-//       {
-//         key: 'RTO',
-//         value: 'DL3C East Delhi',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'EXTERIOR',
-//     icon_name: 'car-lifted-pickup',
-//     car_details: [
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Uninsured',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//     ],
-//     other_information: [
-//       {
-//         key: 'Duplicate Key',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Chasis No.',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Party Peshi Required',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Engine No.',
-//         value: 'yes',
-//       },
-//     ],
-//     registration_and_fitness: [
-//       {
-//         key: 'Manufacturing date',
-//         value: 'October 2020',
-//       },
-//       {
-//         key: 'Registration date',
-//         value: 'January 2021',
-//       },
-//       {
-//         key: 'RTO',
-//         value: 'DL3C East Delhi',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'ENGINE',
-//     icon_name: 'engine',
-//     car_details: [
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Uninsured',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'Hypothrcation',
-//         Value: 'HDFC BANK LTD',
-//       },
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Comprehensive till 07 Dec 2023',
-//       },
-//     ],
-//     other_information: [
-//       {
-//         key: 'Duplicate Key',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Chasis No.',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Party Peshi Required',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Engine No.',
-//         value: 'yes',
-//       },
-//     ],
-//     registration_and_fitness: [
-//       {
-//         key: 'Manufacturing date',
-//         value: 'October 2020',
-//       },
-//       {
-//         key: 'Registration date',
-//         value: 'January 2021',
-//       },
-//       {
-//         key: 'RTO',
-//         value: 'DL3C East Delhi',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'AC',
-//     icon_name: 'air-conditioner',
-//     car_details: [
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Comprehensive till 07 Dec 2023',
-//       },
 
-//     ],
-//     other_information: [
-//       {
-//         key: 'Duplicate Key',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Chasis No.',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Party Peshi Required',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Engine No.',
-//         value: 'yes',
-//       },
-//     ],
-//     registration_and_fitness: [
-//       {
-//         key: 'Manufacturing date',
-//         value: 'October 2020',
-//       },
-//       {
-//         key: 'Registration date',
-//         value: 'January 2021',
-//       },
-//       {
-//         key: 'RTO',
-//         value: 'DL3C East Delhi',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'ELECTRICALS',
-//     icon_name: 'power-plug',
-//     car_details: [
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Comprehensive till 07 Dec 2023',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'Hypothrcation',
-//         Value: 'HDFC BANK LTD',
-//       },
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Uninsured',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'Hypothrcation',
-//         Value: 'HDFC BANK LTD',
-//       },
-//     ],
-//     other_information: [
-//       {
-//         key: 'Duplicate Key',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Chasis No.',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Party Peshi Required',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Engine No.',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Comprehensive till 07 Dec 2023',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'Hypothrcation',
-//         Value: 'HDFC BANK LTD',
-//       },
-//     ],
-//     registration_and_fitness: [
-//       {
-//         key: 'Manufacturing date',
-//         value: 'October 2020',
-//       },
-//       {
-//         key: 'Registration date',
-//         value: 'January 2021',
-//       },
-//       {
-//         key: 'RTO',
-//         value: 'DL3C East Delhi',
-//       },
-//     ],
-//   },
-//   {
-//     name: 'STEERING',
-//     icon_name: 'steering',
-//     car_details: [
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Uninsured',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'Hypothrcation',
-//         Value: 'HDFC BANK LTD',
-//       },
-//       {
-//         key: 'RC Availability',
-//         value: 'Available',
-//       },
-//       {
-//         key: 'Insurance type',
-//         value: 'Comprehensive till 07 Dec 2023',
-//       },
-//       {
-//         key: 'No claim bonus',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Hypothecation',
-//         value: 'yes',
-//       },
-//       {
-//         key: 'Hypothrcation',
-//         Value: 'HDFC BANK LTD',
-//       },
-//     ],
-//     other_information: [
-//       {
-//         key: 'Duplicate Key',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Chasis No.',
-//         value: 'Yes',
-//       },
-//       {
-//         key: 'Party Peshi Required',
-//         value: 'No',
-//       },
-//       {
-//         key: 'Engine No.',
-//         value: 'yes',
-//       },
-//     ],
-//     registration_and_fitness: [
-//       {
-//         key: 'Manufacturing date',
-//         value: 'October 2020',
-//       },
-//       {
-//         key: 'Registration date',
-//         value: 'January 2021',
-//       },
-//       {
-//         key: 'RTO',
-//         value: 'DL3C East Delhi',
-//       },
-//     ],
-//   },
-// ];
 
 const { width, height } = Dimensions.get('window');
 
 export default function CarProfile({ route }) {
-  // const [data, setData] = useState([
-  //   require('../../Assets/Images/car_1.jpeg'),
-  //   require('../../Assets/Images/car_2.webp'),
-  //   require('../../Assets/Images/car_3.webp'),
-  //   require('../../Assets/Images/car_4.jpeg'),
-  //   require('../../Assets/Images/car_5.jpeg'),
-  //   require('../../Assets/Images/car_6.jpeg'),
-  //   require('../../Assets/Images//car_7.jpeg'),
-  // ]);
   const [val, setVal] = useState(0);
   const [index, setIndex] = useState(0);
   const [height_val, setHeightVal] = useState('');
@@ -545,7 +93,7 @@ export default function CarProfile({ route }) {
       headerTintColor: 'black',
     });
     getData();
-  }, [auction_id])
+  }, [auction_id,navigation])
 
   useEffect(() => {
 
@@ -696,7 +244,7 @@ export default function CarProfile({ route }) {
         globalStyles.flexBoxAlign,
         { flex: 1 },
       ]}>
-      {isLoading ? <ActivityIndicator size={'large'} /> :
+      {isLoading ? <LoadingComponent /> :
         <>
           <ScrollView ref={horizontalScrollviewRef} horizontal={true} style={{ height: val != 0 && val <= offset ? 60 : 0, width: '100%', backgroundColor: LIGHT_BLUE, overflow: 'hidden', position: 'absolute', top: 0, zIndex: 1, paddingLeft: 0 }} showsHorizontalScrollIndicator={false}>
             {all_data.detaiapi.map((item, i) => (
@@ -724,10 +272,12 @@ export default function CarProfile({ route }) {
                 // showsHorizontalScrollIndicator={true}
                 renderItem={({ item, index }) => {
                   return (
-                    <View>
+                    <View key={index}>
                       {/* {console.log("image => ",item)} */}
-                      <Image
-                        source={item.image != "" ? { uri: item.image }:null}
+                      <FastImage
+                      onLoad={(e)=> console.log("load => ",e.bubbles)}
+                      onError={(r) => console.log(r.nativeEvent.error)}
+                        source={item.image != "" ? { uri: item.image,priority:FastImage.priority.high}:null}
                         style={{
                           width: width - 20,
                           height: Dimensions.get('window').height / 2.7,
@@ -773,7 +323,7 @@ export default function CarProfile({ route }) {
                   <TouchableOpacity style={[globalStyles.flexBoxAlign, { height: 75, width: 75, marginHorizontal: 5, borderColor: 'lightgrey', borderWidth: 0.5, borderRadius: 8 }]} key={i} onPress={() => navigation.navigate('photo', { screen: item.name, id: auction_detail_data.lead_id, length: car_item_length, item: car_item })}>
                     {/* {console.log("length => ",car_item.length)} */}
                     <View style={[globalStyles.flexBoxAlign, { width: '100%', height: 53, borderTopLeftRadius: 8, borderTopRightRadius: 8 }]}>
-                      <Image style={{ width: 75 - 1, height: 53, borderTopLeftRadius: 8, borderTopRightRadius: 8 }} source={item.images != undefined ?{ uri:  item.images[0].image }: null } />
+                      <FastImage style={{ width: 75 - 1, height: 53, borderTopLeftRadius: 8, borderTopRightRadius: 8 }} source={item.images != undefined ?{ uri:  item.images[0].image,priority:FastImage.priority.high }: null } />
                     </View>
                     <Text style={{ fontSize: VERY_SMALL_FONT_SIZE, textAlignVertical: 'center', width: '100%', textAlign: 'center', height: 22, lineHeight: 22 }}>{item.name}</Text>
                     <Text style={{ position: 'absolute', width: 20, height: 20, borderRadius: 10, textAlign: 'center', textAlignVertical: 'center', fontSize: VERY_SMALL_FONT_SIZE, borderColor: 'black', borderWidth: 1, right: -12, top: -12, lineHeight: 15 }}>{item.images != undefined ? item.images.length : 2}</Text>

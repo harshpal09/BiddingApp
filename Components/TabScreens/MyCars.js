@@ -42,34 +42,45 @@ import MyBottomSheet from '../StackScreens/MyBottomSheet';
 import RenderMainImage from '../ReuseableComponents/RenderMainImage';
 import BidBottemSheet from '../StackScreens/BidBottomSheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingComponent from '../ReuseableComponents/LoadingComponent';
 
 
 
-export default function MyCars({navigation}) {
+export default function MyCars({ navigation }) {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [data,setData] = useState({});
+  const [data, setData] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [toggle,setToggle] = useState(false)
 
 
   useEffect(() => {
-   getData();
+    getData();
   }, [])
-  
 
-  const getData = async() =>{
 
-  let id = await AsyncStorage.getItem("user_id");
-  if(id != null){ 
-   let response = await axios.post('https://crm.unificars.com/api/mybids', {
-        'user_id':id,
-      })
-      console.log("response ",response.data);
-      if(response.data.code == 200){
-        setData(response.data.data);
-      }
-      else{
-        console.log('error ',response.data.code);
+  const getData = async () => {
+
+    let id = await AsyncStorage.getItem("user_id");
+    if (id != null) {
+      try {
+        setToggle(true);
+        const response = await axios.post('https://crm.unificars.com/api/mybids', {
+          user_id: id,
+        });
+        if (response.data.code === 200) {
+          setToggle(false);
+          setData(response.data.data);
+        } else {
+          // console.log("->", response.data.status);
+          setError(response.data.status);
+        }
+      } catch (error) {
+        console.error("Network request error:", error);
+        setError("Network request failed");
+      } finally {
+        setToggle(false);
+        setIsRefreshing(false)
       }
     }
   }
@@ -79,15 +90,17 @@ export default function MyCars({navigation}) {
         style={[globalStyles.contentContainer]}
         onPress={() => { navigation.navigate('car_profile', { auction_id: item.id }) }}>
         <View style={globalStyles.flexBox}>
-          <ImageBackground style={[globalStyles.image]}>
+          <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU' }} style={[globalStyles.image]}>
             {/* {renderImage(item)} */}
             {/* <RenderMainImage item={item} /> */}
             <Image
-                    source={{ uri: item.lead.images.find(
-                      obj => obj.title === 'Front Main',
-                  ).image }}
-                    style={globalStyles.image}
-                />
+              source={{
+                uri: item.lead.images.find(
+                  obj => obj.title === 'Front Main',
+                ).image
+              }}
+              style={globalStyles.image}
+            />
             <View style={[globalStyles.textContainer]}>
               <Text style={[globalStyles.text]}>
                 {item.lead.model}
@@ -240,21 +253,22 @@ export default function MyCars({navigation}) {
   // console.log("data => ",data)
   return (
     <SafeAreaView style={[globalStyles.mainContainer]}>
-     <FlatList
-          data={data.auction}
-          // data={[]}
-          renderItem={renderItem}
-          style={[globalStyles.scrollViewContainer]}
-          showsVerticalScrollIndicator={false}
-          // refreshControl={()=>{}}
-          keyExtractor={item => item.id.toString()} // Replace with your unique key
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-          }
-        />
-
+      {toggle ? <LoadingComponent />:
+      <FlatList
+        data={data.auction}
+        // data={[]}
+        renderItem={renderItem}
+        style={[globalStyles.scrollViewContainer]}
+        showsVerticalScrollIndicator={false}
+        // refreshControl={()=>{}}
+        keyExtractor={item => item.id.toString()} // Replace with your unique key
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
+      />
+      }
     </SafeAreaView>
-    
+
   )
 }
 

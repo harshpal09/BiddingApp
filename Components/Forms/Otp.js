@@ -98,7 +98,7 @@ const OTP = ({route, navigation}) => {
     setToggle(false);
   };
 
-  console.log('global state in out of the on otp page is => ', boolstate);
+  // console.log('global state in out of the on otp page is => ', boolstate);
   
 
   return (

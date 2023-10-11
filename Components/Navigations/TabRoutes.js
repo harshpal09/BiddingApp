@@ -1,7 +1,7 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {MyCars,Profile,TopNavigation,Orders} from '../../export';
+import {MyCars,Profile,TopNavigation,Orders, ProcuredTopnavigation} from '../../export';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { BLUE_COLOR, INACTIVE_TINT_COLOR, LIGHT_BLUE,ORANGE_COLOR } from '../../Styles/global';
 
@@ -33,17 +33,17 @@ export default function TabRoutes() {
         ),
       }}
        />
-      {/* <Tab.Screen 
+      <Tab.Screen 
       name="Orders" 
-      component={Orders} 
+      component={ProcuredTopnavigation} 
       options={{
         headerShown: false,
-        tabBarLabel: 'My Cars',
+        tabBarLabel: 'Procured',
         tabBarIcon: ({color, size}) => (
           <FontAwesome5 name="shopping-bag" color={color} size={size} />
         ),
       }}
-      /> */}
+      />
       <Tab.Screen 
       name="Profile" 
       component={Profile}

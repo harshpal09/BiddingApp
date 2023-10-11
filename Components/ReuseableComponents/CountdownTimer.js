@@ -117,6 +117,8 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: MEDIUM_FONT_SIZE,
+    color:'#000',
+    fontWeight:"500"
   },
 });
 

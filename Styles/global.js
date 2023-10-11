@@ -70,7 +70,7 @@ const globalStyles = StyleSheet.create({
     // flex:1,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems:'center' ,
   },
   flexBoxAlign: {
     // flex:1,
@@ -210,6 +210,7 @@ const globalStyles = StyleSheet.create({
     marginLeft:15
   },
   dataTable_2: {
+    display:'flex',
     // backgroundColor:'grey',
     // padding:20,
     
@@ -237,6 +238,8 @@ const globalStyles = StyleSheet.create({
   rowStyles: {
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 0.5,
+    width:'100%',
+    // backgroundColor:'red'
   },
   cardRowStyles: {
     borderBottomColor: 'lightgrey',
@@ -253,10 +256,11 @@ const globalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    display: 'flex',
+    // backgroundColor:'blue',
   },
   profileHeadingText: {
     textAlignVertical: 'center',
+    // width:width-90,
     marginLeft: 0,
     color: '#6D6D6D',
     // width:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.4: Dimensions.get('screen').width/2.8,

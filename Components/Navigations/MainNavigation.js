@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,TextInput } from 'react-native'
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import { TransitionPresets } from '@react-navigation/stack'; 
@@ -24,9 +24,14 @@ export default function MainNavigation() {
       }} />
       <Stack.Screen name="bottom" component={MyBottomSheet} />
       <Stack.Screen name="photo" component={PhotoGallery} />
-      <Stack.Screen name="ss" component={SearchScreen} />
+      <Stack.Screen name="ss" component={SearchScreen} options={{
+        // headerBackTitle:' ',
+        // headerBackTitleVisible:false,
+        // headerBackImage:()=> null,
+        // headerLeft: () => null, 
+        headerShown:false
+      }} />
     </Stack.Navigator>
   )
 }
 
-const styles = StyleSheet.create({})
