@@ -96,9 +96,9 @@ export default function CarProfile({ route }) {
   }, [auction_id,navigation])
 
   useEffect(() => {
-
     fetchData();
   }, [auction_detail_data])
+
 
 
 
@@ -249,7 +249,7 @@ export default function CarProfile({ route }) {
           <ScrollView ref={horizontalScrollviewRef} horizontal={true} style={{ height: val != 0 && val <= offset ? 60 : 0, width: '100%', backgroundColor: LIGHT_BLUE, overflow: 'hidden', position: 'absolute', top: 0, zIndex: 1, paddingLeft: 0 }} showsHorizontalScrollIndicator={false}>
             {all_data.detaiapi.map((item, i) => (
               <View style={[{ height: 60, padding: 5 }, globalStyles.flexBox]} onLayout={(e) => setWeightArray([...weightArray, e.nativeEvent.layout.width])} key={i}>
-                <TouchableOpacity style={[globalStyles.flexBoxJustify, globalStyles.rowContainer, { padding: 10, bordercolor: 'lightgrey', borderWidth: index == i ? .2 : 0, borderRadius: 15, backgroundColor: index == i ? '#FFF' : 'transparent' }]} onPress={() => scrollToComponent(i)}>
+                <TouchableOpacity style={[globalStyles.flexBoxJustify, globalStyles.rowContainer, { padding: 10, borderRadius: 15, backgroundColor: index == i ? '#FFF' : 'transparent' }]} onPress={() => scrollToComponent(i)}>
                   <MaterialCommunityIcons name={item.icon_name} size={15} style={{ marginHorizontal: 5 }} color={BLUE_COLOR} />
                   <Text style={{ color: BLUE_COLOR, fontWeight: '700' }}>{item.name}</Text>
                 </TouchableOpacity>
@@ -275,8 +275,8 @@ export default function CarProfile({ route }) {
                     <View key={index}>
                       {/* {console.log("image => ",item)} */}
                       <FastImage
-                      onLoad={(e)=> console.log("load => ",e.bubbles)}
-                      onError={(r) => console.log(r.nativeEvent.error)}
+                      // onLoad={(e)=> console.log("load => ",e.bubbles)}
+                      // onError={(r) => console.log(r.nativeEvent.error)}
                         source={item.image != "" ? { uri: item.image,priority:FastImage.priority.high}:null}
                         style={{
                           width: width - 20,
@@ -333,7 +333,7 @@ export default function CarProfile({ route }) {
 
             <View onLayout={(e) => setNameLayout(e.nativeEvent.layout.y)} style={[{ width: '100%', padding: 10 }, globalStyles.rowContainer]}>
               <View style={{ width: '60%' }}>
-                <Text style={{ fontWeight: '700', fontSize: LARGE_FONT_SIZE, width: '100%' }}>
+                <Text style={{ fontWeight: '700', fontSize: LARGE_FONT_SIZE, width: '100%',color:'black' }}>
                   {/* 2015 AUDI Q3 TDI QUATTRO */}
                   {all_data.lead.model + " "}{all_data.lead.brand}
                 </Text>

@@ -14,7 +14,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Import your theme colors
-import globalStyles, { BLUE_COLOR, EXTRA_LARGE_FONT_SIZE } from '../../Styles/global.js';
+import globalStyles, { BLUE_COLOR, EXTRA_LARGE_FONT_SIZE, height } from '../../Styles/global.js';
 
 const Login = ({ onNext, navigation }) => {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -73,7 +73,7 @@ const Login = ({ onNext, navigation }) => {
         <Image source={require('../../Assets/Images/unifi_black_logo.png')} style={{ width: '100%', height: 150 }} />
       </View>
       <View style={{ width: '100%' }}>
-        <Image source={require('../../Assets/Images/Frame.png')} style={{ width: '100%', height: 250 }} />
+        <Image source={require('../../Assets/Images/Frame.png')} style={{ width: '100%', height: height/3 }} />
       </View>
       <View style={styles.inputContainer}>
         <TextInput

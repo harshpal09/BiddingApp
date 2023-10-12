@@ -2,7 +2,7 @@ import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View,Image,Touchable
 import React, { useEffect, useState } from 'react'
 
 import { ProfileCardComponent } from '../../export'
-import globalStyles, { LARGE_FONT_SIZE } from '../../Styles/global';
+import globalStyles, { LARGE_FONT_SIZE, width } from '../../Styles/global';
 import {DataTable} from 'react-native-paper';
 
 export default function ManageProfile({route}) {
@@ -19,11 +19,10 @@ export default function ManageProfile({route}) {
   return (
     <SafeAreaView style={[globalStyles.mainContainer]}>
         { data == undefined ? <ActivityIndicator size={"large"} />:
-                  <SafeAreaView
+                <SafeAreaView
                    style={[globalStyles.mainContainer, globalStyles.flexBoxAlign,{marginVertical:10}]}>
-                   <DataTable style={globalStyles.cardTable}>
-                       <DataTable.Row style={[globalStyles.cardProfileHeader]}>
-                         <View>
+                   <View style={[globalStyles.cardTable,globalStyles.flexBox, { width: '100%', padding: 5 }]}>
+                         <View style={[globalStyles.cardProfileHeader]}>
                            <View style={[globalStyles.rowContainer]}>
                              <View
                                style={[
@@ -61,110 +60,48 @@ export default function ManageProfile({route}) {
                              <Text style={[globalStyles.profileHeaderText]}>Dealer Code : {data.dealer_code}</Text>
                            </View>
                          </View>
-                       </DataTable.Row>
-
-                     {/* {RenderIf(headerTitle != '')(
-                       <DataTable.Row style={[globalStyles.cardHeaderRowStyle]}>
-                         <DataTable.Cell>
                            <TouchableOpacity
                              activeOpacity={0.9}
                              style={globalStyles.profileHeadings}>
-                             <Text style={globalStyles.cardHeadingText}>{headerTitle}</Text>
+                             <Text style={globalStyles.profileHeadingText}>E-Mail: </Text>
+                             <Text style={globalStyles.profileIcon}>{data.email}</Text>
                            </TouchableOpacity>
-                         </DataTable.Cell>
-                       </DataTable.Row>,
-                     )} */}
-                       <DataTable.Row
-                         style={[
-                           globalStyles.cardRowStyles,
-                           {borderBottomColor:'grey'},
-                         ]}
-                         >
-                         <DataTable.Cell>
+                  
                            <TouchableOpacity
                              activeOpacity={0.9}
                              style={globalStyles.profileHeadings}>
-                             <Text style={globalStyles.profileHeadingText}>E-Mail</Text>
-                             <Text style={globalStyles.profileIcons}>{data.email}</Text>
+                             <Text style={globalStyles.profileHeadingText}>Contact: </Text>
+                             <Text style={globalStyles.profileIcon}>{data.contact}</Text>
                            </TouchableOpacity>
-                         </DataTable.Cell>
-                       </DataTable.Row>
-                       <DataTable.Row
-                         style={[
-                           globalStyles.cardRowStyles,
-                           {borderBottomColor:'grey'},
-                         ]}
-                        >
-                         <DataTable.Cell>
+                    
                            <TouchableOpacity
                              activeOpacity={0.9}
                              style={globalStyles.profileHeadings}>
-                             <Text style={globalStyles.profileHeadingText}>Contact</Text>
-                             <Text style={globalStyles.profileIcons}>{data.contact}</Text>
+                             <Text style={globalStyles.profileHeadingText}>Alternate Contact: </Text>
+                             <Text style={globalStyles.profileIcon}>{data.aleternate_mobile}</Text>
                            </TouchableOpacity>
-                         </DataTable.Cell>
-                       </DataTable.Row>
-                       <DataTable.Row
-                         style={[
-                           globalStyles.cardRowStyles,
-                           {borderBottomColor:'grey'},
-                         ]}
-                         >
-                         <DataTable.Cell>
+                 
                            <TouchableOpacity
                              activeOpacity={0.9}
                              style={globalStyles.profileHeadings}>
-                             <Text style={globalStyles.profileHeadingText}>Alternate Contact</Text>
-                             <Text style={globalStyles.profileIcons}>{data.aleternate_mobile}</Text>
+                             <Text style={globalStyles.profileHeadingText}>Date of Birth: </Text>
+                             <Text style={globalStyles.profileIcon}>{data.dob}</Text>
                            </TouchableOpacity>
-                         </DataTable.Cell>
-                       </DataTable.Row>
-                       <DataTable.Row
-                         style={[
-                           globalStyles.cardRowStyles,
-                           {borderBottomColor:'grey'},
-                         ]}
-                        >
-                         <DataTable.Cell>
+                     
                            <TouchableOpacity
                              activeOpacity={0.9}
                              style={globalStyles.profileHeadings}>
-                             <Text style={globalStyles.profileHeadingText}>Date of Birth</Text>
-                             <Text style={globalStyles.profileIcons}>{data.dob}</Text>
+                             <Text style={globalStyles.profileHeadingText}>PAN: </Text>
+                             <Text style={globalStyles.profileIcon}>{data.pancard}</Text>
                            </TouchableOpacity>
-                         </DataTable.Cell>
-                       </DataTable.Row>
-                       <DataTable.Row
-                         style={[
-                           globalStyles.cardRowStyles,
-                           {borderBottomColor:'grey'},
-                         ]}
-                         >
-                         <DataTable.Cell>
+                         
                            <TouchableOpacity
                              activeOpacity={0.9}
-                             style={globalStyles.profileHeadings}>
-                             <Text style={globalStyles.profileHeadingText}>PAN</Text>
-                             <Text style={globalStyles.profileIcons}>{data.pancard}</Text>
+                             style={[globalStyles.profileHeadings,{borderBottomWidth:0}]}>
+                             <Text style={globalStyles.profileHeadingText}>Adhaar Card: </Text>
+                             <Text style={globalStyles.profileIcon}>{data.adharcard}</Text>
                            </TouchableOpacity>
-                         </DataTable.Cell>
-                       </DataTable.Row>
-                       <DataTable.Row
-                         style={[
-                           globalStyles.cardRowStyles,
-                           {borderBottomColor:'white'},
-                         ]}
-                         >
-                         <DataTable.Cell>
-                           <TouchableOpacity
-                             activeOpacity={0.9}
-                             style={globalStyles.profileHeadings}>
-                             <Text style={globalStyles.profileHeadingText}>Adhaar Card</Text>
-                             <Text style={globalStyles.profileIcons}>{data.adharcard}</Text>
-                           </TouchableOpacity>
-                         </DataTable.Cell>
-                       </DataTable.Row>
-                   </DataTable>
+                   </View>
                  </SafeAreaView>
         }
     </SafeAreaView>

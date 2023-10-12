@@ -210,10 +210,7 @@ const globalStyles = StyleSheet.create({
     marginLeft:15
   },
   dataTable_2: {
-    display:'flex',
-    // backgroundColor:'grey',
-    // padding:20,
-    
+    display:'flex',    
     marginVertical:2,
     width: '100%',
   },
@@ -255,12 +252,15 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
+    // width:width-50,
+    width:'100%',
+    paddingHorizontal: 10,
+    padding: 10,
+    borderBottomWidth: .5
     // backgroundColor:'blue',
   },
   profileHeadingText: {
     textAlignVertical: 'center',
-    // width:width-90,
     marginLeft: 0,
     color: '#6D6D6D',
     // width:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.4: Dimensions.get('screen').width/2.8,
@@ -275,10 +275,11 @@ const globalStyles = StyleSheet.create({
     fontSize: EXTRA_LARGE_FONT_SIZE,
     fontWeight:'600'
   },
-  profileIcons: {
+  profileIcon: {
     // paddingLeft:DeviceInfo.isTablet()?Dimensions.get('screen').width/2.4: Dimensions.get('screen').width/2.8,
     // backgroundColor: 'blue'
     // alignContent:'flex-end'
+    color:'black',
   },
   profileHeader: {
     backgroundColor: BLUE_COLOR,

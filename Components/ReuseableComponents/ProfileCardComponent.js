@@ -81,7 +81,7 @@ export default function ProfileCardComponent({data, isProfile, headerTitle}) {
                 activeOpacity={0.9}
                 style={globalStyles.profileHeadings}>
                 <Text style={globalStyles.profileHeadingText}>E-Mail</Text>
-                <Text style={globalStyles.profileIcons}>{data.email}</Text>
+                <Text style={globalStyles.profileIcon}>{data.email}</Text>
               </TouchableOpacity>
             </DataTable.Cell>
           </DataTable.Row>
@@ -96,7 +96,7 @@ export default function ProfileCardComponent({data, isProfile, headerTitle}) {
                 activeOpacity={0.9}
                 style={globalStyles.profileHeadings}>
                 <Text style={globalStyles.profileHeadingText}>Contact</Text>
-                <Text style={globalStyles.profileIcons}>{data.contact}</Text>
+                <Text style={globalStyles.profileIcon}>{data.contact}</Text>
               </TouchableOpacity>
             </DataTable.Cell>
           </DataTable.Row>
@@ -111,7 +111,7 @@ export default function ProfileCardComponent({data, isProfile, headerTitle}) {
                 activeOpacity={0.9}
                 style={globalStyles.profileHeadings}>
                 <Text style={globalStyles.profileHeadingText}>Alternate Contact</Text>
-                <Text style={globalStyles.profileIcons}>{data.aleternate_mobile}</Text>
+                <Text style={globalStyles.profileIcon}>{data.aleternate_mobile}</Text>
               </TouchableOpacity>
             </DataTable.Cell>
           </DataTable.Row>
@@ -126,7 +126,7 @@ export default function ProfileCardComponent({data, isProfile, headerTitle}) {
                 activeOpacity={0.9}
                 style={globalStyles.profileHeadings}>
                 <Text style={globalStyles.profileHeadingText}>Date of Birth</Text>
-                <Text style={globalStyles.profileIcons}>{data.dob}</Text>
+                <Text style={globalStyles.profileIcon}>{data.dob}</Text>
               </TouchableOpacity>
             </DataTable.Cell>
           </DataTable.Row>
@@ -141,7 +141,7 @@ export default function ProfileCardComponent({data, isProfile, headerTitle}) {
                 activeOpacity={0.9}
                 style={globalStyles.profileHeadings}>
                 <Text style={globalStyles.profileHeadingText}>PAN</Text>
-                <Text style={globalStyles.profileIcons}>{data.pancard}</Text>
+                <Text style={globalStyles.profileIcon}>{data.pancard}</Text>
               </TouchableOpacity>
             </DataTable.Cell>
           </DataTable.Row>
@@ -156,7 +156,7 @@ export default function ProfileCardComponent({data, isProfile, headerTitle}) {
                 activeOpacity={0.9}
                 style={globalStyles.profileHeadings}>
                 <Text style={globalStyles.profileHeadingText}>Adhaar Card</Text>
-                <Text style={globalStyles.profileIcons}>{data.adharcard}</Text>
+                <Text style={globalStyles.profileIcon}>{data.adharcard}</Text>
               </TouchableOpacity>
             </DataTable.Cell>
           </DataTable.Row>
