@@ -25,7 +25,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'Unificar' do
+target 'UnifiCarsAuctionApp' do
   config = use_native_modules!
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'RNSVG', :path => '../node_modules/react-native-svg';
@@ -47,7 +47,7 @@ target 'Unificar' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'UnificarTests' do
+  target 'UnifiCarsAuctionAppTests' do
     inherit! :complete
     # Pods for testing
   end

@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* UnificarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* UnificarTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-Unificar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-Unificar.a */; };
+		00E356F31AD99517003FC87E /* UnifiCarsAuctionAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* UnifiCarsAuctionAppTests.m */; };
+		0C80B921A6F3F58F76C31292 /* libPods-UnifiCarsAuctionApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-UnifiCarsAuctionApp.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3B0722042AB9CB1200581500 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 3B0722032AB9CB1200581500 /* Fonts */; };
-		7699B88040F8A987B510C191 /* libPods-Unificar-UnificarTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Unificar-UnificarTests.a */; };
+		7699B88040F8A987B510C191 /* libPods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -23,28 +23,28 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = Unificar;
+			remoteInfo = UnifiCarsAuctionApp;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* UnificarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnificarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* UnifiCarsAuctionAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnifiCarsAuctionAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* UnificarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnificarTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Unificar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unificar.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Unificar/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Unificar/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Unificar/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Unificar/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Unificar/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-Unificar-UnificarTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Unificar-UnificarTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F21AD99517003FC87E /* UnifiCarsAuctionAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnifiCarsAuctionAppTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* UnifiCarsAuctionApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnifiCarsAuctionApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = UnifiCarsAuctionApp/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = UnifiCarsAuctionApp/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = UnifiCarsAuctionApp/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = UnifiCarsAuctionApp/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = UnifiCarsAuctionApp/main.m; sourceTree = "<group>"; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B0722032AB9CB1200581500 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-Unificar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unificar.debug.xcconfig"; path = "Target Support Files/Pods-Unificar/Pods-Unificar.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-Unificar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unificar.release.xcconfig"; path = "Target Support Files/Pods-Unificar/Pods-Unificar.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-Unificar-UnificarTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unificar-UnificarTests.debug.xcconfig"; path = "Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-Unificar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Unificar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Unificar/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-Unificar-UnificarTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unificar-UnificarTests.release.xcconfig"; path = "Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests.release.xcconfig"; sourceTree = "<group>"; };
+		3B4392A12AC88292D35C810B /* Pods-UnifiCarsAuctionApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnifiCarsAuctionApp.debug.xcconfig"; path = "Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp.debug.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-UnifiCarsAuctionApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnifiCarsAuctionApp.release.xcconfig"; path = "Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.debug.xcconfig"; path = "Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-UnifiCarsAuctionApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UnifiCarsAuctionApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = UnifiCarsAuctionApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.release.xcconfig"; path = "Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-Unificar-UnificarTests.a in Frameworks */,
+				7699B88040F8A987B510C191 /* libPods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,20 +61,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-Unificar.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* libPods-UnifiCarsAuctionApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* UnificarTests */ = {
+		00E356EF1AD99517003FC87E /* UnifiCarsAuctionAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* UnificarTests.m */,
+				00E356F21AD99517003FC87E /* UnifiCarsAuctionAppTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = UnificarTests;
+			path = UnifiCarsAuctionAppTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -85,7 +85,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* Unificar */ = {
+		13B07FAE1A68108700A75B9A /* UnifiCarsAuctionApp */ = {
 			isa = PBXGroup;
 			children = (
 				3B0722032AB9CB1200581500 /* Fonts */,
@@ -96,15 +96,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = Unificar;
+			name = UnifiCarsAuctionApp;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-Unificar.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-Unificar-UnificarTests.a */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-UnifiCarsAuctionApp.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -119,9 +119,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* Unificar */,
+				13B07FAE1A68108700A75B9A /* UnifiCarsAuctionApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* UnificarTests */,
+				00E356EF1AD99517003FC87E /* UnifiCarsAuctionAppTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -134,8 +134,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Unificar.app */,
-				00E356EE1AD99517003FC87E /* UnificarTests.xctest */,
+				13B07F961A680F5B00A75B9A /* UnifiCarsAuctionApp.app */,
+				00E356EE1AD99517003FC87E /* UnifiCarsAuctionAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,10 +143,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-Unificar.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-Unificar.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-Unificar-UnificarTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-Unificar-UnificarTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-UnifiCarsAuctionApp.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-UnifiCarsAuctionApp.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -154,9 +154,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* UnificarTests */ = {
+		00E356ED1AD99517003FC87E /* UnifiCarsAuctionAppTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UnificarTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UnifiCarsAuctionAppTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -170,14 +170,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = UnificarTests;
-			productName = UnificarTests;
-			productReference = 00E356EE1AD99517003FC87E /* UnificarTests.xctest */;
+			name = UnifiCarsAuctionAppTests;
+			productName = UnifiCarsAuctionAppTests;
+			productReference = 00E356EE1AD99517003FC87E /* UnifiCarsAuctionAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* Unificar */ = {
+		13B07F861A680F5B00A75B9A /* UnifiCarsAuctionApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Unificar" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "UnifiCarsAuctionApp" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -192,9 +192,9 @@
 			);
 			dependencies = (
 			);
-			name = Unificar;
-			productName = Unificar;
-			productReference = 13B07F961A680F5B00A75B9A /* Unificar.app */;
+			name = UnifiCarsAuctionApp;
+			productName = UnifiCarsAuctionApp;
+			productReference = 13B07F961A680F5B00A75B9A /* UnifiCarsAuctionApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -214,7 +214,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Unificar" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "UnifiCarsAuctionApp" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -227,8 +227,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* Unificar */,
-				00E356ED1AD99517003FC87E /* UnificarTests */,
+				13B07F861A680F5B00A75B9A /* UnifiCarsAuctionApp */,
+				00E356ED1AD99517003FC87E /* UnifiCarsAuctionAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -276,15 +276,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar/Pods-Unificar-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar/Pods-Unificar-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Unificar/Pods-Unificar-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -302,7 +302,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Unificar-UnificarTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -324,7 +324,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Unificar-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-UnifiCarsAuctionApp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -337,15 +337,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -354,15 +354,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar/Pods-Unificar-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar/Pods-Unificar-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Unificar/Pods-Unificar-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp/Pods-UnifiCarsAuctionApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -371,15 +371,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Unificar-UnificarTests/Pods-Unificar-UnificarTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests/Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -408,7 +408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* UnificarTests.m in Sources */,
+				00E356F31AD99517003FC87E /* UnifiCarsAuctionAppTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,7 +426,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* Unificar */;
+			target = 13B07F861A680F5B00A75B9A /* UnifiCarsAuctionApp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -434,14 +434,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Unificar-UnificarTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = UnificarTests/Info.plist;
+				INFOPLIST_FILE = UnifiCarsAuctionAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -453,19 +453,19 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unificarsliveauction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unificar.app/Unificar";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnifiCarsAuctionApp.app/UnifiCarsAuctionApp";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Unificar-UnificarTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-UnifiCarsAuctionApp-UnifiCarsAuctionAppTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = UnificarTests/Info.plist;
+				INFOPLIST_FILE = UnifiCarsAuctionAppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -477,21 +477,25 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.unificarsliveauction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unificar.app/Unificar";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UnifiCarsAuctionApp.app/UnifiCarsAuctionApp";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-Unificar.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-UnifiCarsAuctionApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = P9L689X2GX;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = Unificar/Info.plist;
+				INFOPLIST_FILE = UnifiCarsAuctionApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Unifi Cars Auction App";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -502,8 +506,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Unificar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unificarsliveauction;
+				PRODUCT_NAME = UnifiCarsAuctionApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -513,12 +518,16 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-Unificar.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-UnifiCarsAuctionApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = Unificar/Info.plist;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = P9L689X2GX;
+				INFOPLIST_FILE = UnifiCarsAuctionApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Unifi Cars Auction App";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -529,8 +538,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = Unificar;
+				PRODUCT_BUNDLE_IDENTIFIER = com.unificarsliveauction;
+				PRODUCT_NAME = UnifiCarsAuctionApp;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -679,7 +689,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UnificarTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "UnifiCarsAuctionAppTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -688,7 +698,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Unificar" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "UnifiCarsAuctionApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -697,7 +707,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Unificar" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "UnifiCarsAuctionApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

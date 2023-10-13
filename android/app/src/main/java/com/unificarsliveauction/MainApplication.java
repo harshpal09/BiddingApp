@@ -1,4 +1,4 @@
-package com.unificar;
+package com.unificarsliveauction;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

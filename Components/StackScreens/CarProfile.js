@@ -325,8 +325,8 @@ export default function CarProfile({ route }) {
                     <View style={[globalStyles.flexBoxAlign, { width: '100%', height: 53, borderTopLeftRadius: 8, borderTopRightRadius: 8 }]}>
                       <FastImage style={{ width: 75 - 1, height: 53, borderTopLeftRadius: 8, borderTopRightRadius: 8 }} source={item.images != undefined ?{ uri:  item.images[0].image,priority:FastImage.priority.high }: null } />
                     </View>
-                    <Text style={{ fontSize: VERY_SMALL_FONT_SIZE, textAlignVertical: 'center', width: '100%', textAlign: 'center', height: 22, lineHeight: 22 }}>{item.name}</Text>
-                    <Text style={{ position: 'absolute', width: 20, height: 20, borderRadius: 10, textAlign: 'center', textAlignVertical: 'center', fontSize: VERY_SMALL_FONT_SIZE, borderColor: 'black', borderWidth: 1, right: -12, top: -12, lineHeight: 15 }}>{item.images != undefined ? item.images.length : 2}</Text>
+                    <Text style={{ fontSize: VERY_SMALL_FONT_SIZE, textAlignVertical: 'center', width: '100%', textAlign: 'center', height: 22, lineHeight: 22 ,color:'#000'}}>{item.name}</Text>
+                    <Text style={{ position: 'absolute', width: 20, height: 20, borderRadius: 10, textAlign: 'center', textAlignVertical: 'center', fontSize: VERY_SMALL_FONT_SIZE, borderColor: 'black', borderWidth: 1, right: -12, top: -12, lineHeight: 15,color:'#000'}}>{item.images != undefined ? item.images.length : 2}</Text>
                   </TouchableOpacity> : null
               ))}
             </View>
