@@ -72,7 +72,7 @@ export default function CarProfile({ route }) {
 
   const navigation = useNavigation();
   const { auction_id } = route.params;
-
+  // console.log("id = >",auction_id);
   const flatListRef = useRef(null);
 
   const scrollToIndex = index => {
@@ -345,7 +345,7 @@ export default function CarProfile({ route }) {
                     textAlignVertical: 'center',
                     color: '#3d3d3d',
                   }}>
-                  Auction ID: {auction_detail_data.auction_id}
+                {all_data.lead.unique_id}
                 </Text>
               </View>
             </View>
