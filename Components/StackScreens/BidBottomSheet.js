@@ -24,8 +24,10 @@ const BidBottemSheet = ({ toggleModal, data, callGetData,isProfile }) => {
     })
     if (response.data.code == 200) {
       setCurrentPrice(bid_price);
-      callGetData();
+      console.log(response.data.message);
       setError({ ...error, 'message': response.data.message, 'color': 'green', 'code': '200' });
+      setTimeout(()=> {callGetData();},1000)
+      
     }
     else {
       setError({ ...error, 'message': response.data.message, 'color': 'red', 'code': response.data.code });

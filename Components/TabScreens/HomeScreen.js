@@ -157,6 +157,7 @@ export default function HomeScreen({ navigation }) {
         console.log('error =>', e);
       }
       finally {
+        setBidModalVisible(false);
         setToggle(false);
         setIsRefreshing(false);
       }
@@ -408,6 +409,7 @@ export default function HomeScreen({ navigation }) {
 
     <View style={[globalStyles.mainContainer, globalStyles.flexBox]}>
       {toggle ? <LoadingComponent /> :
+
         <View style={{ width: '100%', height: '100%'}}>
           {showButton && (
             <TouchableOpacity style={{ paddingHorizontal: 10, top: -10, zIndex: 1 }} onPress={() => { onRefresh(), scrollToVerticalComponent() }}>

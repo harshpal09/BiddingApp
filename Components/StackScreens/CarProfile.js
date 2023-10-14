@@ -92,48 +92,51 @@ export default function CarProfile({ route }) {
       title: "Details",
       headerTintColor: 'black',
     });
-    getData();
-  }, [auction_id,navigation])
-
-  useEffect(() => {
     fetchData();
-  }, [auction_detail_data])
+  }, [])
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, [auction_detail_data])
 
 
 
 
-  const getData = async () => {
+  // const getData = async () => {
 
-    await axios.post('https://crm.unificars.com/api/auctiondetail', {
-      'auction_id': auction_id,
-    })
-      .then(function (response) {
-        // console.log("response",response.data);
-        if (response.data.code == 200) {
-          setAuctionDetailData(response.data.data)
+  //   await axios.post('https://crm.unificars.com/api/auctiondetail', {
+  //     'auction_id': auction_id,
+  //   })
+  //     .then(function (response) {
+  //       // console.log("response",response.data);
+  //       if (response.data.code == 200) {
+  //         setAuctionDetailData(response.data.data)
 
-        }
-        else {
-          console.log(response.data.status);
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    // setIsloading(false);
-  }
+  //       }
+  //       else {
+  //         console.log(response.data.status);
+  //       }
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  //   // setIsloading(false);
+  // }
   const fetchData = async () => {
-    // console.log(auction_detail_data.lead_id);
-    setBidData({'auction_id':auction_detail_data.id,'current_price':auction_detail_data.highest_bid,'step_price':auction_detail_data.step_price});
-    if (auction_detail_data.lead_id) {
-      setIsloading(true);
+    // console.log("aa raha hai");
+    setIsloading(true);
+    if (auction_id) {
+      
       await axios.post('https://crm.unificars.com/api/cardetail', {
-        lead_id: auction_detail_data.lead_id,
+        auction_id: auction_id,
       })
         .then(function (response) {
           if (response.data.code == 200) {
+            // console.log("aa raha hai ",response.data.data);
             setAll_data(response.data.data);
+            setAuctionDetailData(response.data.data.auctiondetail)
             setName(response.data.data.lead.model + " " + response.data.data.lead.brand)
+            setBidData({'auction_id':response.data.data.auctiondetail.id,'current_price':response.data.data.auctiondetail.highest_bid,'step_price':response.data.data.auctiondetail.step_price});
             setIsloading(false);
           }
           else {
@@ -143,6 +146,7 @@ export default function CarProfile({ route }) {
         .catch(function (error) {
           console.log(error);
         });
+        setIsloading(false);
       makeCarItemArray();
     }
   }
@@ -273,10 +277,8 @@ export default function CarProfile({ route }) {
                 renderItem={({ item, index }) => {
                   return (
                     <View key={index}>
-                      {/* {console.log("image => ",item)} */}
                       <FastImage
-                      // onLoad={(e)=> console.log("load => ",e.bubbles)}
-                      // onError={(r) => console.log(r.nativeEvent.error)}
+
                         source={item.image != "" ? { uri: item.image,priority:FastImage.priority.high}:null}
                         style={{
                           width: width - 20,
@@ -321,7 +323,6 @@ export default function CarProfile({ route }) {
               {car_item.map((item, i) => (
                 item.images != undefined ?
                   <TouchableOpacity style={[globalStyles.flexBoxAlign, { height: 75, width: 75, marginHorizontal: 5, borderColor: 'lightgrey', borderWidth: 0.5, borderRadius: 8 }]} key={i} onPress={() => navigation.navigate('photo', { screen: item.name, id: auction_detail_data.lead_id, length: car_item_length, item: car_item })}>
-                    {/* {console.log("length => ",car_item.length)} */}
                     <View style={[globalStyles.flexBoxAlign, { width: '100%', height: 53, borderTopLeftRadius: 8, borderTopRightRadius: 8 }]}>
                       <FastImage style={{ width: 75 - 1, height: 53, borderTopLeftRadius: 8, borderTopRightRadius: 8 }} source={item.images != undefined ?{ uri:  item.images[0].image,priority:FastImage.priority.high }: null } />
                     </View>
@@ -334,7 +335,6 @@ export default function CarProfile({ route }) {
             <View onLayout={(e) => setNameLayout(e.nativeEvent.layout.y)} style={[{ width: '100%', padding: 10 }, globalStyles.rowContainer]}>
               <View style={{ width: '60%' }}>
                 <Text style={{ fontWeight: '700', fontSize: LARGE_FONT_SIZE, width: '100%',color:'black' }}>
-                  {/* 2015 AUDI Q3 TDI QUATTRO */}
                   {all_data.lead.model + " "}{all_data.lead.brand}
                 </Text>
               </View>
@@ -396,7 +396,6 @@ export default function CarProfile({ route }) {
                 />
                 <Text style={globalStyles.beltItemText}>
                   {all_data.lead.engine_type}
-                  {/* {console.log(all_data.lead)} */}
                 </Text>
               </View>
               <View
@@ -456,70 +455,26 @@ export default function CarProfile({ route }) {
                   style={globalStyles.beltItemIcon}
                 />
                 <Text style={globalStyles.beltItemText}>
-                  {all_data.lead.registration_in.substring(0,4)+"XXXX"}
+                  {all_data.lead.registration_in != "" ? all_data.lead.registration_in.substring(0,4)+"XXXX":""}
                 </Text>
               </View>
             </View>
-            {/* <View style={[globalStyles.flexBox, { width: '100%' }]}>
+            <View style={[globalStyles.flexBox, { width: '100%' }]}>
               <Text style={{ fontWeight: '700', fontSize: LARGE_FONT_SIZE, padding: 10 }}>
                 200 points inspection checklist
               </Text>
-            </View> */}
+            </View>
             <DetailsComponent getHeight={reciveHeightValue} sendValueToParent={reciveValueFromChild} data={all_data.detaiapi} />
           </ScrollView>
-          {/* <View style={[{ width: '100%', backgroundColor: 'white', borderWidth: 1, borderColor: 'lightgrey', borderTopLeftRadius: 15, borderTopRightRadius: 15, height: 120, paddingHorizontal: 10 },globalStyles.shadow]}>
-            <View style={[globalStyles.rowContainer, { justifyContent: 'space-around', height: '30%' }]}>
-              <View style={{ padding: 13 }}>
-                <Text style={[{ fontSize: MEDIUM_FONT_SIZE, color: 'grey', fontWeight: '700' }]}>Fair market Value</Text>
-                <Text style={[{ fontSize: MEDIUM_FONT_SIZE, color: 'grey', fontWeight: '700' }]}>Rs. 3,30,000</Text>
-              </View>
-              <View style={[{ height:'100%',justifyContent:'space-around',width:'60%',alignItems:'center'},globalStyles.rowContainer]}>
-                <Text style={[{ fontSize: LARGE_FONT_SIZE, color: 'black', fontWeight: '700' }]}>Current Bid {RP_S+parseInt(auction_detail_data.highest_bid).toLocaleString('en-IN')}</Text>
-              </View>
-            </View>
-            <View style={[globalStyles.rowContainer, { justifyContent: 'space-around', alignItems: 'center', height: '50%', width: '100%', paddingHorizontal: 10 }]}>
-              <TouchableOpacity
-                style={[
-                  {
-                    width: '49%',
-                    height: 40,
-                    backgroundColor: LIGHT_BLUE,
-                    borderColor: BLUE_COLOR,
-                    borderWidth: 1,
-                    borderRadius: 10,
-                    justifyContent: 'center', // Center vertically
-                    alignItems: 'center',     // Center horizontally
-                  }
-                ]}
-              >
-                <Text style={[{ fontSize: MEDIUM_FONT_SIZE, fontWeight: '700', color: BLUE_COLOR }]}>AUTO BID</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  {
-                    width: '98%',
-                    height: 40,
-                    backgroundColor: BLUE_COLOR,
-                    borderColor: BLUE_COLOR,
-                    borderWidth: 1,
-                    borderRadius: 10,
-                    justifyContent: 'center', // Center vertically
-                    alignItems: 'center',     // Center horizontally
-                  }
-                ]}
-              >
-                <Text style={[{ fontSize: MEDIUM_FONT_SIZE, fontWeight: '700', color: 'white' }]}>Placed a bid</Text>
-                <Text style={[{ fontSize: SMALL_FONT_SIZE, fontWeight: '700', color: 'white' }]}>Step up Rs. 2000</Text>
-              </TouchableOpacity>
-            </View>
-          </View> */}
-        <BidBottemSheet callGetData={getData} toggleModal={()=>toggleBidModal(null,null)} data={bidData} isProfile={true} />
+        <BidBottemSheet callGetData={fetchData} toggleModal={()=>toggleBidModal(null,null)} data={bidData} isProfile={true} />
 
         </>
+        // <></>
       }
 
 
     </View>
+    // <></>
   );
 }
 
