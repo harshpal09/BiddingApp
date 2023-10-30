@@ -137,9 +137,11 @@ export default function HomeScreen({ navigation }) {
         console.log('error =>', e);
       }
       finally {
+        // setModalVisible(false);
         setBidModalVisible(false);
         setToggle(false);
         setIsRefreshing(false);
+        
       }
     }
 
@@ -164,9 +166,9 @@ export default function HomeScreen({ navigation }) {
     // console.log('before set ',param);
     setParameter(param);
     // console.log('after set',paramerter)
-    setToggle(true);
-    setShowButton(false);
-    setIsRefreshing(true);
+    // setToggle(true);
+    // setShowButton(false);
+    // setIsRefreshing(true);
 
     if (id != null) {
       try {
@@ -190,8 +192,9 @@ export default function HomeScreen({ navigation }) {
       }
       finally {
         setModalVisible(false);
-        setToggle(false);
-        setIsRefreshing(false);
+        setBidModalVisible(false);
+        // setToggle(false);
+        // setIsRefreshing(false);
       }
     }
   }

@@ -29,7 +29,7 @@ import RadioGroup from '../ReuseableComponents/RadioGroup';
 import PopularBrandContainer from '../ReuseableComponents/PopularBrandContainer';
 import MultipleSelect from '../ReuseableComponents/MultipleSelect';
 
-const MyBottomSheet = ({ toggleModal, models, setParam,callGetData }) => {
+const MyBottomSheet = ({ toggleModal, models, setParam,callGetData, }) => {
   const [radioButtons, setRadioButtons] = useState([
     {
       type: 'model',
