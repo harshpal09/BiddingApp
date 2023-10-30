@@ -46,8 +46,8 @@ export default function DetailsChild({data,height,index}) {
             <MaterialCommunityIcons name={data.icon_name} size={15} style={{marginHorizontal:5}} color={BLUE_COLOR}/>
             <Text style={{color:BLUE_COLOR,fontWeight:'700'}}>{data.name}</Text>
           </View>
-        <Animated.View style={[styles.rotatedBox, { padding:10,transform:[{ rotate: spinAnimation }]}]} >
-            <MaterialCommunityIcons name='chevron-down' size={18} style={{marginHorizontal:8,}} color={BLUE_COLOR}/>
+          <Animated.View style={[styles.rotatedBox, { padding:10,transform:[{ rotate: spinAnimation }]}]} >
+              <MaterialCommunityIcons name='chevron-down' size={18} style={{marginHorizontal:8,}} color={BLUE_COLOR}/>
           </Animated.View>
         </View>
       </TouchableOpacity>

@@ -13,7 +13,9 @@ import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from './Redux/Store/configureStore'
 import { toggleBoolean } from './Redux/Actions/booleanActions'
 import { initializeBooleanState } from './Redux/Actions/booleanActions'
-// import store from './Redux/Store/configureStore'; 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 function App() {
   return (
     <Provider store={store}>

@@ -9,6 +9,8 @@ import { toggleBoolean } from '../../Redux/Actions/booleanActions';
 import axios from 'axios';
 import LoadingComponent from '../ReuseableComponents/LoadingComponent';
 
+
+
 // import { Image } from 'react-native-reanimated/lib/typescript/Animated';
 
 export default function Profile({ navigation }) {
@@ -131,7 +133,7 @@ export default function Profile({ navigation }) {
                 style={globalStyles.profileIcons}
               />
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               activeOpacity={0.9}
               style={globalStyles.profileHeadings}
               onPress={() => openWebBrowser()}>
@@ -144,7 +146,7 @@ export default function Profile({ navigation }) {
                 size={25}
                 style={globalStyles.profileIcons}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               activeOpacity={0.9}
               style={globalStyles.profileHeadings}

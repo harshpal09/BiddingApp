@@ -48,7 +48,7 @@ export default function TopNavigation({navigation}) {
 
         //   tabBarIndicator: e => console.log(e),
         }}>
-        <HeaderTab.Screen name="Active Auction" component={HomeScreen} />
+        <HeaderTab.Screen name="Live Auction" component={HomeScreen} />
         {/* <HeaderTab.Screen name="OCB" component={MyAutions} /> */}
         {/* <HeaderTab.Screen name="My Purchases" component={MyPurchases} /> */}
       </HeaderTab.Navigator>

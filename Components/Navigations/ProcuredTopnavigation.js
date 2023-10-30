@@ -43,7 +43,7 @@ export default function ProcuredTopnavigation({navigation}) {
           },
         //tabBarIndicator: e => console.log(e),
         }}>
-        <HeaderTab.Screen name="nagotiation" component={Nagotiation} />
+        <HeaderTab.Screen name="Negotiation" component={Nagotiation} />
         <HeaderTab.Screen name="procured" component={Procured} />  
         <HeaderTab.Screen name="rctransfer" component={RcTransfer} />
   

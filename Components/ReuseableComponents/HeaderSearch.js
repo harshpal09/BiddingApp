@@ -7,7 +7,7 @@ export default function HeaderSearch({navigation}) {
   return (
     <SafeAreaView style={[globalStyles.searchBar,{justifyContent:'space-around',backgroundColor:TOP_TAB_COLOR,alignItems:'center',height:50}]}>
       <Text style={{fontSize:LARGE_FONT_SIZE,fontWeight:'bold',color:TOP_TAB_TEXT_COLOR,width:'40%'}}>
-        BUY
+        
       </Text>
       <TouchableOpacity
         onPress={()=> navigation.navigate('ss')}

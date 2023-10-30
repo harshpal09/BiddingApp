@@ -6,6 +6,7 @@ import { MEDIUM_FONT_SIZE, height, width } from '../../Styles/global';
 import Image from 'react-native-image-lazy-loading';
 import { EXTRA_LARGE_FONT_SIZE, LARGE_FONT_SIZE, TOP_TAB_TEXT_COLOR } from '../../Styles/global';
 import FastImage from 'react-native-fast-image';
+// import { ImageZoom } from '@likashefqet/react-native-image-zoom';
 
 export default AccordionView = ({ title, content, expanded, subchild }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -73,15 +74,15 @@ export default AccordionView = ({ title, content, expanded, subchild }) => {
 
 const MyBottomSheet = ({ toggleModal, data,text }) => {
   return (
-    <SafeAreaView style={[globalStyles.flexBox, { flex: 1, width: '100%', backgroundColor: 'transparent', height: '100%' }]}>
+    <SafeAreaView style={[globalStyles.flexBox, { flex: 1, width: '100%', backgroundColor: 'transparent', marginTop:20 }]}>
       <TouchableOpacity onPress={toggleModal} style={[{ width: '100%', backgroundColor: TOP_TAB_TEXT_COLOR, height: 40, paddingHorizontal: 10 }, globalStyles.flexBoxAlign, globalStyles.rowContainer]} activeOpacity={0.9} >
         <TouchableOpacity onPress={toggleModal}>
           <MaterialCommunityIcons size={40} name='chevron-down' color={'#FFF'} />
         </TouchableOpacity>
       </TouchableOpacity>
-      <View style={[globalStyles.rowContainer, { width: '100%', height: "100%", backgroundColor: '#FFFFFF'}]}>
-        <Image source={{ uri: data }} style={{ width: width, height: height }} />
-      </View>
+      <View style={[globalStyles.rowContainer, { width: '100%', height: '100%', backgroundColor: '#FFFFFF' }]}>
+  <Image source={{ uri: data }} style={{ width: width, height: "100%", resizeMode: 'contain' }} />
+</View>
       <View style={[globalStyles.textContainer,{bottom:50,justifyContent:'center',alignItems:'center'}]}>
               <Text style={[globalStyles.text]}>
                 {text}

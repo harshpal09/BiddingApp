@@ -70,7 +70,7 @@ export default function MyCars({ navigation }) {
         });
         if (response.data.code === 200) {
           setToggle(false);
-          setData(response.data.data);
+          setData(response.data.data.auction);
         } else {
           // console.log("->", response.data.status);
           setError(response.data.status);
@@ -84,6 +84,7 @@ export default function MyCars({ navigation }) {
       }
     }
   }
+  
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity
@@ -255,7 +256,7 @@ export default function MyCars({ navigation }) {
     <SafeAreaView style={[globalStyles.mainContainer]}>
       {toggle ? <LoadingComponent />:
       <FlatList
-        data={data.auction}
+        data={data}
         // data={[]}
         renderItem={renderItem}
         style={[globalStyles.scrollViewContainer]}
