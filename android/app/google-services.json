@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "672643250416",
+    "project_id": "unifi-cars",
+    "storage_bucket": "unifi-cars.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672643250416:android:876c9bf4b9f7944a27aa35",
+        "android_client_info": {
+          "package_name": "com.unificarsliveauction"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOg4v9uAVt793oh2aqC51c0XJclH_cFUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Unifi Cars Auction App</string>
+    <string name="custom_sound">notificationsound</string>
 </resources>

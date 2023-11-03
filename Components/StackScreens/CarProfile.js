@@ -44,7 +44,7 @@ export default function CarProfile({ route }) {
   const [toggle, setToggle] = useState(false);
   const [all_data, setAll_data] = useState({});
   const [auction_detail_data, setAuctionDetailData] = useState({});
-  const [isLoading, setIsloading] = useState(true)
+  const [isLoading, setIsloading] = useState(true);
   const [car_item, setCarItem] = useState([
     {
       name: 'exterior',
@@ -88,6 +88,7 @@ export default function CarProfile({ route }) {
 
 
   useEffect(() => {
+    setIsloading(true);
     navigation.setOptions({
       title: "Details",
       headerTintColor: 'black',
@@ -137,7 +138,7 @@ export default function CarProfile({ route }) {
             setAuctionDetailData(response.data.data.auctiondetail)
             setName(response.data.data.lead.model + " " + response.data.data.lead.brand)
             setBidData({'auction_id':response.data.data.auctiondetail.id,'current_price':response.data.data.auctiondetail.highest_bid,'step_price':response.data.data.auctiondetail.step_price});
-            setIsloading(false);
+            // setIsloading(false);
           }
           else {
             console.log(response.data.status);
@@ -146,7 +147,8 @@ export default function CarProfile({ route }) {
         .catch(function (error) {
           console.log(error);
         });
-        setIsloading(false);
+        setInterval(()=> setIsloading(false),1000)
+        // setIsloading(false);
       makeCarItemArray();
     }
   }
@@ -238,6 +240,28 @@ export default function CarProfile({ route }) {
     else if (offset > (val - n) + prefixSumArray[4] && offset <= (val - n) + prefixSumArray[5])
       setIndex(5);
   }
+  const updateFetchData = async()=>{
+    if (auction_id) {  
+      await axios.post('https://crm.unificars.com/api/cardetail', {
+        auction_id: auction_id,
+      })
+        .then(function (response) {
+          if (response.data.code == 200) {
+            // console.log("aa raha hai ",response.data.data);
+            setAll_data(response.data.data);
+            setAuctionDetailData(response.data.data.auctiondetail)
+            setName(response.data.data.lead.model + " " + response.data.data.lead.brand)
+
+          }
+          else {
+            console.log(response.data.status);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+  }
+}
 
 
   // console.log("index =>",index)
@@ -251,7 +275,7 @@ export default function CarProfile({ route }) {
       {isLoading ? <LoadingComponent /> :
         <>
           <ScrollView ref={horizontalScrollviewRef} horizontal={true} style={{ height: val != 0 && val <= offset ? 60 : 0, width: '100%', backgroundColor: LIGHT_BLUE, overflow: 'hidden', position: 'absolute', top: 0, zIndex: 1, paddingLeft: 0 }} showsHorizontalScrollIndicator={false}>
-            {all_data.detaiapi.map((item, i) => (
+            {all_data.detaiapi != undefined && all_data.detaiapi.map((item, i) => (
               <View style={[{ height: 60, padding: 5 }, globalStyles.flexBox]} onLayout={(e) => setWeightArray([...weightArray, e.nativeEvent.layout.width])} key={i}>
                 <TouchableOpacity style={[globalStyles.flexBoxJustify, globalStyles.rowContainer, { padding: 10, borderRadius: 15, backgroundColor: index == i ? '#FFF' : 'transparent' }]} onPress={() => scrollToComponent(i)}>
                   <MaterialCommunityIcons name={item.icon_name} size={15} style={{ marginHorizontal: 5 }} color={BLUE_COLOR} />
@@ -455,18 +479,18 @@ export default function CarProfile({ route }) {
                   style={globalStyles.beltItemIcon}
                 />
                 <Text style={globalStyles.beltItemText}>
-                  {all_data.lead.registration_in != "" ? all_data.lead.registration_in.substring(0,4)+"XXXX":""}
+                  {all_data.lead.registration_in != null ? all_data.lead.registration_in.substring(0,4)+"XXXX":""}
                 </Text>
               </View>
             </View>
-            <View style={[globalStyles.flexBox, { width: '100%' }]}>
+            {/* <View style={[globalStyles.flexBox, { width: '100%' }]}>
               <Text style={{ fontWeight: '700', fontSize: LARGE_FONT_SIZE, padding: 10 }}>
                 200 points inspection checklist
               </Text>
-            </View>
+            </View> */}
             <DetailsComponent getHeight={reciveHeightValue} sendValueToParent={reciveValueFromChild} data={all_data.detaiapi} />
           </ScrollView>
-        <BidBottemSheet callGetData={fetchData} toggleModal={()=>toggleBidModal(null,null)} data={bidData} isProfile={true} />
+        <BidBottemSheet callGetData={updateFetchData} toggleModal={()=>toggleBidModal(null,null)} data={bidData} isProfile={true} />
 
         </>
         // <></>

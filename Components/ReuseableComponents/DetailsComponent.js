@@ -1,6 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect,useState } from 'react'
 import {DetailsChild,globalStyles} from '../../export'
+import { height } from '../../Styles/global';
 
 export default function DetailsComponent({data,sendValueToParent,getHeight}) {
   const [sendValue, setSendValue] = useState('');
@@ -33,17 +34,9 @@ export default function DetailsComponent({data,sendValueToParent,getHeight}) {
   
   
 
-    
-
-  
-
-
-  
-  
-  
   // console.log("from details => ",childHeight);
   return (
-    <SafeAreaView  onLayout={(e)=> setSendValue(e.nativeEvent.layout.y)} style={[globalStyles.flexBoxAlign,{marginBottom:100}]}>
+    <SafeAreaView  onLayout={(e)=> setSendValue(e.nativeEvent.layout.y)} style={[globalStyles.flexBoxAlign,{marginBottom:height}]}>
       {data.map((item,i)=>(
         <DetailsChild  height={fillArray} index={i}  data={item} key={i} />
       ))}

@@ -27,6 +27,16 @@ end
 
 target 'UnifiCarsAuctionApp' do
   config = use_native_modules!
+
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseMessaging', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+
+ 
+
+
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
   pod 'RNSVG', :path => '../node_modules/react-native-svg';
 

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<channels>
+  <channel id="custom_channel" name="Custom Channel" importance="high" sound="@string/custom_sound" />
+</channels>

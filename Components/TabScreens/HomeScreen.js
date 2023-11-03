@@ -12,8 +12,7 @@ import {
   Dimensions,
   ActivityIndicator,
   RefreshControl,
-  // Modal,
-
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, { Fragment, useRef, useState, useEffect } from 'react';
 import HeaderSearch from '../ReuseableComponents/HeaderSearch';
@@ -47,77 +46,29 @@ import PopupMessage from '../ReuseableComponents/PopupMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingComponent from '../ReuseableComponents/LoadingComponent';
 import Modal from 'react-native-modal';
-// const arr = [
-//   'Diesel',
-//   'Petrol',
-//   '1st owenership',
-//   'Less than 3 years',
-//   'Scrap cars',
-//   'No structure damage',
-//   'Premium cars',
-// ];
-// const data = [
-//   {
-//     image:
-//       'https://listings.unificars.com/_next/image?url=https%3A%2F%2Fcrm.unificars.com%2Fuploads%2Fwebsite%2F202308181658Group%2012.jpg&w=1920&q=75',
-//     name: '2015 AUDI Q3 TDI QUATTRO',
-//     bidding_time: 3600,
-//     price: 'Rs 4,94,000',
-//     highest_bidding: 'Rs 14,844',
-//     car_details: {
-//       engine: 'Diesel',
-//       feature: 'Manual',
-//       run: '1,12,32 Km',
-//       owner: '1st Owner',
-//       registration: 'DL6C',
-//     },
-//   },
-//   {
-//     image:
-//       'https://listings.unificars.com/_next/image?url=https%3A%2F%2Fcrm.unificars.com%2Fuploads%2Fwebsite%2F202304031825WhatsApp%20Image%202023-04-03%20at%206.24.40%20PM.jpeg&w=1920&q=75',
-//     name: '2013 JAGUAR XF',
-//     bidding_time: 3600,
-//     price: 'Rs 4,94,000',
-//     highest_bidding: 'Rs 14,844',
-//     car_details: {
-//       engine: 'Diesel',
-//       feature: 'Manual',
-//       run: '1,12,32 Km',
-//       owner: '1st Owner',
-//       registration: 'DL3C',
-//     },
-//   },
-//   {
-//     image:
-//       'https://listings.unificars.com/_next/image?url=https%3A%2F%2Fcrm.unificars.com%2Fuploads%2Fwebsite%2F202305101704Group%2014.jpg&w=1920&q=75',
-//     name: '2014 AUDI A6',
-//     bidding_time: 3600,
-//     price: 'Rs 4,94,000',
-//     highest_bidding: 'Rs 14,844',
-//     car_details: {
-//       engine: 'Diesel',
-//       feature: 'Manual',
-//       run: '1,12,32 Km',
-//       owner: '1sd Owner',
-//       registration: 'DL6C',
-//     },
-//   },
-// ];
+
 export default function HomeScreen({ navigation }) {
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(undefined);
   const [isRefreshing, setIsRefreshing] = useState(true);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isBidModalVisible, setBidModalVisible] = useState(false);
   const [bidData, setBidData] = useState({})
   const [showButton, setShowButton] = useState(false);
   const [toggle, setToggle] = useState(true);
+  const [models, setModels] = useState([]);
+  const [paramerter, setParameter] = useState({})
+  const [message,setMessage] = useState("");
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   const toggleBidModal = (id, bid, step_price) => {
     setBidData({ 'auction_id': id, 'current_price': bid, 'step_price': step_price });
     setBidModalVisible(!isBidModalVisible);
+  };
+  const updateParameter = (newParameter) => {
+    // console.log('sdfghjkl  ',newParameter)
+    setParameter(newParameter);
   };
 
   useEffect(() => {
@@ -131,24 +82,53 @@ export default function HomeScreen({ navigation }) {
   }, [showButton]);
 
   useEffect(() => {
-
+    // getModel();
     getData();
   }, [navigation]);
+
+
+  // const getModel = async () => {
+  //   try {
+  //     setToggle(true);
+  //     setShowButton(false);
+  //     setIsRefreshing(true);
+
+  //     let response = await axios.post('https://crm.unificars.com/api/webbrands', {
+  //     })
+  //     if (response.data.code == 200) {
+  //       setModels(response.data.result[0].brand);
+  //     } else {
+  //       console.log(response.data.status);
+  //     }
+  //   }
+  //   catch (e) {
+  //     console.log('error =>', e);
+  //   }
+  //   finally {
+  //     setBidModalVisible(false);
+  //     setToggle(false);
+  //     setIsRefreshing(false);
+  //   }
+  // }
+
   const getData = async () => {
 
     id = await AsyncStorage.getItem('user_id');
+
     if (id != null) {
       try {
         setToggle(true);
         setShowButton(false);
         setIsRefreshing(true);
 
-        let response = await axios.post('https://crm.unificars.com/api/live-auctions', {
-          user: id,
-        })
+        let response = await axios.post('https://crm.unificars.com/api/live-auctions', paramerter)
         if (response.data.code == 200) {
-          // console.log("data =>",response.data.data.auction);
+          // console.log("data =>", id);
           setData(response.data.data.auction);
+          if(response.data.data.auction.length == 0){
+            setMessage("No Data Available");
+          }
+
         } else {
           console.log(response.data.status);
         }
@@ -157,9 +137,11 @@ export default function HomeScreen({ navigation }) {
         console.log('error =>', e);
       }
       finally {
+        // setModalVisible(false);
         setBidModalVisible(false);
         setToggle(false);
         setIsRefreshing(false);
+        
       }
     }
 
@@ -167,47 +149,7 @@ export default function HomeScreen({ navigation }) {
 
   };
 
-  const calculateTimeLeft = (currentDate, startTime, endTime) => {
-    const currentDateObj = new Date();
-    const startTimeObj = new Date(`${currentDate}T${startTime}`);
-    const endTimeObj = new Date(`${currentDate}T${endTime}`);
-    const currentTimestamp = currentDateObj.getTime();
 
-    // Calculate the time left in seconds until the auction starts
-    const timeLeftToStartInSeconds =
-      currentTimestamp < startTimeObj.getTime()
-        ? Math.floor((startTimeObj - currentTimestamp) / 1000)
-        : 0;
-
-
-
-
-    // console.log('time left to start in seconds =>',timeLeftToStartInSeconds);
-    // Calculate the time left in seconds until the auction ends
-    const timeLeftInSeconds =
-      currentTimestamp >= startTimeObj.getTime()
-        ? Math.floor((endTimeObj - currentTimestamp) / 1000)
-        : 0;
-
-    // Check if the auction is valid to start
-    const isAuctionValid =
-      currentTimestamp >= startTimeObj.getTime() &&
-      currentTimestamp < endTimeObj.getTime();
-
-    if (timeLeftToStartInSeconds > 0) {
-      return {
-        timeLeftInSeconds: timeLeftToStartInSeconds,
-        isAuctionValid: false,
-        message: `Auction starts in ${timeLeftToStartInSeconds} seconds`,
-      };
-    } else {
-      return {
-        timeLeftInSeconds: timeLeftInSeconds,
-        isAuctionValid: isAuctionValid,
-        message: "Auction is live",
-      };
-    }
-  };
 
 
   const onRefresh = () => {
@@ -217,7 +159,46 @@ export default function HomeScreen({ navigation }) {
     // Fetch data when the user pulls down to refresh
     getData();
   };
-  // console.log('remaining seconds =>',remainingSeconds);
+  const callGetData = async () => {
+    id = await AsyncStorage.getItem('user_id');
+    let param = { ...paramerter }
+    param.user_id = id;
+    // console.log('before set ',param);
+    setParameter(param);
+    // console.log('after set',paramerter)
+    // setToggle(true);
+    // setShowButton(false);
+    // setIsRefreshing(true);
+
+    if (id != null) {
+      try {
+        let response = await axios.post('https://crm.unificars.com/api/filterauction',
+         paramerter)
+        if (response.data.code == 200) {
+          // console.log("data =>", response.data.data.auction);
+          setData(response.data.data.auction);
+          if(response.data.data.auction.length == 0){
+            setMessage("No Data Available");
+          }
+
+
+
+        } else {
+          console.log(response.data.status);
+        }
+      }
+      catch (e) {
+        console.log('error =>', e);
+      }
+      finally {
+        setModalVisible(false);
+        setBidModalVisible(false);
+        // setToggle(false);
+        // setIsRefreshing(false);
+      }
+    }
+  }
+
 
   const verticalScrollviewRef = useRef();
   const scrollToVerticalComponent = () => {
@@ -226,6 +207,7 @@ export default function HomeScreen({ navigation }) {
       verticalScrollviewRef.current.scrollToOffset({ offset: yOffset, animated: true });
     }
   };
+  // console.log("param ",paramerter)
 
   renderItem = ({ item }) => {
     return (
@@ -233,6 +215,7 @@ export default function HomeScreen({ navigation }) {
         style={[globalStyles.contentContainer]}
         activeOpacity={0.9}
         onPress={() => { navigation.navigate('car_profile', { auction_id: item.id }) }}>
+          
         {/* {console.log(item.id," name ",item.lead.brand)} */}
         <View style={globalStyles.flexBox}>
           <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU' }} style={[globalStyles.image]}>
@@ -410,16 +393,17 @@ export default function HomeScreen({ navigation }) {
     <View style={[globalStyles.mainContainer, globalStyles.flexBox]}>
       {toggle ? <LoadingComponent /> :
 
-        <View style={{ width: '100%', height: '100%'}}>
+        <View style={{ width: '100%', height: '100%' }}>
           {showButton && (
             <TouchableOpacity style={{ paddingHorizontal: 10, top: -10, zIndex: 1 }} onPress={() => { onRefresh(), scrollToVerticalComponent() }}>
               <PopupMessage message={'Pull to Refresh'} />
             </TouchableOpacity>
           )}
+          {data != undefined && Array.isArray(data) && data.length == 0?<View style={[globalStyles.flexBox,{height:height-100}]}><Text>{message}</Text></View>:
 
           <FlatList
             ref={verticalScrollviewRef}
-            data={data}
+            data={data != undefined && data}
             renderItem={renderItem}
             style={[globalStyles.scrollViewContainer]}
             showsVerticalScrollIndicator={false}
@@ -428,7 +412,8 @@ export default function HomeScreen({ navigation }) {
             refreshControl={
               <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
             }
-          />
+          />}
+          
           <Modal
 
             style={{ marginLeft: 0, marginBottom: 0 }}
@@ -436,17 +421,19 @@ export default function HomeScreen({ navigation }) {
             onBackdropPress={() => toggleBidModal(null, null)}
           >
             <></>
-            <BidBottemSheet callGetData={getData} toggleModal={() => toggleBidModal(null, null)} data={bidData} />
+            <BidBottemSheet callGetData={callGetData} toggleModal={() => toggleBidModal(null, null)} data={bidData} />
           </Modal>
 
           <Modal
-                  style={{ marginLeft: 0, marginBottom: 0 }}
-                  isVisible={isModalVisible}
-                  onBackdropPress={() => toggleModal(null, null)}
-                >
-                  {/* Modal Content */}
-                  <MyBottomSheet toggleModal={toggleModal} />
-                </Modal>
+            style={{ marginLeft: 0, marginBottom: 0, position: 'relative' }}
+            isVisible={isModalVisible}
+            onBackdropPress={() => toggleModal(null, null)}
+          >
+            {/* Modal Content */}
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : null}>
+            <MyBottomSheet callGetData={callGetData} setParam={updateParameter} models={models} toggleModal={toggleModal} />
+            </KeyboardAvoidingView>
+          </Modal>
 
           <View
             style={[
@@ -473,11 +460,11 @@ export default function HomeScreen({ navigation }) {
                 globalStyles.shadow,
               ]}>
               {/* <View style={[globalStyles.rowContainer,{backgroundColor:'red',justifyContent:'space-around'}]}> */}
-              <TouchableOpacity style={[globalStyles.rowContainer,globalStyles.flexBox,]} onPress={toggleModal}>
+              <TouchableOpacity style={[globalStyles.rowContainer, globalStyles.flexBox,]} onPress={toggleModal}>
                 <MaterialCommunityIcons
                   name="filter-menu-outline"
                   size={25}
-                  style={[{ padding: 5,color:'#000' }]}
+                  style={[{ padding: 5, color: '#000' }]}
                 />
                 <Text
                   style={[
@@ -486,21 +473,21 @@ export default function HomeScreen({ navigation }) {
                       fontSize: LARGE_FONT_SIZE,
                       padding: 7,
                       fontWeight: '700',
-                      color:'#000'
+                      color: '#000'
                     },
                   ]}>
                   Filter
                 </Text>
-                
+
               </TouchableOpacity>
               <View
-                style={[{ width: 5, height: 30, backgroundColor: 'grey'}]}></View>
-              <TouchableOpacity style={[globalStyles.rowContainer,globalStyles.flexBox]} activeOpacity={0.9}>
+                style={[{ width: 5, height: 30, backgroundColor: 'grey' }]}></View>
+              <TouchableOpacity style={[globalStyles.rowContainer, globalStyles.flexBox]} activeOpacity={0.9}>
                 <MaterialCommunityIcons
                   name="heart-outline"
                   size={25}
                   color={'#000'}
-                  // style={[{ padding: 15 }]}
+                // style={[{ padding: 15 }]}
                 />
                 <Text
                   style={[
@@ -509,7 +496,7 @@ export default function HomeScreen({ navigation }) {
                       fontSize: LARGE_FONT_SIZE,
                       padding: 5,
                       fontWeight: '700',
-                      color:'#000'
+                      color: '#000'
                     },
                   ]}>
                   Wishlist
