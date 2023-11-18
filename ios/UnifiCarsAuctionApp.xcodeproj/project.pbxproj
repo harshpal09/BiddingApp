@@ -483,11 +483,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = UnifiCarsAuctionApp/UnifiCarsAuctionApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4.0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = P9L689X2GX;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = P9L689X2GX;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = UnifiCarsAuctionApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Unifi Cars Auction App";
@@ -520,11 +518,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = UnifiCarsAuctionApp/UnifiCarsAuctionApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4.0;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = P9L689X2GX;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = P9L689X2GX;
 				INFOPLIST_FILE = UnifiCarsAuctionApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Unifi Cars Auction App";
 				LD_RUNPATH_SEARCH_PATHS = (

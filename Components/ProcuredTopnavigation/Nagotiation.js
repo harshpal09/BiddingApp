@@ -38,16 +38,10 @@ export default function Nagotiation({navigation}) {
           status: 1,
         },
       );
-      if (response.data.code === 200) {
-        // console.log("data =>",response.data.data)
-        setData(response.data.data);
-      } else {
-        setData(response.data.data);
-      }
     } catch (error) {
       console.error('Network request error:', error);
     } finally {
-      setIsloading(false);
+      setIsloading(false)
     }
   };
   renderItem = ({ item }) => {
@@ -180,7 +174,7 @@ export default function Nagotiation({navigation}) {
          
       //   </View>
       // </TouchableOpacity>
-        <View style={globalStyles.cartProductContainer} key={j}>
+        <View style={globalStyles.cartProductContainer} >
           <View style={globalStyles.cartImageContainer} >
             <FastImage style={globalStyles.cartImage} source={item.lead.images.length > 0 ?  {  uri : item.lead.images[0].image ,priority:FastImage.priority.high}: null} />
           </View>
