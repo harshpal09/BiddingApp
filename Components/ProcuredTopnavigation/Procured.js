@@ -26,7 +26,7 @@ export default function Procured() {
         'https://crm.unificars.com/api/auctionstatus',
         {
           user_id: id,
-          status: 3,
+          status: 2,
         },
       );
       if (response.data.code === 200) {

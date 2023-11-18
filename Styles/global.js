@@ -85,6 +85,7 @@ const globalStyles = StyleSheet.create({
 
     // height: '100%',
   },
+  
   rowContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -486,7 +487,7 @@ const globalStyles = StyleSheet.create({
     // backgroundColor:'red',
   },
   cartProductContainer: {
-    // backgroundColor:'blue',
+    backgroundColor:'white',
     // marginHorizontal:15,
     justifyContent:'space-between',
     alignItems:'center',
@@ -495,10 +496,11 @@ const globalStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     borderBottomWidth: 1,
+    borderRadius:5,
     // paddingHorizontal:15,
     
     // paddingBottom:200,
-    borderBottomColor: '#bba890'
+    borderBottomColor: BLUE_COLOR,
   },
   cartImageContainer: {
     // backgroundColor:'green',
@@ -534,7 +536,7 @@ const globalStyles = StyleSheet.create({
     padding:5,
     color: 'black',
     fontFamily: 'Baskervville-Regular',
-    fontSize:15,
+    fontSize:LARGE_FONT_SIZE,
     width: '100%',
     // height:70,
     // textAlign:"center",
@@ -545,10 +547,11 @@ const globalStyles = StyleSheet.create({
     // margin: 2,
     // marginLeft: 2,
     padding:5,
-    color: '#6D6D6D',
+    color: 'black',
   
-    fontSize: 11,  
+    fontSize: MEDIUM_FONT_SIZE,  
     width: '100%',
+    fontWeight:'bold',
     // height:70,
     // textAlign:"center",
     textAlignVertical: "center",
