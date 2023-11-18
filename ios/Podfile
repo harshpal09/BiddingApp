@@ -27,6 +27,8 @@ end
 
 target 'UnifiCarsAuctionApp' do
   config = use_native_modules!
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
 
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
@@ -35,6 +37,8 @@ target 'UnifiCarsAuctionApp' do
   pod 'GoogleUtilities', :modular_headers => true
 
  
+
+
 
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
@@ -46,13 +50,13 @@ target 'UnifiCarsAuctionApp' do
   use_react_native!(
     :path => config[:reactNativePath],
     # Hermes is now enabled by default. Disable by setting this flag to false.
-    :hermes_enabled => flags[:hermes_enabled],
+    :hermes_enabled => false,
     :fabric_enabled => flags[:fabric_enabled],
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => flipper_config,
+    # :flipper_configuration => flipper_config,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )

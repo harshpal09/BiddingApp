@@ -6,6 +6,7 @@ import HeaderSearch from '../ReuseableComponents/HeaderSearch';
 
 import { BLUE_COLOR, INACTIVE_TINT_COLOR, LIGHT_BLUE, MEDIUM_FONT_SIZE, ORANGE_COLOR, SMALL_FONT_SIZE, TOP_TAB_COLOR, TOP_TAB_TEXT_COLOR } from '../../Styles/global';
 
+
 const HeaderTab = createMaterialTopTabNavigator();
 
 export default function ProcuredTopnavigation({navigation}) {
@@ -43,7 +44,7 @@ export default function ProcuredTopnavigation({navigation}) {
           },
         //tabBarIndicator: e => console.log(e),
         }}>
-        <HeaderTab.Screen name="Negotiation" component={Nagotiation} />
+        <HeaderTab.Screen name="Negotiation" component={Nagotiation} options={{tabBarLabel:'IN NEGOTIATION'}} />
         <HeaderTab.Screen name="procured" component={Procured} />  
         <HeaderTab.Screen name="rctransfer" component={RcTransfer} />
   

@@ -8,6 +8,7 @@ import React, { useState, useEffect } from 'react'
 import LazyloadImage from 'react-native-image-lazy-loading';
 import { globalStyles } from '../../export';
 import FastImage from 'react-native-fast-image';
+import axios from 'axios';
 
 
 export default function RenderMainImage({ item }) {
@@ -36,6 +37,9 @@ export default function RenderMainImage({ item }) {
         calculateTimeLeft(item.start_date, item.start_time, item.end_time);
     }, [])
     useEffect(() => {
+        if(remainingTime <= 0){
+            callApi();
+        }
         const timer = setInterval(() => {
             if (remainingTime >= 0) {
                 setRemainingTime(prevTime => prevTime - 1);
@@ -49,6 +53,15 @@ export default function RenderMainImage({ item }) {
             clearInterval(timer);
         };
     }, [remainingTime]);
+
+    const callApi =async() => {
+        try {
+             await axios.get('https://crm.unificars.com/api/winnerauction') 
+          }
+          catch (e) {
+            console.log('error =>', e);
+          }
+    } 
 
     // console.log(' remaining time on image component =>   ',remainingTime)
     return (

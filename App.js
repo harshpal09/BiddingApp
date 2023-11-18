@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, Text, View,ActivityIndicator ,Alert, Platform} from 'react-native'
+import { SafeAreaView, Text, View,ActivityIndicator ,Alert, Platform,Linking} from 'react-native'
 import globalStyles from './Styles/global'
 import TabRoutes from './Components/Navigations/TabRoutes'
 import { NavigationContainer } from '@react-navigation/native'
@@ -14,54 +14,84 @@ import store from './Redux/Store/configureStore'
 import { toggleBoolean } from './Redux/Actions/booleanActions'
 import { initializeBooleanState } from './Redux/Actions/booleanActions'
 import messaging from '@react-native-firebase/messaging';
+import notifee ,{AndroidImportance,AuthorizationStatus,IOSNotificationSetting,IOSNotificationPermissions,}from '@notifee/react-native';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+
+
 import { LogBox } from 'react-native';
-import PushNotificationIOS from 'react-native-push-notification';
+// import PushNotification from 'react-native-push-notification';
 import { getToken, notificationListener, requestUserPermission } from './Components/ReuseableComponents/NotificationListener'
-import { platform } from 'os'
+
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 function App() {
-  const [toggle, settoggle] = useState(true);
-  // console.log("platform => ",Platform.OS)
+  const [AppLink,setAppLink] = useState('');
   useEffect(() => {
-    if(Platform.OS === 'android'){
       const unsubscribe = messaging().onMessage(async remoteMessage => {
-        configureCustomNotificationSound(remoteMessage);
+        // if (Platform.OS === 'ios') {
+        //   Linking.openURL('app-settings:');
+        // } else if (Platform.OS === 'android') {
+        //   Linking.openSettings();
+        // }
+        console.log("notification =>",remoteMessage);
+        displayNotification(remoteMessage.notification);
       });
       return unsubscribe;
-    }
-   
+
+
   }, []);
 
-  const configureCustomNotificationSound = (rm) => {
-    // Configure notification channel for Android (optional)
-    PushNotification.createChannel(
-      {
-        channelId: 'custom_channel',
-        channelName: 'Custom Channel',
-        channelDescription: 'A channel with a custom sound',
-        soundName: 'notificationsound.mp3', // Specify your custom sound file name
+   const   buildLink =async ()=> {
+    const link = await dynamicLinks().buildLink({
+      link: 'https://www.unificars.com/',
+      // domainUriPrefix is created in your Firebase console
+      domainUriPrefix: 'https://unificarsliveauction.page.link',
+      // optional setup which updates Firebase analytics campaign
+      // "banner". This also needs setting up before hand
+      analytics: {
+        campaign: 'banner',
       },
-      (created) => console.log(`CreateChannel returned '${created}'`)
-    );
-  
-    // Create and display a notification (if needed)
-    PushNotification.localNotification({
-      channelId: 'custom_channel', // Use the channel you created for Android
-      title: rm.notification.title,
-      message: rm.notification.body,
     });
-  };
+  
+    console.log("link =>",link);
+  }
+
+  const displayNotification = async(rm)=>{
+    if(Platform.OS == "ios"){
+      await notifee.requestPermission( )
+    }
+    const channelId = await notifee.createChannel({
+      id: 'custom_sound_5',
+      name: 'Custom Channel 5',
+      sound: 'notificationsound', // Specify your custom sound file name
+      importance:AndroidImportance.HIGH
+    });
+    
+    // Display a notification
+    await notifee.displayNotification({
+      title: rm.title,
+      body: rm.body,
+      ios:{
+        critical: true,
+        sound: 'notificationsound.wav',
+      },
+      android: {
+        channelId,
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  }
+
 
   useEffect(() => {
-    if(Platform.OS === 'android'){
-      requestUserPermission();
-      notificationListener();
-      getToken();
-    }
-    
-  }, [])
-  
+    buildLink();
+    requestUserPermission();
+    notificationListener();
+    getToken();
+  }, []);
+
   return (
     <Provider store={store}>
       <Main />
@@ -97,7 +127,7 @@ const Main = () => {
 
   // After loading, conditionally render the AuthStack or MainNavigation
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       {boolstate ? 
       <MainNavigation />
         : <AuthStack />}

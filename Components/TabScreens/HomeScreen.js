@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   KeyboardAvoidingView,
+  
 } from 'react-native';
 import React, { Fragment, useRef, useState, useEffect } from 'react';
 import HeaderSearch from '../ReuseableComponents/HeaderSearch';
@@ -113,7 +114,7 @@ export default function HomeScreen({ navigation }) {
 
   const getData = async () => {
 
-    id = await AsyncStorage.getItem('user_id');
+    let id = await AsyncStorage.getItem('user_id');
 
     if (id != null) {
       try {
@@ -121,7 +122,7 @@ export default function HomeScreen({ navigation }) {
         setShowButton(false);
         setIsRefreshing(true);
 
-        let response = await axios.post('https://crm.unificars.com/api/live-auctions', paramerter)
+        let response = await axios.post('https://crm.unificars.com/api/filterauction', {user_id:id})
         if (response.data.code == 200) {
           // console.log("data =>", id);
           setData(response.data.data.auction);
@@ -180,9 +181,6 @@ export default function HomeScreen({ navigation }) {
           if(response.data.data.auction.length == 0){
             setMessage("No Data Available");
           }
-
-
-
         } else {
           console.log(response.data.status);
         }
@@ -220,6 +218,14 @@ export default function HomeScreen({ navigation }) {
         <View style={globalStyles.flexBox}>
           <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU' }} style={[globalStyles.image]}>
             <RenderMainImage item={item} />
+            {item.my_highest != 2 ? 
+            <View style={[globalStyles.textContainer,{bottom:175,backgroundColor:item.my_highest == 1 ? 'green': 'red',borderRadius:2},globalStyles.flexBox]}>
+              <Text style={[globalStyles.text]}>
+                {console.log("bid =>",item.my_highest)}
+              {item.my_highest == 1 ?"You are Leading!":"You are loosing the Auction"}
+              </Text>
+            </View>
+            :<></>}
             <View style={[globalStyles.textContainer]}>
               <Text style={[globalStyles.text]}>
                 {item.lead.model + " "}

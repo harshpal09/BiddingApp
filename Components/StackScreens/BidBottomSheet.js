@@ -38,6 +38,7 @@ const BidBottemSheet = ({toggleModal, data, callGetData, isProfile}) => {
   // },[data])
   const placedBid = async () => {
     // if (bid_price > parseInt(data.current_price)) {
+      console.log(bid_price);
 
     let id = await AsyncStorage.getItem('user_id');
     let response = await axios.post('https://crm.unificars.com/api/setbid', {

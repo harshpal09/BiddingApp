@@ -39,3 +39,4 @@ export async function requestUserPermission() {
       console.log('Authorization status:', authStatus);
     }   
   }
+

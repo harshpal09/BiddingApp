@@ -14,18 +14,30 @@ import {
   MEDIUM_FONT_SIZE,
 } from '../../Styles/global.js'; // Import your theme colors
 import {toggleBoolean} from '../../Redux/Actions/booleanActions.js';
+import { getToken } from '../ReuseableComponents/NotificationListener.js';
 
 const OTP = ({route, navigation}) => {
   const [toggle, setToggle] = useState(false);
   const [error, setError] = useState(null);
-
+  const [token,setToken] = useState('');
   const dispatch = useDispatch();
   const boolstate = useSelector(state => state.booleanState);
   const [otp, setOtp] = useState('');
 
-  console.log('global state in otp page is => ', boolstate);
+  // console.log('global state in otp page is => ', boolstate);
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await getToken();
+      console.log("opt token", token); // This should log the actual token value
+      setToken(token);
+    };
+    fetchToken();
+  }, [])
+  
 
   const verifyOTP = async () => {
+    console.log("opt token", token)
     const {number} = route.params;
     setToggle(toggle);
     if (!otp) {
@@ -40,6 +52,7 @@ const OTP = ({route, navigation}) => {
         {
           mobile: number,
           otp: otp,
+          token:token,
         },
       );
       if (response.data.code == 200) {
@@ -67,36 +80,36 @@ const OTP = ({route, navigation}) => {
     otpInput.current.clear();
   };
 
-  const sendOTP = async () => {
-    setToggle(true);
-    setError(null); // Clear any previous errors
+  // const sendOTP = async () => {
+  //   setToggle(true);
+  //   setError(null); // Clear any previous errors
 
-  // Validate if the mobile number is empty
-  if (!mobileNumber) {
-    setError("Please enter the number");
-    setToggle(false);
-    return;
-  }
-  console.log('number => ',mobileNumber);
-    try {
-      let response = await axios.post('https://crm.unificars.com/api/otplogin', {
-        mobile: mobileNumber.substring(3),
-      });
+  // // Validate if the mobile number is empty
+  // if (!mobileNumber) {
+  //   setError("Please enter the number");
+  //   setToggle(false);
+  //   return;
+  // }
+  // console.log('number => ',mobileNumber);
+  //   try {
+  //     let response = await axios.post('https://crm.unificars.com/api/otplogin', {
+  //       mobile: mobileNumber.substring(3),
+  //     });
 
-      if (response.data.code === 200) {
-        setToggle(false);
-        return navigation.replace('otp', { number: mobileNumber.substring(3) });
-      } else {
-        console.log("->", response.data.status);
-        setError(response.data.status); // Set error state
-      }
-    } catch (error) {
-      console.error("Network request error:", error);
-      setError("Network request failed"); // Set error state for network errors
-    }
+  //     if (response.data.code === 200) {
+  //       setToggle(false);
+  //       return navigation.replace('otp', { number: mobileNumber.substring(3) });
+  //     } else {
+  //       console.log("->", response.data.status);
+  //       setError(response.data.status); // Set error state
+  //     }
+  //   } catch (error) {
+  //     console.error("Network request error:", error);
+  //     setError("Network request failed"); // Set error state for network errors
+  //   }
 
-    setToggle(false);
-  };
+  //   setToggle(false);
+  // };
 
   // console.log('global state in out of the on otp page is => ', boolstate);
   

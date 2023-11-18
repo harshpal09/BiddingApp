@@ -58,7 +58,6 @@ const globalStyles = StyleSheet.create({
   searchButton: {},
 
   flexBox: {
-    // flex:1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -198,6 +197,11 @@ const globalStyles = StyleSheet.create({
     height: 50,
     borderBottomRightRadius: CONTAINER_BORDER,
     marginLeft: 15,
+  },
+  negoHighestBidContainer: {
+    backgroundColor: BLUE_COLOR,
+    height: 50,
+    borderBottomRightRadius: CONTAINER_BORDER,
   },
   dataTable_2: {
     display: 'flex',
@@ -469,7 +473,87 @@ const globalStyles = StyleSheet.create({
     width:'90%',
     fontWeight:'900',
     color:BLUE_COLOR
-  }
+  },
+  warpContainer: {
+    // justifyContent: 'flex-start',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 10,
+    justifyContent:'space-evenly',
+    // marginLeft: 10,
+    width: "100%",
+    // backgroundColor:'red',
+  },
+  cartProductContainer: {
+    // backgroundColor:'blue',
+    // marginHorizontal:15,
+    justifyContent:'space-between',
+    alignItems:'center',
+    marginVertical: 5,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    // paddingHorizontal:15,
+    
+    // paddingBottom:200,
+    borderBottomColor: '#bba890'
+  },
+  cartImageContainer: {
+    // backgroundColor:'green',
+    width: Dimensions.get("screen").width/3.6,
+    height: Dimensions.get("screen").height/7.3,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  cartImage: {
+    width: Dimensions.get("screen").width/4,
+    height: Dimensions.get("screen").height/8.3,
+    borderRadius: 6,
+  },
+  negoContentContainer: {
+    // backgroundColor:'grey',
+    display: 'flex',
+    flexDirection: 'column',
+    marginVertical: 10,
+    width: Dimensions.get("screen").width/1.42,
+  },
+  cartTextContainer: {
+    // backgroundColor:'skyblue',
+    // marginHorizontal: 5,
+    // width: '70%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  cartProductTitle: {
+    // margin: 2,
+    // marginLeft: 2,
+    padding:5,
+    color: 'black',
+    fontFamily: 'Baskervville-Regular',
+    fontSize:15,
+    width: '100%',
+    // height:70,
+    // textAlign:"center",
+    textAlignVertical: "center",
+    // backgroundColor:'white',
+  },
+  cartModelText: {
+    // margin: 2,
+    // marginLeft: 2,
+    padding:5,
+    color: '#6D6D6D',
+  
+    fontSize: 11,  
+    width: '100%',
+    // height:70,
+    // textAlign:"center",
+    textAlignVertical: "center",
+    // backgroundColor:'white',
+  },
 });
 
 export default globalStyles;

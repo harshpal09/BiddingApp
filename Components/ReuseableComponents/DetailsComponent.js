@@ -36,7 +36,7 @@ export default function DetailsComponent({data,sendValueToParent,getHeight}) {
 
   // console.log("from details => ",childHeight);
   return (
-    <SafeAreaView  onLayout={(e)=> setSendValue(e.nativeEvent.layout.y)} style={[globalStyles.flexBoxAlign,{marginBottom:height}]}>
+    <SafeAreaView  onLayout={(e)=> setSendValue(e.nativeEvent.layout.y)} style={[globalStyles.flexBoxAlign,{marginBottom:(height+200)/2}]}>
       {data.map((item,i)=>(
         <DetailsChild  height={fillArray} index={i}  data={item} key={i} />
       ))}
