@@ -29,7 +29,6 @@ import CountdownTimer from '../ReuseableComponents/CountdownTimer';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { SelectCountry } from 'react-native-element-dropdown';
 import RenderIf from '../ExtraScreens/RenderIf';
