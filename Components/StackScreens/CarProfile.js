@@ -95,7 +95,7 @@ export default function CarProfile({route}) {
       const shareOptions = {
         title: 'Share App',
         message: 'Check out this amazing app!',
-        url: 'https://example.com/app-download-link',
+        url: '',
       };
 
       await Share.open(shareOptions);

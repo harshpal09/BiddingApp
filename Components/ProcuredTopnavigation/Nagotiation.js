@@ -102,7 +102,7 @@ const Nagotiation = ({navigation}) => {
               {color: BLUE_COLOR, fontWeight: '600'},
             ]}>
             {' '}
-            Bid Price: {RP_S + item.highest_bid}
+            Highest Bid: {RP_S + item.highest_bid}
           </Text>
         </View>
         <View

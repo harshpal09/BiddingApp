@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, Linking, ActivityIndicator } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View,Alert, TouchableOpacity, Image, Linking, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { DataTable } from 'react-native-paper';
 import globalStyles, { LARGE_FONT_SIZE } from '../../Styles/global';
@@ -66,6 +66,16 @@ export default function Profile({ navigation }) {
       console.error(`Don't know how to open this URL: ${url}`);
     }
   };
+  logoutConfirmation = () => {
+    Alert.alert(
+      'Logout',
+      'Do you really want to Logout?',
+      [{ text: "Not Now" },
+      { text: "Logout", onPress: () => logout() }
+      ],
+      { cancelable: false }
+    )
+  }
 
   const logout = async () => {
     try {
@@ -162,7 +172,7 @@ export default function Profile({ navigation }) {
             <TouchableOpacity
               activeOpacity={0.9}
               style={globalStyles.profileHeadings}
-              onPress={() => logout()}>
+              onPress={() => logoutConfirmation()}>
               <Text style={globalStyles.profileHeadingText}>Logout</Text>
               <MaterialIcons
                 style={globalStyles.profileIcons}
