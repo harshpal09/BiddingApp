@@ -12,6 +12,9 @@ import axios from 'axios';
 
 
 export default function RenderMainImage({ item }) {
+
+    console.log("item =>",item.lead.images)
+
     const [frontMainImage, setFrontMainImage] = useState(item.lead.images.find(
         obj => obj.title === 'Front Main',
     ))
@@ -63,7 +66,7 @@ export default function RenderMainImage({ item }) {
           }
     } 
 
-    // console.log(' remaining time on image component =>   ',remainingTime)
+    console.log(' remaining time on image component =>   ',frontMainImage)
     return (
         <View>
             { remainingTime === undefined || remainingTime > 0?

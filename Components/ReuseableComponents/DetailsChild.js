@@ -53,10 +53,8 @@ export default function DetailsChild({data,height,index}) {
       </TouchableOpacity>
       {data.subpart.length ? 
         <SubAccordionView content={data.subpart} expanded={accordion}  /> 
-      // <></>
       :
       <AccordionView  expanded={accordion} content={data.car_details} isSubAccordionView={data.subpart.length > 0} />
-      // <></>
   }
     </SafeAreaView>
   )
