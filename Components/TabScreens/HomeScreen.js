@@ -46,6 +46,7 @@ import PopupMessage from '../ReuseableComponents/PopupMessage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingComponent from '../ReuseableComponents/LoadingComponent';
 import Modal from 'react-native-modal';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function HomeScreen({ navigation }) {
 
@@ -67,17 +68,18 @@ export default function HomeScreen({ navigation }) {
     setBidModalVisible(!isBidModalVisible);
   };
   const updateParameter = (newParameter) => {
-    // console.log('sdfghjkl  ',newParameter)
     setParameter(newParameter);
   };
-
+  useFocusEffect(
+    React.useCallback(() => {
+      getData();
+    }, [])
+  );
   useEffect(() => {
-    // Start a timer to show the button every 20 seconds
     const timer = setInterval(() => {
       setShowButton(true);
     }, 60000); // 20 seconds in milliseconds
 
-    // Clear the timer when the component unmounts
     return () => clearInterval(timer);
   }, [showButton]);
 
@@ -130,7 +132,7 @@ export default function HomeScreen({ navigation }) {
           }
 
         } else {
-          console.log(response.data.status);
+          // console.log(response.data.status);
         }
       }
       catch (e) {
@@ -181,7 +183,7 @@ export default function HomeScreen({ navigation }) {
             setMessage("No Data Available");
           }
         } else {
-          console.log(response.data.status);
+          // console.log(response.data.status);
         }
       }
       catch (e) {
@@ -211,7 +213,7 @@ export default function HomeScreen({ navigation }) {
       <TouchableOpacity
         style={[globalStyles.contentContainer]}
         activeOpacity={0.9}
-        onPress={() => { navigation.navigate('car_profile', { auction_id: item.id }) }}>
+        onPress={() => { navigation.navigate('car_profile', { auction_id: item.id ,type : "details",closure_amount : ""}) }}>
           
         {/* {console.log(item.id," name ",item.lead.brand)} */}
         <View style={globalStyles.flexBox}>
@@ -220,7 +222,6 @@ export default function HomeScreen({ navigation }) {
             {item.my_highest != 2 ? 
             <View style={[globalStyles.textContainer,{bottom:175,backgroundColor:item.my_highest == 1 ? 'green': 'red',borderRadius:2},globalStyles.flexBox]}>
               <Text style={[globalStyles.text]}>
-                {console.log("bid =>",item.my_highest)}
               {item.my_highest == 1 ?"You are Leading!":"You are loosing the Auction"}
               </Text>
             </View>
@@ -404,7 +405,7 @@ export default function HomeScreen({ navigation }) {
               <PopupMessage message={'Pull to Refresh'} />
             </TouchableOpacity>
           )}
-          {data != undefined && Array.isArray(data) && data.length == 0?<View style={[globalStyles.flexBox,{height:height-100}]}><Text>{message}</Text></View>:
+          {data != undefined && Array.isArray(data) && data.length == 0? <View style={[globalStyles.flexBox,{height:height-100}]}><Text>{message}</Text></View>:
 
           <FlatList
             ref={verticalScrollviewRef}

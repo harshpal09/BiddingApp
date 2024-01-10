@@ -48,7 +48,7 @@ const Nagotiation = ({navigation}) => {
   }, []);
 
   const onRefresh = () => {
-    console.log('agya');
+    // console.log('agya');
     setRefreshing(true);
     getData();
   };

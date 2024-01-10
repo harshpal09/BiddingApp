@@ -89,7 +89,7 @@ export default function MyCars({ navigation }) {
     return (
       <TouchableOpacity
         style={[globalStyles.contentContainer]}
-        onPress={() => { navigation.navigate('car_profile', { auction_id: item.id }) }}>
+        onPress={() => { navigation.navigate('car_profile', { auction_id: item.id,type : "details",closure_amount:"" }) }}>
         <View style={globalStyles.flexBox}>
           <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU' }} style={[globalStyles.image]}>
             {/* {renderImage(item)} */}

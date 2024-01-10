@@ -6,6 +6,8 @@ import { MEDIUM_FONT_SIZE, height, width } from '../../Styles/global';
 import Image from 'react-native-image-lazy-loading';
 import { EXTRA_LARGE_FONT_SIZE, LARGE_FONT_SIZE, TOP_TAB_TEXT_COLOR } from '../../Styles/global';
 import FastImage from 'react-native-fast-image';
+// import TowDimentional from './TowDimentional';
+import TwoDimensional from './TwoDimensional';
 // import { ImageZoom } from '@likashefqet/react-native-image-zoom';
 
 export default AccordionView = ({ title, content, expanded, subchild }) => {
@@ -26,6 +28,7 @@ export default AccordionView = ({ title, content, expanded, subchild }) => {
       {expanded && (
         content.map((item, i) => (
           <View style={globalStyles.content} key={i}>
+            <TwoDimensional />
             <View
               style={[
                 globalStyles.rowContainer,

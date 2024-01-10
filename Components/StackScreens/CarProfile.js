@@ -10,38 +10,48 @@ import {
   TurboModuleRegistry,
   Button,
   ActivityIndicator,
-} from 'react-native';
-import Share from 'react-native-share';
-import React, {useEffect, useState, useRef,useCallback, useLayoutEffect} from 'react';
+  Alert,
+} from "react-native";
+import Share from "react-native-share";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+} from "react";
 import globalStyles, {
   BLUE_COLOR,
+  CONTAINER_BORDER,
   LARGE_FONT_SIZE,
   LIGHT_BLUE,
   MEDIUM_FONT_SIZE,
+  PALATINO_BOLD_FONT,
   RP_S,
   SMALL_FONT_SIZE,
   VERY_SMALL_FONT_SIZE,
-} from '../../Styles/global';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {ScrollView} from 'react-native-gesture-handler';
-import {DetailsComponent, RenderIf} from '../../export';
-import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
-import LazyloadImage from 'react-native-image-lazy-loading';
-import BidBottemSheet from './BidBottomSheet';
-import LoadingComponent from '../ReuseableComponents/LoadingComponent';
-import FastImage from 'react-native-fast-image';
+} from "../../Styles/global";
+import EvilIcons from "react-native-vector-icons/EvilIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Entypo from "react-native-vector-icons/Entypo";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { ScrollView } from "react-native-gesture-handler";
+import { DetailsComponent, RenderIf } from "../../export";
+import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import LazyloadImage from "react-native-image-lazy-loading";
+import BidBottemSheet from "./BidBottomSheet";
+import LoadingComponent from "../ReuseableComponents/LoadingComponent";
+import FastImage from "react-native-fast-image";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
-export default function CarProfile({route}) {
+export default function CarProfile({ route }) {
   const [val, setVal] = useState(0);
   const [index, setIndex] = useState(0);
-  const [height_val, setHeightVal] = useState('');
-  const [offset, setOffset] = useState('');
+  const [height_val, setHeightVal] = useState("");
+  const [offset, setOffset] = useState("");
   const [heightArray, setHeightArray] = useState([]);
   const [weightArray, setWeightArray] = useState([]);
   const [prefixSumArray, setPrefixSumArray] = useState([]);
@@ -53,62 +63,93 @@ export default function CarProfile({route}) {
   const [isLoading, setIsloading] = useState(true);
   const [car_item, setCarItem] = useState([
     {
-      name: 'exterior',
+      name: "exterior",
       number: 1,
     },
     {
-      name: 'interior',
+      name: "interior",
       number: 2,
     },
     {
-      name: 'others',
+      name: "others",
       number: 3,
     },
     {
-      name: 'damage',
+      name: "damage",
       number: 4,
     },
   ]);
-  const [nameLayout, setNameLayout] = useState('name');
-  const [name, setName] = useState('');
+  const [nameLayout, setNameLayout] = useState("name");
+  const [name, setName] = useState("");
   const [car_item_length, setCarItemLength] = useState(0);
   const [bidData, setBidData] = useState({});
+  // const [types,setType] = useState("")
 
   const navigation = useNavigation();
-  const {auction_id} = route.params;
+  const { auction_id, type ,closure_amount} = route.params;
+
   // console.log("id = >",auction_id);
   const flatListRef = useRef(null);
 
-  const scrollToIndex = index => {
+  const scrollToIndex = (index) => {
     if (flatListRef.current) {
-      flatListRef.current.scrollToIndex({index, animated: true});
+      flatListRef.current.scrollToIndex({ index, animated: true });
     }
   };
 
+  const oneClickBuy = async(auction_id) => {
+    let id = await AsyncStorage.getItem('user_id');
+    // console.log("id =>",id," auction id =>",auction_id)
+    if (id != null) {
+      try {
+        let response = await axios.post('https://crm.unificars.com/api/ocbwinner', {dealer_id:id,auction_id:auction_id})
+        if(response.data.code == 200){
+          Alert.alert('Succesfully !', 'Congratulations Now you owned this car ...!',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                fetchData();
+              },
+            },
+          ],
+          );
+           
+        }
+      }
+      catch (e) {
+        console.log('error =>', e);
+      }
+      finally {
+       
+      }
+    }
+  } 
+
   const handleSwipe = () => {
     // Handle the swipe action here
-    console.log('Swiped!');
+    console.log("Swiped!");
   };
   const shareApp = async () => {
     try {
       // Define the content you want to share, including a URL or file path
       const shareOptions = {
-        title: 'Share App',
-        message: 'Check out this amazing app!',
-        url: '',
+        title: "Share App",
+        message: "Check out this amazing app!",
+        url: "",
       };
 
       await Share.open(shareOptions);
     } catch (error) {
-      console.error('Error sharing the app:', error);
+      console.error("Error sharing the app:", error);
     }
   };
 
   useEffect(() => {
     setIsloading(true);
     navigation.setOptions({
-      title: 'Details',
-      headerTintColor: 'black',
+      title: "Details",
+      headerTintColor: "black",
     });
     fetchData();
   }, []);
@@ -142,7 +183,7 @@ export default function CarProfile({route}) {
     setIsloading(true);
     if (auction_id) {
       await axios
-        .post('https://crm.unificars.com/api/cardetail', {
+        .post("https://crm.unificars.com/api/cardetail", {
           auction_id: auction_id,
         })
         .then(function (response) {
@@ -152,8 +193,8 @@ export default function CarProfile({route}) {
             setAuctionDetailData(response.data.data.auctiondetail);
             setName(
               response.data.data.lead.model +
-                ' ' +
-                response.data.data.lead.brand,
+                " " +
+                response.data.data.lead.brand
             );
             setBidData({
               auction_id: response.data.data.auctiondetail.id,
@@ -175,14 +216,14 @@ export default function CarProfile({route}) {
   };
 
   makeCarItemArray = () => {
-    const updatedArray = car_item.map(item => ({
+    const updatedArray = car_item.map((item) => ({
       ...item,
       images: all_data[item.name], // Set the value for the new key here
     }));
 
-    updatedArray.forEach(item => {
+    updatedArray.forEach((item) => {
       if (item.images !== undefined) {
-        setCarItemLength(prevCarItemLength => prevCarItemLength + 1);
+        setCarItemLength((prevCarItemLength) => prevCarItemLength + 1);
       }
     });
 
@@ -196,12 +237,12 @@ export default function CarProfile({route}) {
     prefixSum();
   }, [heightArray]);
 
-  const reciveValueFromChild = value => {
+  const reciveValueFromChild = (value) => {
     // console.log('inside recive function =>',value);
     setVal(value);
     // setHeightVal(height);
   };
-  const reciveHeightValue = value => {
+  const reciveHeightValue = (value) => {
     setHeightArray(value);
   };
   prefixSum = () => {
@@ -212,16 +253,16 @@ export default function CarProfile({route}) {
     }
     setPrefixSumArray(prefixSumArray);
   };
-  const updateHeaderTitle = val => {
+  const updateHeaderTitle = (val) => {
     if (val > nameLayout) {
       navigation.setOptions({
         title: name,
-        headerTintColor: 'black',
+        headerTintColor: "black",
       });
     } else {
       navigation.setOptions({
-        title: 'Details',
-        headerTintColor: 'black',
+        title: "Details",
+        headerTintColor: "black",
       });
     }
   };
@@ -229,7 +270,7 @@ export default function CarProfile({route}) {
   // console.log("car_item => ", car_item);
   const scrollViewRef = useRef();
   const horizontalScrollviewRef = useRef();
-  const scrollToHorizontalComponent = n => {
+  const scrollToHorizontalComponent = (n) => {
     const xOffset = n === 0 ? 0 : n * 80;
     horizontalScrollviewRef.current.scrollTo({
       x: xOffset,
@@ -238,17 +279,17 @@ export default function CarProfile({route}) {
     });
     // console.log(horizontalScrollviewRef.current);
   };
-  const scrollToComponent = componentNumber => {
+  const scrollToComponent = (componentNumber) => {
     // console.log('index',heightArray);
     // setIndex(componentNumber);
     const yOffset =
       componentNumber === 0
         ? val - 10
         : prefixSumArray[componentNumber - 1] + (val - 45);
-    scrollViewRef.current.scrollTo({x: 0, y: yOffset, animated: true});
+    scrollViewRef.current.scrollTo({ x: 0, y: yOffset, animated: true });
   };
 
-  const getIndex = offset => {
+  const getIndex = (offset) => {
     // console.log("offset  => ",offset);
     let n = 45.1;
     if (offset <= val - n + prefixSumArray[0]) setIndex(0);
@@ -281,7 +322,7 @@ export default function CarProfile({route}) {
   const updateFetchData = async () => {
     if (auction_id) {
       await axios
-        .post('https://crm.unificars.com/api/cardetail', {
+        .post("https://crm.unificars.com/api/cardetail", {
           auction_id: auction_id,
         })
         .then(function (response) {
@@ -291,11 +332,11 @@ export default function CarProfile({route}) {
             setAuctionDetailData(response.data.data.auctiondetail);
             setName(
               response.data.data.lead.model +
-                ' ' +
-                response.data.data.lead.brand,
+                " " +
+                response.data.data.lead.brand
             );
           } else {
-            console.log(response.data.status);
+            // console.log(response.data.status);
           }
         })
         .catch(function (error) {
@@ -317,8 +358,15 @@ export default function CarProfile({route}) {
     ({ item }) => (
       <View>
         <FastImage
-          source={item.image ? { uri: item.image, priority: FastImage.priority.high } : null}
-          style={{ width: width - 20, height: Dimensions.get('window').height / 2.7 }}
+          source={
+            item.image
+              ? { uri: item.image, priority: FastImage.priority.high }
+              : null
+          }
+          style={{
+            width: width - 20,
+            height: Dimensions.get("window").height / 2.7,
+          }}
           resizeMode={FastImage.resizeMode.cover}
         />
       </View>
@@ -328,15 +376,15 @@ export default function CarProfile({route}) {
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
-
   // console.log("index =>",index)
   return (
     <View
       style={[
         globalStyles.mainContainer,
         globalStyles.flexBoxAlign,
-        {flex: 1},
-      ]}>
+        { flex: 1 },
+      ]}
+    >
       {
         isLoading ? (
           <LoadingComponent />
@@ -347,26 +395,28 @@ export default function CarProfile({route}) {
               horizontal={true}
               style={{
                 height: val != 0 && val <= offset ? 60 : 0,
-                width: '100%',
+                width: "100%",
                 backgroundColor: LIGHT_BLUE,
-                overflow: 'hidden',
-                position: 'absolute',
+                overflow: "hidden",
+                position: "absolute",
                 top: 0,
                 zIndex: 1,
                 paddingLeft: 0,
               }}
-              showsHorizontalScrollIndicator={false}>
+              showsHorizontalScrollIndicator={false}
+            >
               {all_data.detaiapi != undefined &&
                 all_data.detaiapi.map((item, i) => (
                   <View
-                    style={[{height: 60, padding: 5}, globalStyles.flexBox]}
-                    onLayout={e =>
+                    style={[{ height: 60, padding: 5 }, globalStyles.flexBox]}
+                    onLayout={(e) =>
                       setWeightArray([
                         ...weightArray,
                         e.nativeEvent.layout.width,
                       ])
                     }
-                    key={i}>
+                    key={i}
+                  >
                     <TouchableOpacity
                       style={[
                         globalStyles.flexBoxJustify,
@@ -374,17 +424,18 @@ export default function CarProfile({route}) {
                         {
                           padding: 10,
                           borderRadius: 15,
-                          backgroundColor: index == i ? '#FFF' : 'transparent',
+                          backgroundColor: index == i ? "#FFF" : "transparent",
                         },
                       ]}
-                      onPress={() => scrollToComponent(i)}>
+                      onPress={() => scrollToComponent(i)}
+                    >
                       <MaterialCommunityIcons
                         name={item.icon_name}
                         size={15}
-                        style={{marginHorizontal: 5}}
+                        style={{ marginHorizontal: 5 }}
                         color={BLUE_COLOR}
                       />
-                      <Text style={{color: BLUE_COLOR, fontWeight: '700'}}>
+                      <Text style={{ color: BLUE_COLOR, fontWeight: "700" }}>
                         {item.name}
                       </Text>
                     </TouchableOpacity>
@@ -394,14 +445,15 @@ export default function CarProfile({route}) {
             <ScrollView
               ref={scrollViewRef}
               scrollEventThrottle={1}
-              onScroll={e => {
+              onScroll={(e) => {
                 setOffset(e.nativeEvent.contentOffset.y),
                   getIndex(e.nativeEvent.contentOffset.y),
                   scrollToHorizontalComponent(index),
                   updateHeaderTitle(e.nativeEvent.contentOffset.y);
               }}
-              style={[globalStyles.scrollViewContainer]}>
-              <View style={{width: width - 20}}>
+              style={[globalStyles.scrollViewContainer]}
+            >
+              <View style={{ width: width - 20 }}>
                 <FlatList
                   pagingEnabled
                   horizontal
@@ -440,7 +492,7 @@ export default function CarProfile({route}) {
             }}
           />
         </View> */}
-              <View style={[globalStyles.wrapContainer, {marginTop: 15}]}>
+              <View style={[globalStyles.wrapContainer, { marginTop: 15 }]}>
                 {car_item.map((item, i) =>
                   item.images != undefined ? (
                     <TouchableOpacity
@@ -450,30 +502,32 @@ export default function CarProfile({route}) {
                           height: 75,
                           width: 75,
                           marginHorizontal: 5,
-                          borderColor: 'lightgrey',
+                          borderColor: "lightgrey",
                           borderWidth: 0.5,
                           borderRadius: 8,
                         },
                       ]}
                       key={i}
                       onPress={() =>
-                        navigation.navigate('photo', {
+                        navigation.navigate("photo", {
                           screen: item.name,
                           id: auction_detail_data.lead_id,
                           length: car_item_length,
                           item: car_item,
                         })
-                      }>
+                      }
+                    >
                       <View
                         style={[
                           globalStyles.flexBoxAlign,
                           {
-                            width: '100%',
+                            width: "100%",
                             height: 53,
                             borderTopLeftRadius: 8,
                             borderTopRightRadius: 8,
                           },
-                        ]}>
+                        ]}
+                      >
                         <FastImage
                           style={{
                             width: 75 - 1,
@@ -494,77 +548,83 @@ export default function CarProfile({route}) {
                       <Text
                         style={{
                           fontSize: VERY_SMALL_FONT_SIZE,
-                          textAlignVertical: 'center',
-                          width: '100%',
-                          textAlign: 'center',
+                          textAlignVertical: "center",
+                          width: "100%",
+                          textAlign: "center",
                           height: 22,
                           lineHeight: 22,
-                          color: '#000',
-                        }}>
+                          color: "#000",
+                        }}
+                      >
                         {item.name}
                       </Text>
                       <Text
                         style={{
-                          position: 'absolute',
+                          position: "absolute",
                           width: 20,
                           height: 20,
                           borderRadius: 10,
-                          textAlign: 'center',
-                          textAlignVertical: 'center',
+                          textAlign: "center",
+                          textAlignVertical: "center",
                           fontSize: VERY_SMALL_FONT_SIZE,
-                          borderColor: 'black',
+                          borderColor: "black",
                           borderWidth: 1,
                           right: -12,
                           top: -12,
                           lineHeight: 15,
-                          color: '#000',
-                        }}>
+                          color: "#000",
+                        }}
+                      >
                         {item.images != undefined ? item.images.length : 2}
                       </Text>
                     </TouchableOpacity>
-                  ) : null,
+                  ) : null
                 )}
               </View>
 
               <View
-                onLayout={e => setNameLayout(e.nativeEvent.layout.y)}
+                onLayout={(e) => setNameLayout(e.nativeEvent.layout.y)}
                 style={[
-                  {width: '100%', padding: 10},
+                  { width: "100%", padding: 10 },
                   globalStyles.rowContainer,
-                ]}>
-                <View style={{width: '60%'}}>
+                ]}
+              >
+                <View style={{ width: "60%" }}>
                   <Text
                     style={{
-                      fontWeight: '700',
+                      fontWeight: "700",
                       fontSize: LARGE_FONT_SIZE,
-                      width: '100%',
-                      color: 'black',
-                    }}>
-                    {all_data.lead.model + ' '}
+                      width: "100%",
+                      color: "black",
+                    }}
+                  >
+                    {all_data.lead.model + " "}
                     {all_data.lead.brand}
                   </Text>
                 </View>
-                <View style={[{width: '40%'}, globalStyles.flexBox]}>
+                <View style={[{ width: "40%" }, globalStyles.flexBox]}>
                   <Text
                     style={{
-                      textAlign: 'center',
-                      textAlignVertical: 'center',
-                      color: '#3d3d3d',
-                    }}>
+                      textAlign: "center",
+                      textAlignVertical: "center",
+                      color: "#3d3d3d",
+                    }}
+                  >
                     {all_data.lead.unique_id}
                   </Text>
                   <TouchableOpacity
                     style={[
                       {
-                        backgroundColor: 'lightgrey',
+                        backgroundColor: "lightgrey",
                         borderRadius: 10,
-                        width: '60%',
+                        width: "60%",
                         marginVertical: 5,
                         padding: 5,
                       },
                       globalStyles.flexBox,
                     ]}
-                    onPress={() => shareApp()}>
+                    onPress={() => shareApp()}
+                  >
                     <MaterialCommunityIcons
                       //  style={{
                       //     textAlign: 'center',
@@ -573,10 +633,13 @@ export default function CarProfile({route}) {
                       //   }}
                       name="share"
                       size={25}
-                      color={'black'}
+                      color={"black"}
                     />
                     <Text
-                      style={[{fontSize: MEDIUM_FONT_SIZE, fontWeight: '800'}]}>
+                      style={[
+                        { fontSize: MEDIUM_FONT_SIZE, fontWeight: "800" },
+                      ]}
+                    >
                       Share
                     </Text>
                   </TouchableOpacity>
@@ -585,32 +648,35 @@ export default function CarProfile({route}) {
               <View
                 style={[
                   globalStyles.flexBoxJustify,
-                  {width: '100%', paddingHorizontal: 10},
-                ]}>
+                  { width: "100%", paddingHorizontal: 10 },
+                ]}
+              >
                 <View
                   style={[
                     globalStyles.rowContainer,
                     {
-                      backgroundColor: '#e37617',
+                      backgroundColor: "#e37617",
                       padding: 5,
                       borderRadius: 10,
                       margin: 5,
                       width: 80,
                     },
-                  ]}>
+                  ]}
+                >
                   <Text
                     style={{
                       fontSize: VERY_SMALL_FONT_SIZE,
-                      fontWeight: '600',
-                      color: '#ffffff',
-                    }}>
+                      fontWeight: "600",
+                      color: "#ffffff",
+                    }}
+                  >
                     Engine {auction_detail_data.engine_rating}
                   </Text>
                   <FontAwesome
                     name="star"
                     color="#ffffff"
                     size={9}
-                    style={{padding: 1, paddingHorizontal: 5}}
+                    style={{ padding: 1, paddingHorizontal: 5 }}
                   />
                 </View>
               </View>
@@ -620,13 +686,15 @@ export default function CarProfile({route}) {
                   globalStyles.belt,
                   globalStyles.rowContainer,
                   globalStyles.flexBoxJustify,
-                ]}>
+                ]}
+              >
                 <View
                   style={[
                     globalStyles.rowContainer,
                     globalStyles.flexBox,
                     globalStyles.beltItem,
-                  ]}>
+                  ]}
+                >
                   <MaterialCommunityIcons
                     name="gas-station-outline"
                     size={15}
@@ -641,7 +709,8 @@ export default function CarProfile({route}) {
                     globalStyles.rowContainer,
                     globalStyles.flexBox,
                     globalStyles.beltItem,
-                  ]}>
+                  ]}
+                >
                   <MaterialCommunityIcons
                     name="car-shift-pattern"
                     size={13}
@@ -656,7 +725,8 @@ export default function CarProfile({route}) {
                     globalStyles.rowContainer,
                     globalStyles.flexBox,
                     globalStyles.beltItem,
-                  ]}>
+                  ]}
+                >
                   <MaterialCommunityIcons
                     name="road-variant"
                     size={15}
@@ -671,7 +741,8 @@ export default function CarProfile({route}) {
                     globalStyles.rowContainer,
                     globalStyles.flexBox,
                     globalStyles.beltItem,
-                  ]}>
+                  ]}
+                >
                   <MaterialCommunityIcons
                     name="account-outline"
                     size={16}
@@ -686,7 +757,8 @@ export default function CarProfile({route}) {
                     globalStyles.rowContainer,
                     globalStyles.flexBox,
                     globalStyles.beltItem,
-                  ]}>
+                  ]}
+                >
                   <Entypo
                     name="location"
                     size={13}
@@ -694,8 +766,8 @@ export default function CarProfile({route}) {
                   />
                   <Text style={globalStyles.beltItemText}>
                     {all_data.lead.registration_in != null
-                      ? all_data.lead.registration_in.substring(0, 4) + 'XXXX'
-                      : ''}
+                      ? all_data.lead.registration_in.substring(0, 4) + "XXXX"
+                      : ""}
                   </Text>
                 </View>
               </View>
@@ -710,12 +782,51 @@ export default function CarProfile({route}) {
                 data={all_data.detaiapi}
               />
             </ScrollView>
-            <BidBottemSheet
-              callGetData={updateFetchData}
-              toggleModal={() => toggleBidModal(null, null)}
-              data={bidData}
-              isProfile={true}
-            />
+            {type == "ocb" ? (
+              <View style={{ backgroundColor: "transparent", width: width-30,position:'absolute',bottom:30,}}>
+                <TouchableOpacity
+                  activeOpacity={0.9}
+                  onPress={() =>
+                    {oneClickBuy(auction_id)}
+                  }
+                  
+                  style={[globalStyles.flexBox,{borderRadius:10}]}
+                >
+                  <View
+                    style={[
+                      {
+                        width: "100%",
+                        height: 40,
+                        backgroundColor: BLUE_COLOR,
+                        borderRadius:10,
+                        // borderBottomLeftRadius: CONTAINER_BORDER,
+                        // borderTopRightRadius: CONTAINER_BORDER,
+                        marginTop: 10,
+                      },
+                      globalStyles.flexBox,
+                    ]}
+                  >
+                    <Text
+                      style={{
+                        color: "#ffffff",
+                        fontFamily: PALATINO_BOLD_FONT,
+                        fontSize: LARGE_FONT_SIZE,
+                        fontWeight: "700",
+                      }}
+                    >
+                      Click To Buy   {RP_S + parseInt(closure_amount).toLocaleString('en-IN')}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <BidBottemSheet
+                callGetData={updateFetchData}
+                toggleModal={() => toggleBidModal(null, null)}
+                data={bidData}
+                isProfile={true}
+              />
+            )}
           </>
         )
         // <></>

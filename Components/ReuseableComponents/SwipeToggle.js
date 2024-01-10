@@ -5,7 +5,7 @@ import SwipeButton from 'react-native-swipe-button';
 const SwipeToggle = () => {
   const handleSwipe = () => {
     // Handle the swipe action here
-    console.log('Swiped!');
+    // console.log('Swiped!');
   };
 
   return (

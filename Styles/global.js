@@ -16,8 +16,8 @@ export function NotchHeight() {
 // Commonlly used variables
 export const BACKGROUD_BLUE_COLOR = '#f0f2f5';
 export const RP_S = '\u20B9' + ' ';
-export const TOP_TAB_COLOR = '#FFF';
-export const TOP_TAB_TEXT_COLOR = '#000';
+export const TOP_TAB_COLOR = '#ceddf5';
+export const TOP_TAB_TEXT_COLOR = '#32507a';
 export const ORANGE_COLOR = '#000';
 export const BLUE_COLOR = '#32507a';
 export const CONTAINER_BORDER = 2;
@@ -394,6 +394,14 @@ const globalStyles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
+  },
+  hintIcon:{
+    width:40,
+    height:40,
+    borderRadius:12,
+    borderWidth:1,
+    textAlign:'center',
+    textAlignVertical:'center'
   },
   content: {
     padding: 5,

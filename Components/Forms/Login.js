@@ -71,7 +71,7 @@ const Login = ({onNext, navigation}) => {
         setToggle(false);
         return navigation.navigate('otp', {number: mobileNumber.substring(3)});
       } else {
-        console.log('->', response.data.status);
+        // console.log('->', response.data.status);
         setError(response.data.status);
       }
     } catch (error) {

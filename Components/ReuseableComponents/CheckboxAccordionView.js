@@ -16,7 +16,7 @@ export default function CheckboxAccordionView({ expanded, content }) {
     // console.log("content = ",expanded)
     onSelectionsChange = (items) =>{
         setSelectedItems(items);
-        console.log("selected items",SelectedItems)
+        // console.log("selected items",SelectedItems)
     }
     return (
         <SafeAreaView style={[globalStyles.container, globalStyles.flexBoxJustify, { borderWidth: expanded ? 1 : 0}]}>

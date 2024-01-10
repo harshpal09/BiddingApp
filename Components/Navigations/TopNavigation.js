@@ -13,20 +13,19 @@ export default function TopNavigation({navigation}) {
   
  
   return (
-    <SafeAreaView style={{height: '100%',}}>
-      {/* <View> */}
-        <HeaderSearch navigation={navigation} />
-      {/* </View> */}
+    <SafeAreaView style={{height: '100%'}}>
+      <HeaderSearch navigation={navigation} />
       <HeaderTab.Navigator
         style={{
-          // padding: 10
+          
         }}
         screenOptions={{
             tabBarIndicatorStyle:{
                 backgroundColor:TOP_TAB_TEXT_COLOR,
             },
             tabBarActiveTintColor:ORANGE_COLOR,
-            tabBarInactiveTintColor:TOP_TAB_COLOR,
+            tabBarInactiveTintColor:TOP_TAB_COLOR, 
+            
           tabBarStyle: {
             backgroundColor:TOP_TAB_COLOR,
             // padding: 10,
@@ -49,7 +48,7 @@ export default function TopNavigation({navigation}) {
         //   tabBarIndicator: e => console.log(e),
         }}>
         <HeaderTab.Screen name="Live Auction" component={HomeScreen} />
-        {/* <HeaderTab.Screen name="OCB" component={MyAutions} /> */}
+        <HeaderTab.Screen name="Quick Buy" component={MyAutions} />
         {/* <HeaderTab.Screen name="My Purchases" component={MyPurchases} /> */}
       </HeaderTab.Navigator>
     </SafeAreaView>

@@ -38,7 +38,7 @@ const BidBottemSheet = ({toggleModal, data, callGetData, isProfile}) => {
   // },[data])
   const placedBid = async () => {
     // if (bid_price > parseInt(data.current_price)) {
-      console.log(bid_price);
+      // console.log(bid_price);
 
     let id = await AsyncStorage.getItem('user_id');
     let response = await axios.post('https://crm.unificars.com/api/setbid', {
@@ -50,7 +50,7 @@ const BidBottemSheet = ({toggleModal, data, callGetData, isProfile}) => {
     
     if (response.data.code == 200) {
       setCurrentPrice(response.data.currentpricing);
-      console.log(response.data);
+      // console.log(response.data);
       setError({
         ...error,
         message: response.data.message,

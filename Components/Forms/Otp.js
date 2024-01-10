@@ -29,7 +29,7 @@ const OTP = ({route, navigation}) => {
   useEffect(() => {
     const fetchToken = async () => {
       const token = await getToken();
-      console.log("opt token", token); // This should log the actual token value
+      // console.log("opt token", token); // This should log the actual token value
       setToken(token);
     };
     fetchToken();
@@ -37,7 +37,7 @@ const OTP = ({route, navigation}) => {
   
 
   const verifyOTP = async () => {
-    console.log("opt token", token)
+    // console.log("opt token", token)
     const {number} = route.params;
     setToggle(toggle);
     if (!otp) {

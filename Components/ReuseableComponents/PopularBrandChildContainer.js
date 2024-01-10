@@ -7,7 +7,7 @@ export default function PopularBrandChildContainer({data}) {
     const [toggle, setToggle] = useState(false);
     const [accordion, setAccordion] = useState(true);
     const spinValue = useRef(new Animated.Value(0)).current;
-    console.log("item => ",data)
+    // console.log("item => ",data)
     const spin = () => {
         // console.log('toggle=>',toggle);
         spinValue.setValue(1);
