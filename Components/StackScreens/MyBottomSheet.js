@@ -8,7 +8,8 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  Keyboard
+  Keyboard,
+  Alert
 } from 'react-native';
 import { globalStyles } from '../../export';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,6 +29,8 @@ import { value } from 'react-native-extended-stylesheet';
 import RadioGroup from '../ReuseableComponents/RadioGroup';
 import PopularBrandContainer from '../ReuseableComponents/PopularBrandContainer';
 import MultipleSelect from '../ReuseableComponents/MultipleSelect';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AlarmType } from '@notifee/react-native';
 
 const MyBottomSheet = ({ toggleModal, models, setParam,callGetData, }) => {
   const [radioButtons, setRadioButtons] = useState([
@@ -639,6 +642,7 @@ const MyBottomSheet = ({ toggleModal, models, setParam,callGetData, }) => {
   }
   ],)
   const [searchText, setSearchText] = useState('');
+  const [showMessage,setShowMessage] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [selected_group, setSelectedGroup] = useState(radioButtons);
   const [isBrandBodels, SetIsBrandModels] = useState(true);
@@ -696,6 +700,19 @@ useEffect(() => {
 
     setSelectedGroup(mainArray);
   };
+
+  const resetFilters = async()=>{
+    try{
+      const resp = AsyncStorage.removeItem('filters');
+      // console.log('resp =>',resp);
+      setShowMessage(true);
+      setParam({});
+      setTimeout(()=>{setShowMessage(false)},3000)
+      
+    }catch(e){
+      console.log("error in reset your filters")
+    }
+  }
   useEffect(() => {
     let dummy = paramerter;
     selected_group.forEach(item => {
@@ -729,9 +746,9 @@ useEffect(() => {
         }
       } else if (item.type === 'regiscity' && item.key) {
         const selectedCity = item.key.find(city => city.selected);
+        // console.log("selected city ",selectedCity)
         if (selectedCity) {
-          console.log()
-          dummy.regisCity = selectedCity.label == "delhi" ? console.log("DL") : selectedCity.label == "haryana" ? console.log('hr'):"UP";
+          dummy.regisCity = selectedCity.label == "Delhi" ? "DL" : selectedCity.label == "Haryana" ? "Hr":"UP";
         }
       } else if (item.type === 'year' && item.key) {
         const selectedYear = item.key.find(year => year.selected);
@@ -745,7 +762,7 @@ useEffect(() => {
         }
       }
     });
-    // console.log("dummy =>", dummy)
+    // console.log("dummy =>", dummy.regisCity)
     setParam(dummy);
   }, [selected_group]);
 
@@ -813,13 +830,18 @@ useEffect(() => {
               style={[globalStyles.text, { fontSize: EXTRA_LARGE_FONT_SIZE }]}>
               Filter
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={resetFilters}>
               <Text style={[globalStyles.text, { fontWeight: '600' }]}>
                 Reset
               </Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
+        {showMessage && 
+          <View style={[{backgroundColor:'green',padding:10},globalStyles.flexBox]}>
+            <Text style={{fontWeight:'800',fontSize:16,color:'white'}}>Succesfully reset your filters</Text>
+          </View>
+        }
         {/* <RadioGroup
             accessibilityLabel='asdfgh'
             radioButtons={radioButtons[0].fuel_type}

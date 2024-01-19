@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   KeyboardAvoidingView,
+  Platform,
   
 } from 'react-native';
 import React, { Fragment, useRef, useState, useEffect } from 'react';
@@ -47,6 +48,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingComponent from '../ReuseableComponents/LoadingComponent';
 import Modal from 'react-native-modal';
 import { useFocusEffect } from '@react-navigation/native';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function HomeScreen({ navigation }) {
 
@@ -85,45 +87,32 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     // getModel();
+    // setFilterParam();
     getData();
-  }, [navigation]);
+  }, []);
 
-
-  // const getModel = async () => {
+  // const setFilterParam = async() =>{
   //   try {
-  //     setToggle(true);
-  //     setShowButton(false);
-  //     setIsRefreshing(true);
-
-  //     let response = await axios.post('https://crm.unificars.com/api/webbrands', {
-  //     })
-  //     if (response.data.code == 200) {
-  //       setModels(response.data.result[0].brand);
-  //     } else {
-  //       console.log(response.data.status);
-  //     }
-  //   }
-  //   catch (e) {
-  //     console.log('error =>', e);
-  //   }
-  //   finally {
-  //     setBidModalVisible(false);
-  //     setToggle(false);
-  //     setIsRefreshing(false);
+  //     const val =  await AsyncStorage.getItem('filters');
+  //     console.log()
+  //   } catch (error) {
+  //     console.log('error =>', error);
   //   }
   // }
-
+  
   const getData = async () => {
 
-    let id = await AsyncStorage.getItem('user_id');
+    let param = await AsyncStorage.getItem('filters');
 
-    if (id != null) {
+    // console.log('get data filters =>',id);
+
+    // if (id != null) {
       try {
         setToggle(true);
         setShowButton(false);
         setIsRefreshing(true);
 
-        let response = await axios.post('https://crm.unificars.com/api/filterauction', {user_id:id})
+        let response = await axios.post('https://crm.unificars.com/api/filterauction',JSON.parse(param))
         if (response.data.code == 200) {
           // console.log("data =>", id);
           setData(response.data.data.auction);
@@ -145,15 +134,8 @@ export default function HomeScreen({ navigation }) {
         setIsRefreshing(false);
         
       }
-    }
-
-
-
+    // }
   };
-
-
-
-
   const onRefresh = () => {
     // Set isRefreshing to true to show the loading indicator
     setIsRefreshing(true);
@@ -162,22 +144,11 @@ export default function HomeScreen({ navigation }) {
     getData();
   };
   const callGetData = async () => {
-    id = await AsyncStorage.getItem('user_id');
-    let param = { ...paramerter }
-    param.user_id = id;
-    // console.log('before set ',param);
-    setParameter(param);
-    // console.log('after set',paramerter)
-    // setToggle(true);
-    // setShowButton(false);
-    // setIsRefreshing(true);
-
-    if (id != null) {
+      console.log("parameter =>",paramerter)
       try {
         let response = await axios.post('https://crm.unificars.com/api/filterauction',
          paramerter)
         if (response.data.code == 200) {
-          // console.log("data =>", response.data.data.auction);
           setData(response.data.data.auction);
           if(response.data.data.auction.length == 0){
             setMessage("No Data Available");
@@ -195,8 +166,8 @@ export default function HomeScreen({ navigation }) {
         // setToggle(false);
         // setIsRefreshing(false);
       }
-    }
   }
+  // console.log(' set',paramerter)
 
 
   const verticalScrollviewRef = useRef();
@@ -207,6 +178,22 @@ export default function HomeScreen({ navigation }) {
     }
   };
   // console.log("param ",paramerter)
+
+  const setFilters = async() =>{
+    // if(Platform.OS == 'android') console.log("param android =>",paramerter)
+    // else console.log("param ios =>",paramerter)
+    // console.log("param => ",paramerter);
+    try {
+      
+      const resp = await AsyncStorage.setItem('filters',JSON.stringify(paramerter));
+
+      // if(Platform.OS == 'android') console.log("param android resp =>",resp)
+    // else console.log("param ios resp=>",resp)
+      callGetData();
+    } catch (error) {
+      console.log('error =>', error);
+    }
+  }
 
   renderItem = ({ item }) => {
     return (
@@ -437,7 +424,7 @@ export default function HomeScreen({ navigation }) {
           >
             {/* Modal Content */}
             <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : null}>
-            <MyBottomSheet callGetData={callGetData} setParam={updateParameter} models={models} toggleModal={toggleModal} />
+            <MyBottomSheet callGetData={setFilters} setParam={updateParameter} models={models} toggleModal={toggleModal} />
             </KeyboardAvoidingView>
           </Modal>
 

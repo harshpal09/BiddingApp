@@ -1,5 +1,15 @@
 // objectReducer.js
-const initialState = {}; // Initial state
+const initialState = {
+  change: '',
+  model: [],
+  type: '',
+  transmission: '',
+  km: '',
+  regisCity: '',
+  year: '',
+  owner: '',
+  user_id: '',
+}; // Initial state
 
 const objectReducer = (state = initialState, action) => {
   switch (action.type) {
