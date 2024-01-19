@@ -10,29 +10,8 @@ const VideoPlayer = ({uri,height,width,onPressCancel,isFullView}) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    // Check if the video is paused and update the state accordingly
-    try{
-    if (videoRef.current) {
-      videoRef.current.isPaused().then((paused) => {
-        setIsPlaying(!paused);
-      });
-    }
-  }catch(e){
-    console.log("erro =>",e)
-  }
-  }, [uri]);
+  
 
-  const handlePlayPause = () => {
-    try{
-    if (videoRef.current) {
-      // Toggle the playing state
-      setIsPlaying((prevIsPlaying) => !prevIsPlaying);
-    }
-  }catch(e){
-    console.log("er =>",e)
-  }
-  };
 
 
   return (
