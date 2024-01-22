@@ -10,9 +10,9 @@ import App from './App';
 import {name as appName} from './app.json';
 
 
-if(Platform.OS === 'android'){
+// if(Platform.OS === 'android'){
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-        // console.log('Message handled in the background!', remoteMessage);
+        console.log('Message handled in the background!', remoteMessage);
         displayNotification(remoteMessage.notification);
       });
     //   const configureCustomNotificationSound = (rm) => {
@@ -62,7 +62,7 @@ if(Platform.OS === 'android'){
           },
         });
       }
-}
+// }
 
   
 

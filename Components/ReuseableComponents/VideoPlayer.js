@@ -10,9 +10,6 @@ const VideoPlayer = ({uri,height,width,onPressCancel,isFullView}) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  
-
-
 
   return (
     <View style={styles.container}>
