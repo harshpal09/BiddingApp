@@ -6,6 +6,8 @@ import {HomeScreen,TabRoutes,StackRoutes, Address, ManageProfile, PaymentDetails
 
 const Stack = createStackNavigator();
 
+
+
 export default function MainNavigation() {
   return (
     <Stack.Navigator 
@@ -23,7 +25,7 @@ export default function MainNavigation() {
         headerBackTitle:' '
       }} />
       <Stack.Screen name="bottom" component={MyBottomSheet} />
-      <Stack.Screen name="photo" component={PhotoGallery} />
+      <Stack.Screen name="photo" component={PhotoGallery} options={{headerTitle:'Photos'}} />
       <Stack.Screen name="ss" component={SearchScreen} options={{
         // headerBackTitle:' ',
         // headerBackTitleVisible:false,

@@ -28,11 +28,7 @@ function App() {
   const [AppLink,setAppLink] = useState('');
   useEffect(() => {
       const unsubscribe = messaging().onMessage(async remoteMessage => {
-        // if (Platform.OS === 'ios') {
-        //   Linking.openURL('app-settings:');
-        // } else if (Platform.OS === 'android') {
-        //   Linking.openSettings();
-        // }
+       
         console.log("notification =>",remoteMessage);
         displayNotification(remoteMessage.notification);
       });

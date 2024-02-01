@@ -8,19 +8,21 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const VideoPlayer = ({uri,height,width,onPressCancel,isFullView}) => {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
 
   return (
     <View style={styles.container}>
+      <View style={{backgroundColor:'black',width:width+5,height:height+5}}>
       <Video 
-      ref={videoRef} source={{uri: uri}} 
-      style={{width:width,height:height}}
-      paused={isPlaying}
-      onLoad={() => {
-        setIsPlaying(true)
-      }}
+        ref={videoRef} source={{uri: uri}} 
+        style={{width:width,height:height}}
+        paused={isPlaying}
+        onLoad={() => {
+          setIsPlaying(true)
+        }}
        />
+       </View>
        {isFullView &&
         <TouchableOpacity style={{height:30,width:width,backgroundColor:'#fff',position:'absolute',top:50}} onPress={() => onPressCancel(null)}>
           <MaterialCommunityIcons

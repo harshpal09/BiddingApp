@@ -67,9 +67,13 @@ export default function Procured({navigation}) {
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={[globalStyles.cartProductContainer]}
-      onPress={() => {
-        navigation.navigate('car_profile', {auction_id: item.id});
-      }}>
+      onPress={() => { 
+        navigation.navigate('car_profile', { 
+          auction_id: item.id,
+          type : "details",
+          closure_amount:"",
+          })
+        }}>
       {/* {console.log("DFGHJK",item)} */}
       <View style={globalStyles.cartImageContainer}>
         <FastImage

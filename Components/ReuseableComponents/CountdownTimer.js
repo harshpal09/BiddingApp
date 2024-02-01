@@ -4,12 +4,13 @@ import { MEDIUM_FONT_SIZE } from '../../Styles/global';
 import globalStyles from '../../Styles/global';
 import { Button } from 'react-native-paper';
 
+
 const CountdownTimer = ({ stamps }) => {
   const [remainingTime, setRemainingTime] = useState(undefined);
   const [timeLeftToStart, setTimeLeftToStart] = useState(undefined);
 
 
-  // console.log(stamps)
+  // console.log("staps => ",stamps)
 
   const calculateTimeLeft = (currentDate, startTime, endTime) => {
     const currentDateObj = new Date();

@@ -12,9 +12,9 @@ import {
   Dimensions,
   ActivityIndicator,
   RefreshControl,
-  Modal
+  Modal,
 } from 'react-native';
-import React, { Fragment, useState, useEffect } from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import HeaderSearch from '../ReuseableComponents/HeaderSearch';
 import globalStyles, {
   LARGE_FONT_SIZE,
@@ -23,19 +23,18 @@ import globalStyles, {
   PALATINO_FONT,
   SMALL_FONT_SIZE,
 } from '../../Styles/global';
-import { BLUE_COLOR, CONTAINER_BORDER } from '../../Styles/global';
+import {BLUE_COLOR, CONTAINER_BORDER} from '../../Styles/global';
 import CountdownTimer from '../ReuseableComponents/CountdownTimer';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { SelectCountry } from 'react-native-element-dropdown';
+import {SelectCountry} from 'react-native-element-dropdown';
 import RenderIf from '../ExtraScreens/RenderIf';
 import Image from 'react-native-image-lazy-loading';
 
-
-const { width, height } = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 import axios from 'axios';
 import babelConfig from '../../babel.config';
 import MyBottomSheet from '../StackScreens/MyBottomSheet';
@@ -44,30 +43,28 @@ import BidBottemSheet from '../StackScreens/BidBottomSheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingComponent from '../ReuseableComponents/LoadingComponent';
 
-
-
-export default function MyCars({ navigation }) {
-
+export default function MyCars({navigation}) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [toggle,setToggle] = useState(false)
-
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     getData();
-  }, [])
-
+  }, []);
 
   const getData = async () => {
-
-    let id = await AsyncStorage.getItem("user_id");
+    let id = await AsyncStorage.getItem('user_id');
+    console.log('id =>>>>>>', id);
     if (id != null) {
       try {
         setToggle(true);
-        const response = await axios.post('https://crm.unificars.com/api/mybids', {
-          user_id: id,
-        });
+        const response = await axios.post(
+          'https://crm.unificars.com/api/mybids',
+          {
+            user_id: id,
+          },
+        );
         if (response.data.code === 200) {
           setToggle(false);
           setData(response.data.data.auction);
@@ -76,32 +73,69 @@ export default function MyCars({ navigation }) {
           setError(response.data.status);
         }
       } catch (error) {
-        console.error("Network request error:", error);
-        setError("Network request failed");
+        console.error('Network request error:', error);
+        setError('Network request failed');
       } finally {
         setToggle(false);
-        setIsRefreshing(false)
+        setIsRefreshing(false);
       }
     }
-  }
-  
-  renderItem = ({ item }) => {
+  };
+
+  renderItem = ({item}) => {
     return (
       <TouchableOpacity
         style={[globalStyles.contentContainer]}
-        onPress={() => { navigation.navigate('car_profile', { auction_id: item.id,type : "details",closure_amount:"" }) }}>
+        onPress={() => {
+          navigation.navigate('car_profile', {
+            auction_id: item.id,
+            type: 'details',
+            closure_amount: '',
+            stamps: {
+              start_time: item.start_time,
+              start_date: item.start_date,
+              end_time: item.end_time,
+            },
+          });
+        }}>
         <View style={globalStyles.flexBox}>
-          <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU' }} style={[globalStyles.image]}>
+          <ImageBackground
+            source={{
+              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU',
+            }}
+            style={[globalStyles.image]}>
             {/* {renderImage(item)} */}
             {/* <RenderMainImage item={item} /> */}
+            {/* {console.log("vai =>",item.my_highest)} */}
+
             <Image
               source={{
-                uri: item.lead.images.find(
-                  obj => obj.title === 'Front Main',
-                ).image
+                uri: item.lead.images.find(obj => obj.title === 'Front Main')
+                  .image,
               }}
               style={globalStyles.image}
             />
+            {/* {console.log('uct =>', item.my_highest)} */}
+            {item.my_highest != 2 ? (
+              <View
+                style={[
+                  globalStyles.textContainer,
+                  {
+                    bottom: 175,
+                    backgroundColor: item.my_highest == 1 ? 'green' : 'red',
+                    borderRadius: 2,
+                  },
+                  globalStyles.flexBox,
+                ]}>
+                <Text style={[globalStyles.text]}>
+                  {item.my_highest == 1
+                    ? 'You are Leading!'
+                    : 'You are loosing the Auction'}
+                </Text>
+              </View>
+            ) : (
+              <></>
+            )}
             <View style={[globalStyles.textContainer]}>
               <Text style={[globalStyles.text]}>
                 {item.lead.model}
@@ -191,13 +225,11 @@ export default function MyCars({ navigation }) {
           style={[
             globalStyles.columnContainer,
             globalStyles.contentChildContainer,
-          ]}>
-
-        </View>
+          ]}></View>
         <View
           style={[
             globalStyles.rowContainer,
-            { justifyContent: 'space-between' },
+            {justifyContent: 'space-between'},
           ]}>
           <View>
             <View
@@ -212,7 +244,7 @@ export default function MyCars({ navigation }) {
               <View
                 style={[
                   globalStyles.flexBox,
-                  { transform: [{ skewX: '20deg' }, { perspective: 100 }] },
+                  {transform: [{skewX: '20deg'}, {perspective: 100}]},
                 ]}>
                 <Text
                   style={{
@@ -235,9 +267,9 @@ export default function MyCars({ navigation }) {
           </View>
           <CountdownTimer
             stamps={{
-              'start_time': item.start_time,
-              'start_date': item.start_date,
-              'end_time': item.end_time,
+              start_time: item.start_time,
+              start_date: item.start_date,
+              end_time: item.end_time,
             }}
           />
         </View>
@@ -254,23 +286,35 @@ export default function MyCars({ navigation }) {
   // console.log("data => ",data)
   return (
     <SafeAreaView style={[globalStyles.mainContainer]}>
-      {toggle ? <LoadingComponent />:
-      <FlatList
-        data={data}
-        // data={[]}
-        renderItem={renderItem}
-        style={[globalStyles.scrollViewContainer]}
-        showsVerticalScrollIndicator={false}
-        // refreshControl={()=>{}}
-        keyExtractor={item => item.id.toString()} // Replace with your unique key
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-        }
-      />
-      }
+      {toggle ? (
+        <LoadingComponent />
+      ) : (
+        <FlatList
+          data={data}
+          // data={[]}
+          renderItem={renderItem}
+          ListEmptyComponent={() => (
+            <View
+              style={[
+                {width: width, height: width / 1.5},
+                globalStyles.flexBox,
+              ]}>
+              <Text style={{color: 'black', fontSize: 16, fontWeight: '800'}}>
+                Data not Available..!
+              </Text>
+            </View>
+          )}
+          style={[globalStyles.scrollViewContainer]}
+          showsVerticalScrollIndicator={false}
+          // refreshControl={()=>{}}
+          keyExtractor={item => item.id.toString()} // Replace with your unique key
+          refreshControl={
+            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+          }
+        />
+      )}
     </SafeAreaView>
-
-  )
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

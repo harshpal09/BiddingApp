@@ -11,7 +11,8 @@ import {
   Button,
   ActivityIndicator,
   Alert,
-  Modal
+  Modal,
+  Platform,
 } from 'react-native';
 import Share from 'react-native-share';
 import React, {
@@ -47,6 +48,8 @@ import BidBottemSheet from './BidBottomSheet';
 import LoadingComponent from '../ReuseableComponents/LoadingComponent';
 import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CountdownTimer from '../ReuseableComponents/CountdownTimer';
+import CountdownTimer2 from '../ReuseableComponents/CountdownTimer2';
 
 const {width, height} = Dimensions.get('window');
 
@@ -88,12 +91,13 @@ export default function CarProfile({route}) {
   const [bidData, setBidData] = useState({});
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  // const [types,setType] = useState("")
-
+  const [remainingTime, setRemainingTime] = useState(4100);
+  const [timeLeftToStart, setTimeLeftToStart] = useState(undefined);
+  const [timerShow, setTimerShow] = useState(false);
   const navigation = useNavigation();
   const {auction_id, type, closure_amount} = route.params;
 
-  // console.log("id = >",auction_id);
+  // console.log('id = >', auction_id);
   const flatListRef = useRef(null);
 
   const scrollToIndex = index => {
@@ -132,10 +136,6 @@ export default function CarProfile({route}) {
     }
   };
 
-  const handleSwipe = () => {
-    // Handle the swipe action here
-    console.log('Swiped!');
-  };
   const shareApp = async () => {
     try {
       // Define the content you want to share, including a URL or file path
@@ -155,66 +155,59 @@ export default function CarProfile({route}) {
     setIsloading(true);
     navigation.setOptions({
       title: 'Details',
+      headerTitleContainerStyle: {
+        backgroundColor: 'transparent',
+        zIndex: 2,
+        width: width,
+        // marginLeft: Platform.OS == 'ios' ? -80:0,
+      },
       headerTintColor: 'black',
+      // headerRight: () => rightComponent(),
     });
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [auction_detail_data])
-
-  // const getData = async () => {
-
-  //   await axios.post('https://crm.unificars.com/api/auctiondetail', {
-  //     'auction_id': auction_id,
-  //   })
-  //     .then(function (response) {
-  //       // console.log("response",response.data);
-  //       if (response.data.code == 200) {
-  //         setAuctionDetailData(response.data.data)
-
-  //       }
-  //       else {
-  //         console.log(response.data.status);
-  //       }
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  //   // setIsloading(false);
-  // }
   const fetchData = async () => {
-    // console.log("aa raha hai");
+    // console.log('aa raha hai');
     setIsloading(true);
     if (auction_id) {
-      await axios
-        .post('https://crm.unificars.com/api/cardetail', {
-          auction_id: auction_id,
-        })
-        .then(function (response) {
-          if (response.data.code == 200) {
-            // console.log("aa raha hai ",response.data.data);
-            setAll_data(response.data.data);
-            setAuctionDetailData(response.data.data.auctiondetail);
-            setName(
-              response.data.data.lead.model +
-                ' ' +
-                response.data.data.lead.brand,
-            );
-            setBidData({
-              auction_id: response.data.data.auctiondetail.id,
-              current_price: response.data.data.auctiondetail.highest_bid,
-              step_price: response.data.data.auctiondetail.step_price,
+        await AsyncStorage.getItem('user_id').then(async id => {
+          await axios
+            .post('https://crm.unificars.com/api/cardetail', {
+              auction_id: auction_id,
+              user_id: id,
+            })
+            .then(function (response) {
+              if (response.data.code == 200) {
+                // console.log("aa raha hai ",response.data.data);
+                setAll_data(response.data.data);
+                setAuctionDetailData(response.data.data.auctiondetail);
+                setName(
+                  response.data.data.lead.model +
+                    ' ' +
+                    response.data.data.lead.brand,
+                );
+                setBidData({
+                  auction_id: response.data.data.auctiondetail.id,
+                  current_price: response.data.data.auctiondetail.highest_bid,
+                  step_price: response.data.data.auctiondetail.step_price,
+                });
+
+                // setIsloading(false);
+                calculateTimeLeft(
+                  response.data.data.auctiondetail.start_date,
+                  response.data.data.auctiondetail.start_time,
+                  response.data.data.auctiondetail.end_time,
+                );
+              } else {
+                console.log(response.data.status);
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
             });
-            // setIsloading(false);
-          } else {
-            console.log(response.data.status);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
         });
+
       setInterval(() => setIsloading(false), 1000);
       // setIsloading(false);
       makeCarItemArray();
@@ -227,17 +220,17 @@ export default function CarProfile({route}) {
       images: all_data[item.name], // Set the value for the new key here
     }));
 
+    let cnt = 0;
     updatedArray.forEach(item => {
       if (item.images !== undefined) {
-        setCarItemLength(prevCarItemLength => prevCarItemLength + 1);
+        cnt++;
       }
     });
 
     // console.log("length =>",car_item_length);
-
+    setCarItemLength(cnt);
     setCarItem(updatedArray);
   };
-  // console.log(car_item)
 
   useEffect(() => {
     prefixSum();
@@ -259,11 +252,79 @@ export default function CarProfile({route}) {
     }
     setPrefixSumArray(prefixSumArray);
   };
+
+  useEffect(() => {
+    if (!timerShow) return;
+
+    navigation.setOptions({
+      title: 'Details',
+      headerTitleContainerStyle: {
+        backgroundColor: 'transparent',
+        zIndex: 2,
+        width: width / 2.5,
+        marginLeft: Platform.OS == 'ios' ? -80 : 0,
+      },
+      headerTintColor: 'black',
+      headerRight: () => rightComponent(),
+    });
+  }, [timerShow]);
+
+  const calculateTimeLeft = (start_date, start_time, end_time) => {
+    const currentDateObj = new Date();
+    const startTimeObj = new Date(`${start_date}T${start_time}`);
+    const endTimeObj = new Date(`${start_date}T${end_time}`);
+    const currentTimestamp = currentDateObj.getTime();
+
+    currentTimestamp < startTimeObj.getTime()
+      ? setTimeLeftToStart(Math.floor((startTimeObj - currentTimestamp) / 1000))
+      : setRemainingTime(Math.floor((endTimeObj - currentTimestamp) / 1000));
+    setTimerShow(true);
+  };
+  const formatTime = timeInSeconds => {
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
+    const seconds = timeInSeconds % 60;
+
+    return {hours, minutes, seconds};
+  };
+
+  // console.log("remaining time =>",remainingTime);
+  const rightComponent = () => {
+    // console.log("start time =>",remainingTime);
+    const {hours, minutes, seconds} = formatTime(remainingTime);
+    return (
+      <View
+        style={[
+          {
+            backgroundColor: 'transparent',
+            width: width / 2,
+            height: '100%',
+            right: -20,
+          },
+          globalStyles.flexBox,
+        ]}>
+        <CountdownTimer2
+          leftTimetoStart={timeLeftToStart}
+          remainingTime={remainingTime}
+          hours={hours}
+          minutes={minutes}
+          seconds={seconds}
+        />
+      </View>
+    );
+  };
   const updateHeaderTitle = val => {
     if (val > nameLayout) {
       navigation.setOptions({
         title: name,
         headerTintColor: 'black',
+        headerTitleContainerStyle: {
+          backgroundColor: 'transparent',
+          zIndex: 2,
+          width: width / 2.5,
+          marginLeft: Platform.OS == 'ios' ? -120 : 0,
+        },
+        headerRight: () => rightComponent(),
       });
     } else {
       navigation.setOptions({
@@ -272,8 +333,6 @@ export default function CarProfile({route}) {
       });
     }
   };
-
-  // console.log("car_item => ", car_item);
   const scrollViewRef = useRef();
   const horizontalScrollviewRef = useRef();
   const scrollToHorizontalComponent = n => {
@@ -327,26 +386,28 @@ export default function CarProfile({route}) {
   };
   const updateFetchData = async () => {
     if (auction_id) {
-      await axios
-        .post('https://crm.unificars.com/api/cardetail', {
-          auction_id: auction_id,
-        })
-        .then(function (response) {
-          if (response.data.code == 200) {
-            // console.log("aa raha hai ",response.data.data);
-            setAll_data(response.data.data);
-            setAuctionDetailData(response.data.data.auctiondetail);
-            setName(
-              response.data.data.lead.model +
-                ' ' +
-                response.data.data.lead.brand,
-            );
-          } else {
-            // console.log(response.data.status);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
+      await AsyncStorage.getItem('user_id').then(async id => {
+        await axios.post('https://crm.unificars.com/api/cardetail', {
+            auction_id: auction_id,
+            user_id: id,
+          })
+          .then(function (response) {
+            if (response.data.code == 200) {
+              // console.log("aa raha hai ",response.data.data);
+              setAll_data(response.data.data);
+              setAuctionDetailData(response.data.data.auctiondetail);
+              setName(
+                response.data.data.lead.model +
+                  ' ' +
+                  response.data.data.lead.brand,
+              );
+            } else {
+              // console.log(response.data.status);
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
         });
     }
   };
@@ -359,15 +420,14 @@ export default function CarProfile({route}) {
     },
     [width],
   );
-  const toggleModal = (index) => {
+  const toggleModal = index => {
     setSelectedImageIndex(index);
     setModalVisible(!isModalVisible);
   };
 
-
   const renderCarImage = useCallback(
-    ({item,i}) => (
-      <TouchableOpacity onPress={()=>toggleModal(i)}>
+    ({item, i}) => (
+      <TouchableOpacity onPress={() => toggleModal(i)}>
         <FastImage
           source={
             item.image
@@ -387,7 +447,7 @@ export default function CarProfile({route}) {
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
-  // console.log("index =>",index)
+  // console.log("index =>",)
   return (
     <View
       style={[
@@ -395,94 +455,96 @@ export default function CarProfile({route}) {
         globalStyles.flexBoxAlign,
         {flex: 1},
       ]}>
-      {
-        isLoading ? (
-          <LoadingComponent />
-        ) : (
-          <>
-            <ScrollView
-              ref={horizontalScrollviewRef}
-              horizontal={true}
-              style={{
-                height: val != 0 && val <= offset ? 60 : 0,
-                width: '100%',
-                backgroundColor: LIGHT_BLUE,
-                overflow: 'hidden',
-                position: 'absolute',
-                top: 0,
-                zIndex: 1,
-                paddingLeft: 0,
-              }}
-              showsHorizontalScrollIndicator={false}>
-              {all_data.detaiapi != undefined &&
-                all_data.detaiapi.map((item, i) => (
-                  <View
-                    style={[{height: 60, padding: 5}, globalStyles.flexBox]}
-                    onLayout={e =>
-                      setWeightArray([
-                        ...weightArray,
-                        e.nativeEvent.layout.width,
-                      ])
-                    }
-                    key={i}>
-                    <TouchableOpacity
-                      style={[
-                        globalStyles.flexBoxJustify,
-                        globalStyles.rowContainer,
-                        {
-                          padding: 10,
-                          borderRadius: 15,
-                          backgroundColor: index == i ? '#FFF' : 'transparent',
-                        },
-                      ]}
-                      onPress={() => scrollToComponent(i)}>
-                      <MaterialCommunityIcons
-                        name={item.icon_name}
-                        size={15}
-                        style={{marginHorizontal: 5}}
-                        color={BLUE_COLOR}
-                      />
-                      <Text style={{color: BLUE_COLOR, fontWeight: '700'}}>
-                        {item.name}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                ))}
-            </ScrollView>
-            <ScrollView
-              ref={scrollViewRef}
-              scrollEventThrottle={1}
-              onScroll={e => {
-                setOffset(e.nativeEvent.contentOffset.y),
-                  getIndex(e.nativeEvent.contentOffset.y),
-                  scrollToHorizontalComponent(index),
-                  updateHeaderTitle(e.nativeEvent.contentOffset.y);
-              }}
-              style={[globalStyles.scrollViewContainer]}>
-              <View style={{width: width - 20}}>
-                <FlatList
-                  pagingEnabled
-                  horizontal
-                  data={all_data.images}
-                  onScroll={handleScroll}
-                  renderItem={renderCarImage}
-                  keyExtractor={keyExtractor}
-                />
-              </View>
-              {isModalVisible && (
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={isModalVisible}>
-                  <ImageViewer
-                    imageUrls={all_data.images.map(img => ({url: img.image}))}
-                    index={selectedImageIndex}
-                    enableSwipeDown={true}
-                    onCancel={() => toggleModal(null)}
+      {isLoading ? (
+        <LoadingComponent />
+      ) : (
+        <>
+          {all_data != null ? (
+            <>
+              <ScrollView
+                ref={horizontalScrollviewRef}
+                horizontal={true}
+                style={{
+                  height: val != 0 && val <= offset ? 60 : 0,
+                  width: '100%',
+                  backgroundColor: LIGHT_BLUE,
+                  overflow: 'hidden',
+                  position: 'absolute',
+                  top: 0,
+                  zIndex: 1,
+                  paddingLeft: 0,
+                }}
+                showsHorizontalScrollIndicator={false}>
+                {all_data.detaiapi != undefined &&
+                  all_data.detaiapi.map((item, i) => (
+                    <View
+                      style={[{height: 60, padding: 5}, globalStyles.flexBox]}
+                      onLayout={e =>
+                        setWeightArray([
+                          ...weightArray,
+                          e.nativeEvent.layout.width,
+                        ])
+                      }
+                      key={i}>
+                      <TouchableOpacity
+                        style={[
+                          globalStyles.flexBoxJustify,
+                          globalStyles.rowContainer,
+                          {
+                            padding: 10,
+                            borderRadius: 15,
+                            backgroundColor:
+                              index == i ? '#FFF' : 'transparent',
+                          },
+                        ]}
+                        onPress={() => scrollToComponent(i)}>
+                        <MaterialCommunityIcons
+                          name={item.icon_name}
+                          size={15}
+                          style={{marginHorizontal: 5}}
+                          color={BLUE_COLOR}
+                        />
+                        <Text style={{color: BLUE_COLOR, fontWeight: '700'}}>
+                          {item.name}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+              </ScrollView>
+              <ScrollView
+                ref={scrollViewRef}
+                scrollEventThrottle={1}
+                onScroll={e => {
+                  setOffset(e.nativeEvent.contentOffset.y),
+                    getIndex(e.nativeEvent.contentOffset.y),
+                    scrollToHorizontalComponent(index),
+                    updateHeaderTitle(e.nativeEvent.contentOffset.y);
+                }}
+                style={[globalStyles.scrollViewContainer]}>
+                <View style={{width: width - 20}}>
+                  <FlatList
+                    pagingEnabled
+                    horizontal
+                    data={all_data.images}
+                    onScroll={handleScroll}
+                    renderItem={renderCarImage}
+                    keyExtractor={keyExtractor}
                   />
-                </Modal>
-              )}
-              {/* <View style={[{width: '100%', marginTop: 5}, {height: height / 9}]}>
+                </View>
+                {isModalVisible && (
+                  <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={isModalVisible}>
+                    <ImageViewer
+                      imageUrls={all_data.images.map(img => ({url: img.image}))}
+                      index={selectedImageIndex}
+                      enableSwipeDown={true}
+                      onCancel={() => toggleModal(null)}
+                    />
+                  </Modal>
+                )}
+                {/* <View style={[{width: '100%', marginTop: 5}, {height: height / 9}]}>
           <FlatList
             ref={flatListRef}
             horizontal
@@ -511,328 +573,390 @@ export default function CarProfile({route}) {
             }}
           />
         </View> */}
-              <View style={[globalStyles.wrapContainer, {marginTop: 15}]}>
-                {car_item.map((item, i) =>
-                  item.images != undefined ? (
-                    <TouchableOpacity
-                      style={[
-                        globalStyles.flexBoxAlign,
-                        {
-                          height: 75,
-                          width: 75,
-                          marginHorizontal: 5,
-                          borderColor: 'lightgrey',
-                          borderWidth: 0.5,
-                          borderRadius: 8,
-                        },
-                      ]}
-                      key={i}
-                      onPress={() =>
-                        navigation.navigate('photo', {
-                          screen: item.name,
-                          id: auction_detail_data.lead_id,
-                          length: car_item_length,
-                          item: car_item,
-                        })
-                      }>
-                      <View
+        <View style={{position:'absolute',width:"100%",height:30}}>
+                {auction_detail_data.my_highest != 2 ? (
+                  <View
+                    style={[
+                      globalStyles.textContainer,
+                      {
+                        // bottom: 300,
+                        // height:30,
+                        top:0,
+                        backgroundColor:
+                          auction_detail_data.my_highest == 1 ? 'green' : 'red',
+                        borderRadius: 2,
+                      },
+                      globalStyles.flexBox,
+                    ]}>
+                    <Text style={[globalStyles.text]}>
+                      {auction_detail_data.my_highest == 1
+                        ? 'You are Leading!'
+                        : 'You are loosing the Auction'}
+                      
+                    </Text>
+                   
+
+                    {/* {console.log("harsh")} */}
+                  </View>
+                ) : (
+                  <></>
+                )}
+            </View>
+                <View style={[globalStyles.wrapContainer, {marginTop: 15}]}>
+                  {car_item.map((item, i) =>
+                    item.images != undefined ? (
+                      <TouchableOpacity
                         style={[
                           globalStyles.flexBoxAlign,
                           {
-                            width: '100%',
-                            height: 53,
-                            borderTopLeftRadius: 8,
-                            borderTopRightRadius: 8,
+                            height: 75,
+                            width: 75,
+                            marginHorizontal: 5,
+                            borderColor: 'lightgrey',
+                            borderWidth: 0.5,
+                            borderRadius: 8,
                           },
-                        ]}>
-                        <FastImage
+                        ]}
+                        key={i}
+                        onPress={() =>
+                          navigation.navigate('photo', {
+                            screen: item.name,
+                            id: auction_detail_data.lead_id,
+                            length: car_item_length,
+                            item: car_item,
+                          })
+                        }>
+                        <View
+                          style={[
+                            globalStyles.flexBoxAlign,
+                            {
+                              width: '100%',
+                              height: 53,
+                              borderTopLeftRadius: 8,
+                              borderTopRightRadius: 8,
+                            },
+                          ]}>
+                          <FastImage
+                            style={{
+                              width: 75 - 1,
+                              height: 53,
+                              borderTopLeftRadius: 8,
+                              borderTopRightRadius: 8,
+                            }}
+                            source={
+                              item.images != undefined
+                                ? {
+                                    uri: item.images[0].image,
+                                    priority: FastImage.priority.high,
+                                  }
+                                : null
+                            }
+                          />
+                        </View>
+                        <Text
                           style={{
-                            width: 75 - 1,
-                            height: 53,
-                            borderTopLeftRadius: 8,
-                            borderTopRightRadius: 8,
-                          }}
-                          source={
-                            item.images != undefined
-                              ? {
-                                  uri: item.images[0].image,
-                                  priority: FastImage.priority.high,
-                                }
-                              : null
-                          }
-                        />
-                      </View>
-                      <Text
-                        style={{
-                          fontSize: VERY_SMALL_FONT_SIZE,
-                          textAlignVertical: 'center',
-                          width: '100%',
-                          textAlign: 'center',
-                          height: 22,
-                          lineHeight: 22,
-                          color: '#000',
-                        }}>
-                        {item.name}
-                      </Text>
-                      <Text
-                        style={{
-                          position: 'absolute',
-                          width: 20,
-                          height: 20,
+                            fontSize: VERY_SMALL_FONT_SIZE,
+                            textAlignVertical: 'center',
+                            width: '100%',
+                            textAlign: 'center',
+                            height: 22,
+                            lineHeight: 22,
+                            color: '#000',
+                          }}>
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{
+                            position: 'absolute',
+                            width: 20,
+                            height: 20,
+                            borderRadius: 10,
+                            textAlign: 'center',
+                            textAlignVertical: 'center',
+                            fontSize: VERY_SMALL_FONT_SIZE,
+                            borderColor: 'black',
+                            borderWidth: 1,
+                            right: -12,
+                            top: -12,
+                            lineHeight: 15,
+                            color: '#000',
+                          }}>
+                          {item.images != undefined ? item.images.length : 2}
+                        </Text>
+                      </TouchableOpacity>
+                    ) : null,
+                  )}
+                </View>
+
+                <View
+                  onLayout={e => setNameLayout(e.nativeEvent.layout.y)}
+                  style={[
+                    {width: '100%', padding: 10},
+                    globalStyles.rowContainer,
+                  ]}>
+                  <View style={{width: '60%'}}>
+                    <Text
+                      style={{
+                        fontWeight: '700',
+                        fontSize: LARGE_FONT_SIZE,
+                        width: '100%',
+                        color: 'black',
+                      }}>
+                      {all_data.lead.model + ' '}
+                      {all_data.lead.brand}
+                    </Text>
+                  </View>
+                  <View style={[{width: '40%'}, globalStyles.flexBox]}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        textAlignVertical: 'center',
+                        color: '#3d3d3d',
+                      }}>
+                      {all_data.lead.unique_id}
+                    </Text>
+                    <TouchableOpacity
+                      style={[
+                        {
+                          backgroundColor: 'lightgrey',
                           borderRadius: 10,
-                          textAlign: 'center',
-                          textAlignVertical: 'center',
-                          fontSize: VERY_SMALL_FONT_SIZE,
-                          borderColor: 'black',
-                          borderWidth: 1,
-                          right: -12,
-                          top: -12,
-                          lineHeight: 15,
-                          color: '#000',
-                        }}>
-                        {item.images != undefined ? item.images.length : 2}
+                          width: '60%',
+                          marginVertical: 5,
+                          padding: 5,
+                        },
+                        globalStyles.flexBox,
+                      ]}
+                      onPress={() => shareApp()}>
+                      <MaterialCommunityIcons
+                        //  style={{
+                        //     textAlign: 'center',
+                        //     textAlignVertical: 'center',
+                        //     color: '#3d3d3d',
+                        //   }}
+                        name="share"
+                        size={25}
+                        color={'black'}
+                      />
+                      <Text
+                        style={[
+                          {fontSize: MEDIUM_FONT_SIZE, fontWeight: '800'},
+                        ]}>
+                        Share
                       </Text>
                     </TouchableOpacity>
-                  ) : null,
-                )}
-              </View>
-
-              <View
-                onLayout={e => setNameLayout(e.nativeEvent.layout.y)}
-                style={[
-                  {width: '100%', padding: 10},
-                  globalStyles.rowContainer,
-                ]}>
-                <View style={{width: '60%'}}>
-                  <Text
-                    style={{
-                      fontWeight: '700',
-                      fontSize: LARGE_FONT_SIZE,
-                      width: '100%',
-                      color: 'black',
-                    }}>
-                    {all_data.lead.model + ' '}
-                    {all_data.lead.brand}
-                  </Text>
+                  </View>
                 </View>
-                <View style={[{width: '40%'}, globalStyles.flexBox]}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      textAlignVertical: 'center',
-                      color: '#3d3d3d',
-                    }}>
-                    {all_data.lead.unique_id}
-                  </Text>
-                  <TouchableOpacity
+                <View
+                  style={[
+                    globalStyles.flexBoxJustify,
+                    {width: '100%', paddingHorizontal: 10},
+                  ]}>
+                  <View
                     style={[
+                      globalStyles.rowContainer,
                       {
-                        backgroundColor: 'lightgrey',
-                        borderRadius: 10,
-                        width: '60%',
-                        marginVertical: 5,
+                        backgroundColor: '#e37617',
                         padding: 5,
+                        borderRadius: 10,
+                        margin: 5,
+                        width: 80,
+                      },
+                    ]}>
+                    <Text
+                      style={{
+                        fontSize: VERY_SMALL_FONT_SIZE,
+                        fontWeight: '600',
+                        color: '#ffffff',
+                      }}>
+                      Engine {auction_detail_data.engine_rating}
+                    </Text>
+                    <FontAwesome
+                      name="star"
+                      color="#ffffff"
+                      size={9}
+                      style={{padding: 1, paddingHorizontal: 5}}
+                    />
+                  </View>
+                </View>
+                {/* {console.log("W => ",auction_detail_data.my_highest)} */}
+                {auction_detail_data.my_highest != 2 ? (
+                  <View
+                    style={[
+                      globalStyles.textContainer,
+                      {
+                        bottom: 175,
+                        backgroundColor:
+                          auction_detail_data.my_highest == 1 ? 'green' : 'red',
+                        borderRadius: 2,
                       },
                       globalStyles.flexBox,
-                    ]}
-                    onPress={() => shareApp()}>
-                    <MaterialCommunityIcons
-                      //  style={{
-                      //     textAlign: 'center',
-                      //     textAlignVertical: 'center',
-                      //     color: '#3d3d3d',
-                      //   }}
-                      name="share"
-                      size={25}
-                      color={'black'}
-                    />
-                    <Text
-                      style={[{fontSize: MEDIUM_FONT_SIZE, fontWeight: '800'}]}>
-                      Share
+                    ]}>
+                    <Text style={[globalStyles.text]}>
+                      {auction_detail_data.my_highest == 1
+                        ? 'You are Leading!'
+                        : 'You are loosing the Auction'}
                     </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View
-                style={[
-                  globalStyles.flexBoxJustify,
-                  {width: '100%', paddingHorizontal: 10},
-                ]}>
+
+                    {/* {console.log("harsh")} */}
+                  </View>
+                ) : (
+                  <></>
+                )}
                 <View
                   style={[
+                    globalStyles.wrapContainer,
+                    globalStyles.belt,
                     globalStyles.rowContainer,
-                    {
-                      backgroundColor: '#e37617',
-                      padding: 5,
-                      borderRadius: 10,
-                      margin: 5,
-                      width: 80,
-                    },
+                    globalStyles.flexBoxJustify,
                   ]}>
-                  <Text
-                    style={{
-                      fontSize: VERY_SMALL_FONT_SIZE,
-                      fontWeight: '600',
-                      color: '#ffffff',
-                    }}>
-                    Engine {auction_detail_data.engine_rating}
-                  </Text>
-                  <FontAwesome
-                    name="star"
-                    color="#ffffff"
-                    size={9}
-                    style={{padding: 1, paddingHorizontal: 5}}
-                  />
+                  <View
+                    style={[
+                      globalStyles.rowContainer,
+                      globalStyles.flexBox,
+                      globalStyles.beltItem,
+                    ]}>
+                    <MaterialCommunityIcons
+                      name="gas-station-outline"
+                      size={15}
+                      style={globalStyles.beltItemIcon}
+                    />
+                    <Text style={globalStyles.beltItemText}>
+                      {all_data.lead.engine_type}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      globalStyles.rowContainer,
+                      globalStyles.flexBox,
+                      globalStyles.beltItem,
+                    ]}>
+                    <MaterialCommunityIcons
+                      name="car-shift-pattern"
+                      size={13}
+                      style={globalStyles.beltItemIcon}
+                    />
+                    <Text style={globalStyles.beltItemText}>
+                      {all_data.lead.feature}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      globalStyles.rowContainer,
+                      globalStyles.flexBox,
+                      globalStyles.beltItem,
+                    ]}>
+                    <MaterialCommunityIcons
+                      name="road-variant"
+                      size={15}
+                      style={globalStyles.beltItemIcon}
+                    />
+                    <Text style={globalStyles.beltItemText}>
+                      {all_data.lead.km_driven}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      globalStyles.rowContainer,
+                      globalStyles.flexBox,
+                      globalStyles.beltItem,
+                    ]}>
+                    <MaterialCommunityIcons
+                      name="account-outline"
+                      size={16}
+                      style={globalStyles.beltItemIcon}
+                    />
+                    <Text style={globalStyles.beltItemText}>
+                      {all_data.lead.ownership}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      globalStyles.rowContainer,
+                      globalStyles.flexBox,
+                      globalStyles.beltItem,
+                    ]}>
+                    <Entypo
+                      name="location"
+                      size={13}
+                      style={globalStyles.beltItemIcon}
+                    />
+                    <Text style={globalStyles.beltItemText}>
+                      {all_data.lead.registration_in != null
+                        ? all_data.lead.registration_in.substring(0, 4) + 'XXXX'
+                        : ''}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-              <View
-                style={[
-                  globalStyles.wrapContainer,
-                  globalStyles.belt,
-                  globalStyles.rowContainer,
-                  globalStyles.flexBoxJustify,
-                ]}>
-                <View
-                  style={[
-                    globalStyles.rowContainer,
-                    globalStyles.flexBox,
-                    globalStyles.beltItem,
-                  ]}>
-                  <MaterialCommunityIcons
-                    name="gas-station-outline"
-                    size={15}
-                    style={globalStyles.beltItemIcon}
-                  />
-                  <Text style={globalStyles.beltItemText}>
-                    {all_data.lead.engine_type}
-                  </Text>
-                </View>
-                <View
-                  style={[
-                    globalStyles.rowContainer,
-                    globalStyles.flexBox,
-                    globalStyles.beltItem,
-                  ]}>
-                  <MaterialCommunityIcons
-                    name="car-shift-pattern"
-                    size={13}
-                    style={globalStyles.beltItemIcon}
-                  />
-                  <Text style={globalStyles.beltItemText}>
-                    {all_data.lead.feature}
-                  </Text>
-                </View>
-                <View
-                  style={[
-                    globalStyles.rowContainer,
-                    globalStyles.flexBox,
-                    globalStyles.beltItem,
-                  ]}>
-                  <MaterialCommunityIcons
-                    name="road-variant"
-                    size={15}
-                    style={globalStyles.beltItemIcon}
-                  />
-                  <Text style={globalStyles.beltItemText}>
-                    {all_data.lead.km_driven}
-                  </Text>
-                </View>
-                <View
-                  style={[
-                    globalStyles.rowContainer,
-                    globalStyles.flexBox,
-                    globalStyles.beltItem,
-                  ]}>
-                  <MaterialCommunityIcons
-                    name="account-outline"
-                    size={16}
-                    style={globalStyles.beltItemIcon}
-                  />
-                  <Text style={globalStyles.beltItemText}>
-                    {all_data.lead.ownership}
-                  </Text>
-                </View>
-                <View
-                  style={[
-                    globalStyles.rowContainer,
-                    globalStyles.flexBox,
-                    globalStyles.beltItem,
-                  ]}>
-                  <Entypo
-                    name="location"
-                    size={13}
-                    style={globalStyles.beltItemIcon}
-                  />
-                  <Text style={globalStyles.beltItemText}>
-                    {all_data.lead.registration_in != null
-                      ? all_data.lead.registration_in.substring(0, 4) + 'XXXX'
-                      : ''}
-                  </Text>
-                </View>
-              </View>
-              {/* <View style={[globalStyles.flexBox, { width: '100%' }]}>
+                {/* <View style={[globalStyles.flexBox, { width: '100%' }]}>
               <Text style={{ fontWeight: '700', fontSize: LARGE_FONT_SIZE, padding: 10 }}>
                 200 points inspection checklist
               </Text>
             </View> */}
-              <DetailsComponent
-                getHeight={reciveHeightValue}
-                sendValueToParent={reciveValueFromChild}
-                data={all_data.detaiapi}
-              />
-            </ScrollView>
-            {type == 'ocb' ? (
-              <View
-                style={{
-                  backgroundColor: 'transparent',
-                  width: width - 30,
-                  position: 'absolute',
-                  bottom: 30,
-                }}>
-                <TouchableOpacity
-                  activeOpacity={0.9}
-                  onPress={() => {
-                    oneClickBuy(auction_id);
-                  }}
-                  style={[globalStyles.flexBox, {borderRadius: 10}]}>
-                  <View
-                    style={[
-                      {
-                        width: '100%',
-                        height: 40,
-                        backgroundColor: BLUE_COLOR,
-                        borderRadius: 10,
-                        // borderBottomLeftRadius: CONTAINER_BORDER,
-                        // borderTopRightRadius: CONTAINER_BORDER,
-                        marginTop: 10,
-                      },
-                      globalStyles.flexBox,
-                    ]}>
-                    <Text
-                      style={{
-                        color: '#ffffff',
-                        fontFamily: PALATINO_BOLD_FONT,
-                        fontSize: LARGE_FONT_SIZE,
-                        fontWeight: '700',
-                      }}>
-                      Click To Buy{' '}
-                      {RP_S + parseInt(closure_amount).toLocaleString('en-IN')}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <BidBottemSheet
-                callGetData={updateFetchData}
-                toggleModal={() => toggleBidModal(null, null)}
-                data={bidData}
-                isProfile={true}
-              />
-            )}
-          </>
-        )
-        // <></>
-      }
+                <DetailsComponent
+                  getHeight={reciveHeightValue}
+                  sendValueToParent={reciveValueFromChild}
+                  data={all_data.detaiapi}
+                />
+              </ScrollView>
+              {type == 'ocb' ? (
+                <View
+                  style={{
+                    backgroundColor: 'transparent',
+                    width: width - 30,
+                    position: 'absolute',
+                    bottom: 30,
+                  }}>
+                  <TouchableOpacity
+                    activeOpacity={0.9}
+                    onPress={() => {
+                      oneClickBuy(auction_id);
+                    }}
+                    style={[globalStyles.flexBox, {borderRadius: 10}]}>
+                    <View
+                      style={[
+                        {
+                          width: '100%',
+                          height: 40,
+                          backgroundColor: BLUE_COLOR,
+                          borderRadius: 10,
+                          // borderBottomLeftRadius: CONTAINER_BORDER,
+                          // borderTopRightRadius: CONTAINER_BORDER,
+                          marginTop: 10,
+                        },
+                        globalStyles.flexBox,
+                      ]}>
+                      <Text
+                        style={{
+                          color: '#ffffff',
+                          fontFamily: PALATINO_BOLD_FONT,
+                          fontSize: LARGE_FONT_SIZE,
+                          fontWeight: '700',
+                        }}>
+                        Click To Buy{' '}
+                        {RP_S +
+                          parseInt(closure_amount).toLocaleString('en-IN')}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <BidBottemSheet
+                  setFilters={updateFetchData}
+                  toggleModal={() => toggleBidModal(null, null)}
+                  data={bidData}
+                  isProfile={true}
+                />
+              )}
+            </>
+          ) : (
+            <View style={[{flex: 1}, globalStyles.flexBox]}>
+              <Text style={{color: 'black', fontSize: 18, fontWeight: '800'}}>
+                Something went wrong
+              </Text>
+            </View>
+          )}
+        </>
+      )}
     </View>
     // <></>
   );

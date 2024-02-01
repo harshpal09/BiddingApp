@@ -140,7 +140,8 @@ const MyBottomSheet = ({ toggleModal, models, setParam,callGetData, }) => {
           { 'name': 'FIGO', 'selected': 'false' },
           { 'name': 'ASPIRE', 'selected': 'false' },
           { 'name': 'ECOSPORTS', 'selected': 'false' },
-          { 'name': 'MUSTANG', 'selected': 'false' }
+          { 'name': 'MUSTANG', 'selected': 'false' },
+          { 'name': 'Fiesta', 'selected': 'false' },
         ]
       },
       {
@@ -545,7 +546,8 @@ const MyBottomSheet = ({ toggleModal, models, setParam,callGetData, }) => {
       { 'name': 'FIGO', 'selected': 'false' },
       { 'name': 'ASPIRE', 'selected': 'false' },
       { 'name': 'ECOSPORTS', 'selected': 'false' },
-      { 'name': 'MUSTANG', 'selected': 'false' }
+      { 'name': 'MUSTANG', 'selected': 'false' },
+      { 'name': 'Fiesta', 'selected': 'false' }
     ]
   },
   {

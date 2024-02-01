@@ -80,7 +80,7 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     const timer = setInterval(() => {
       setShowButton(true);
-    }, 60000); // 20 seconds in milliseconds
+    }, 60000); // 60 seconds in milliseconds
 
     return () => clearInterval(timer);
   }, [showButton]);
@@ -102,27 +102,34 @@ export default function HomeScreen({ navigation }) {
   
   const getData = async () => {
 
-    let param = await AsyncStorage.getItem('filters');
-
-    // console.log('get data filters =>',id);
+    // console.log('get data filters =>',obj);
 
     // if (id != null) {
       try {
         setToggle(true);
         setShowButton(false);
         setIsRefreshing(true);
+        let param = await AsyncStorage.getItem('filters').then(async(param)=>{
+           AsyncStorage.getItem('user_id').then((id)=>{
+            let obj = {...JSON.parse(param)}
+            obj.user_id = id;
+             axios.post('https://crm.unificars.com/api/filterauction',obj).then((response)=>{
+              if (response.data.code == 200) {
+                // console.log("data =>", id);
+                setData(response.data.data.auction);
+                if(response.data.data.auction.length == 0){
+                  setMessage("No Data Available");
+                }
+      
+              } else {
+                // console.log(response.data.status);
+              }
+            })
+          })
+        })
 
-        let response = await axios.post('https://crm.unificars.com/api/filterauction',JSON.parse(param))
-        if (response.data.code == 200) {
-          // console.log("data =>", id);
-          setData(response.data.data.auction);
-          if(response.data.data.auction.length == 0){
-            setMessage("No Data Available");
-          }
-
-        } else {
-          // console.log(response.data.status);
-        }
+       
+        
       }
       catch (e) {
         console.log('error =>', e);
@@ -144,27 +151,33 @@ export default function HomeScreen({ navigation }) {
     getData();
   };
   const callGetData = async () => {
-      console.log("parameter =>",paramerter)
+      // console.log("parameter =>",paramerter)
+
       try {
-        let response = await axios.post('https://crm.unificars.com/api/filterauction',
-         paramerter)
-        if (response.data.code == 200) {
-          setData(response.data.data.auction);
-          if(response.data.data.auction.length == 0){
-            setMessage("No Data Available");
-          }
-        } else {
-          // console.log(response.data.status);
-        }
+        AsyncStorage.getItem('user_id').then((id)=>{
+          let obj = {...paramerter}
+          obj.user_id = id;
+          console.log('data obj=>',obj)
+           axios.post('https://crm.unificars.com/api/filterauction',obj).then((response)=>{
+            if (response.data.code == 200) {
+              // console.log("data =>", id);
+              setData(response.data.data.auction);
+              if(response.data.data.auction.length == 0){
+                setMessage("No Data Available");
+              }
+    
+            } else {
+              // console.log(response.data.status);
+            }
+          })
+        })
       }
-      catch (e) {
+      catch (e) { 
         console.log('error =>', e);
       }
       finally {
         setModalVisible(false);
         setBidModalVisible(false);
-        // setToggle(false);
-        // setIsRefreshing(false);
       }
   }
   // console.log(' set',paramerter)
@@ -180,16 +193,17 @@ export default function HomeScreen({ navigation }) {
   // console.log("param ",paramerter)
 
   const setFilters = async() =>{
-    // if(Platform.OS == 'android') console.log("param android =>",paramerter)
-    // else console.log("param ios =>",paramerter)
-    // console.log("param => ",paramerter);
-    try {
-      
-      const resp = await AsyncStorage.setItem('filters',JSON.stringify(paramerter));
+    try {     
+      await AsyncStorage.getItem('user_id').then(async(id)=>{
 
-      // if(Platform.OS == 'android') console.log("param android resp =>",resp)
-    // else console.log("param ios resp=>",resp)
-      callGetData();
+        let obj = {...paramerter}
+        obj.user_id = id; 
+        setParameter(obj);
+        console.log("id =>",id);
+         await AsyncStorage.setItem('filters',JSON.stringify(obj)).then(()=>{
+          callGetData();
+         })
+      })
     } catch (error) {
       console.log('error =>', error);
     }
@@ -200,12 +214,20 @@ export default function HomeScreen({ navigation }) {
       <TouchableOpacity
         style={[globalStyles.contentContainer]}
         activeOpacity={0.9}
-        onPress={() => { navigation.navigate('car_profile', { auction_id: item.id ,type : "details",closure_amount : ""}) }}>
+        onPress={() => { 
+          navigation.navigate('car_profile', 
+          { 
+            auction_id: item.id ,
+            type : "details",
+            closure_amount : "",
+          }
+          )}}>
           
         {/* {console.log(item.id," name ",item.lead.brand)} */}
         <View style={globalStyles.flexBox}>
           <ImageBackground source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmbz0ELuNovZruM2dBUbLnLghxb5z_o8C4pOlt13ZLMtWa9IN1vmGTw_RUKd9gNMjn6fg&usqp=CAU' }} style={[globalStyles.image]}>
             <RenderMainImage item={item} />
+            {console.log("uct =>",item.id == 875 ? item.my_highest:null)}
             {item.my_highest != 2 ? 
             <View style={[globalStyles.textContainer,{bottom:175,backgroundColor:item.my_highest == 1 ? 'green': 'red',borderRadius:2},globalStyles.flexBox]}>
               <Text style={[globalStyles.text]}>
@@ -213,10 +235,10 @@ export default function HomeScreen({ navigation }) {
               </Text>
             </View>
             :<></>}
+
             <View style={[globalStyles.textContainer]}>
               <Text style={[globalStyles.text]}>
-                {item.lead.model + " "}
-                {item.lead.brand}
+                {item.lead.model + " "}{item.lead.brand}
               </Text>
             </View>
           </ImageBackground>
@@ -380,7 +402,7 @@ export default function HomeScreen({ navigation }) {
       </TouchableOpacity>
     );
   };
-
+  // console.log("data")
   return (
 
     <View style={[globalStyles.mainContainer, globalStyles.flexBox]}>
@@ -414,7 +436,7 @@ export default function HomeScreen({ navigation }) {
             onBackdropPress={() => toggleBidModal(null, null)}
           >
             <></>
-            <BidBottemSheet callGetData={callGetData} toggleModal={() => toggleBidModal(null, null)} data={bidData} />
+            <BidBottemSheet setFilters={setFilters} toggleModal={() => toggleBidModal(null, null)} data={bidData} />
           </Modal>
 
           <Modal

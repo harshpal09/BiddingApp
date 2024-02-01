@@ -27,7 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 // import { MyBottomSheet } from '../../export';
 
-const BidBottemSheet = ({toggleModal, data, callGetData, isProfile}) => {
+const BidBottemSheet = ({toggleModal, data, setFilters, isProfile}) => {
   const [allData,setALLData] =useState(data);
   const [bid_price, setBidPrice] = useState(data.current_price);
   const [currentPrice, setCurrentPrice] = useState(data.current_price);
@@ -59,7 +59,7 @@ const BidBottemSheet = ({toggleModal, data, callGetData, isProfile}) => {
       });
       setTimeout(() => {
         setShowMessage(false);
-        callGetData();
+        setFilters();
       }, 1000);
     } else {
       setError({
@@ -71,11 +71,13 @@ const BidBottemSheet = ({toggleModal, data, callGetData, isProfile}) => {
     }
     // }
   };
+
+  
   // useEffect(() => {
   //   callGetData();
   // }, [currentPrice])
-  
   // console.log("bid price =>", error)
+
   return (
     <View
       style={[

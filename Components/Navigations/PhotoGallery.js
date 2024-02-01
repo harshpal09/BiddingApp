@@ -49,15 +49,15 @@ export default function PhotoGallery() {
               <>
                 <HeaderTab.Screen name="interior" component={Interior} initialParams={{ id: id ,item:item}} />
                 <HeaderTab.Screen name="exterior" component={Exterior} initialParams={{ id: id ,item:item}} />
-                <HeaderTab.Screen name="others" component={Others} initialParams={{ id: id ,item:item}} />
+                <HeaderTab.Screen name="damage" component={Damage} initialParams={{ id: id ,item:item}} />
               </> :
-              length == 4 ?
-                <>
-                  <HeaderTab.Screen name="interior" component={Interior} initialParams={{ id: id,item:item }} />
-                  <HeaderTab.Screen name="exterior" component={Exterior} initialParams={{ id: id,item:item }} />
-                  <HeaderTab.Screen name="others" component={Others} initialParams={{ id: id ,item:item}} />
-                  <HeaderTab.Screen name="damage" component={Damage} initialParams={{ id: id ,item:item}} />
-                </> :
+              // length == 4 ?
+              //   <>
+              //     <HeaderTab.Screen name="interior" component={Interior} initialParams={{ id: id,item:item }} />
+              //     <HeaderTab.Screen name="exterior" component={Exterior} initialParams={{ id: id,item:item }} />
+              //     <HeaderTab.Screen name="others" component={Others} initialParams={{ id: id ,item:item}} />
+              //     <HeaderTab.Screen name="damage" component={Damage} initialParams={{ id: id ,item:item}} />
+              //   </> :
                 <></>
         }
         {/* <HeaderTab.Screen name="exterior" component={Exterior}  initialParams={{ id: id }} /> */}

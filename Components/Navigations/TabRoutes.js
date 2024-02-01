@@ -26,7 +26,7 @@ export default function TabRoutes() {
        name="My Cars" 
        component={MyCars} 
        options={{
-        headerShown: false,
+        headerShown: true,
         tabBarLabel: 'My Cars',
         tabBarIcon: ({color, size}) => (
           <FontAwesome5 name="car" color={color} size={size} />
